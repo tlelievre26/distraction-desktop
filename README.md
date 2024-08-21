@@ -1,0 +1,2 @@
+# distraction-desktop
+This is the desktop component of a project developed for Purdue Open Source Software Senior Design (ECE 49595O).
