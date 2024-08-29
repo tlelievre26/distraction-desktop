@@ -1,10 +1,13 @@
 ## What is this PR introducing?
 
 
-## What components of our system does this change impact?
+
+## What components of our system does this change impact? Which core feature is this relevant to?
+
 
 
 ## Does this change depend on any other unmerged PRs? Link them here if so.
+
 
 
 ## Pre-commit to-do list
@@ -16,4 +19,6 @@
 - [ ] Have you given a written explanation of the change?
 
 ## Anything else important?
+
+
 
