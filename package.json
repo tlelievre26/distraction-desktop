@@ -1,0 +1,37 @@
+{
+  "name": "distraction-desktop",
+  "version": "1.0.0",
+  "description": "Desktop component for the DistrAction app usage tracking tool",
+  "main": "electron/main.js",
+  "scripts": {
+    "test:integration": "playwright test",
+    "test:unit": "jest",
+    "start": "electron .",
+    "lint": "npx eslint src/** electron/**"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tlelievre26/distraction-desktop.git"
+  },
+  "author": "Taylor Le Lievre, Wilson Wong, Stephanie Zhan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tlelievre26/distraction-desktop/issues"
+  },
+  "homepage": "https://github.com/tlelievre26/distraction-desktop#readme",
+  "devDependencies": {
+    "@electron-forge/cli": "^7.4.0",
+    "@eslint/js": "^9.9.1",
+    "@playwright/test": "^1.46.1",
+    "@types/node": "^22.5.2",
+    "electron": "^32.0.1",
+    "eslint": "^8.57.0",
+    "eslint-config-eslint": "^11.0.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.6.0",
+    "globals": "^15.9.0",
+    "jest": "^29.7.0"
+  },
+  "type": "module"
+}
