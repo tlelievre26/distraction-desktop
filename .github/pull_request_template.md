@@ -12,7 +12,7 @@
 
 ## Pre-commit to-do list
 
-- [ ] Can this be broken up into smaller features?
+- [ ] Does this PR only contain one feature that cannot be broken up into smaller components?
 - [ ] Have you written unit/integration tests for this feature?
 - [ ] Have you run the linter over your code for this change?
 - [ ] Have you run your changes against the testing suite?
