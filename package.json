@@ -24,6 +24,7 @@
     "@playwright/test": "^1.46.1",
     "@types/node": "^22.5.2",
     "electron": "^32.0.1",
+    "electron-builder": "^25.0.5",
     "eslint": "^9.9.1",
     "eslint-config-eslint": "^11.0.0",
     "globals": "^15.9.0",
