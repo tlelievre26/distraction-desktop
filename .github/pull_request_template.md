@@ -12,11 +12,12 @@
 
 ## Pre-commit to-do list
 
-- [ ] Have you written unit/integration tests for this?
-- [ ] Have you run this against the testing suite?
-- [ ] Can this be broken up into smaller features?
-- [ ] Have you asked a teammate for review?
+- [ ] Does this PR only contain one feature that cannot be broken up into smaller components?
+- [ ] Have you written unit/integration tests for this feature?
+- [ ] Have you run the linter over your code for this change?
+- [ ] Have you run your changes against the testing suite?
 - [ ] Have you given a written explanation of the change?
+- [ ] Have you asked a teammate for review?
 
 ## Anything else important?
 
