@@ -7,7 +7,9 @@
     "test:integration": "playwright test",
     "test:unit": "jest",
     "start": "electron .",
-    "lint": "npx eslint src/** electron/**"
+    "lint": "npx eslint src/** electron/**",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "repository": {
     "type": "git",
@@ -19,8 +21,15 @@
     "url": "https://github.com/tlelievre26/distraction-desktop/issues"
   },
   "homepage": "https://github.com/tlelievre26/distraction-desktop#readme",
+  "build": {
+    "appId": "com.distrAction.app",
+    "productName": "DistrAction",
+    "win": {
+      "target": "nsis",
+      "icon": "build/clock-icon.png"
+    }
+  },
   "devDependencies": {
-    "@electron-forge/cli": "^7.4.0",
     "@playwright/test": "^1.46.1",
     "@types/node": "^22.5.2",
     "electron": "^32.0.1",
