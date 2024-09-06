@@ -1,5 +1,4 @@
 import eslintConfigESLint from "eslint-config-eslint";
-import { electron } from "process";
 
 export default [
     ...eslintConfigESLint,
@@ -7,7 +6,7 @@ export default [
         {
             "rules": {
                 "n/no-unpublished-import": ["allow", {
-                    "allowModules": [electron],
+                    "allowModules": [],
                     "convertPath": null
                 }]
             }
