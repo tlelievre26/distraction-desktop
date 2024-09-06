@@ -30,7 +30,6 @@
     }
   },
   "devDependencies": {
-    "@electron-forge/cli": "^7.4.0",
     "@playwright/test": "^1.46.1",
     "@types/node": "^22.5.2",
     "electron": "^32.0.1",
