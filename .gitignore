@@ -4,6 +4,11 @@ db_files/
 
 .env
 test-results/
+
+#Testing outputs
 playwright-report/
 blob-report/
 playwright/.cache/
+
+#Build dist
+dist/

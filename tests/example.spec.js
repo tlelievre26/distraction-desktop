@@ -1,6 +1,6 @@
 //Integration tests
-import { test, _electron as electron } from "@playwright/test";
-import path from "path";
+const { test, _electron: electron } = require("@playwright/test");
+const path = require("path");
 
 
 test('launch app', async() => {
