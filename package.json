@@ -79,6 +79,8 @@
     "memlab": "^1.1.55",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.1.0",
+    "@waiting/shared-core": "^23.21.0",
+    "win32-api": "^26.0.2",
     "@influxdata/influxdb-client": "^1.35.0"
   },
   "_moduleAliases": {
