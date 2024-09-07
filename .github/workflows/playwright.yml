@@ -1,9 +1,8 @@
 name: Run Playwright Integration Tests
 on:
-  push:
-    branches: main
   pull_request:
     branches: main
+    
 jobs:
   test:
     timeout-minutes: 60
