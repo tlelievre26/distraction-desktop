@@ -26,19 +26,9 @@ console.log(handle);
 let string = ['\0'.repeat(200)];
 let txt = GetWindowTextA(handle, string, 200)
 //console.log(txt);
-console.log(string);
-let prev_string = [string, string];
 while(1)
 {
-  prev_string[1] = prev_string[0];
   handle = GetForegroundWindow();
   txt = GetWindowTextA(handle, string, 200);
-  prev_string[0] = string;
-  console.log(prev_string[0]);
-  //console.log(prev_string[1]);
-  if(prev_string[0] != prev_string[1])
-  {
-    console.log(txt);
-    console.log(prev_string[0]);
-  }
+  console.log(string);
 }
