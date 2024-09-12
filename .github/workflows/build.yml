@@ -25,8 +25,12 @@ jobs:
           # (No need to define this secret in the repo settings)
           github_token: ${{ secrets.github_token }}
 
-          # If the commit is tagged with a version (e.g. "v1.0.0"),
-          # release the app after building
-          release: ${{ startsWith(github.ref, 'refs/tags/v') }}
-
           skip_build: true
+
+          args: "--dir"
+      
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: "**\\dist\\win-unpacked\\"
+          overwrite: true
