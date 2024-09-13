@@ -7,8 +7,8 @@ const log = require('./util/logger');
 
 const createWindow = () => {
   let win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 600,
+    height: 400,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"), // Optional if using preload script
       nodeIntegration: true,
@@ -24,8 +24,13 @@ const createWindow = () => {
     win.loadFile(path.join(__dirname, '../dist/index.html')); // Load the production build
   }
 
-  log.info("Testing logging", { sample: "data", sample2: "data2"});
-  log.debug("Testing debug logging");
+  log.info("Testing logging", { sample: "data", sample2: "data2"})
+  log.debug("Testing debug logging")
+  ipcMain.on("begin-session", (...args) => {
+    win.setSize(800, 600);
+    beginSession(...args);
+  });
+  ipcMain.on("end-session", endSession);
 };
   
 app.whenReady().then(() => {
