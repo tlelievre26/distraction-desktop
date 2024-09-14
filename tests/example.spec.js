@@ -4,7 +4,7 @@ const path = require("path");
 
 
 test('launch app', async() => {
-  const electronApp = await electron.launch({ args: [path.join("electron","main.js")] })
+  const electronApp = await electron.launch({ args: [path.join("src","main.js")] })
 
   await electronApp.close()
 })
