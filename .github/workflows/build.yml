@@ -2,8 +2,7 @@ name: Build/release
 
 on:
   push:
-    branches:
-      main
+    branches: main
 
 jobs:
   release:
@@ -25,12 +24,10 @@ jobs:
           # (No need to define this secret in the repo settings)
           github_token: ${{ secrets.github_token }}
 
-          skip_build: true
-
           args: "--dir"
-      
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          path: "**\\dist\\win-unpacked\\"
+          path: "**\\build\\win-unpacked\\"
           overwrite: true
