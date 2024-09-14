@@ -12,3 +12,6 @@ playwright/.cache/
 
 #Build dist
 dist/
+build/
+
+.env
