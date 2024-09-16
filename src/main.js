@@ -21,6 +21,9 @@ const createWindow = () => {
     } else {
       win.loadFile(path.join(__dirname, '../dist/index.html')); // Load the production build
     }
+
+    log.info("Testing logging", { sample: "data", sample2: "data2"})
+    log.debug("Testing debug logging")
   }
 };
 
