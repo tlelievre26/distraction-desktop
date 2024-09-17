@@ -25,8 +25,7 @@ const createWindow = () => {
     log.info("Testing logging", { sample: "data", sample2: "data2"})
     log.debug("Testing debug logging")
   }
-};
-
+  
 app.whenReady().then(() => {
   createWindow();
 });
