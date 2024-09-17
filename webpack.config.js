@@ -30,5 +30,6 @@ module.exports = {
       template: "./public/index.html"
     })
   ],
-  target: "electron-renderer"
+  target: "electron-renderer",
+  stats: "errors-warnings"
 };
