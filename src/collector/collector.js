@@ -47,20 +47,4 @@ const getCurrentAppName = () => {
      console.log(GetLastError());
 }
 
-getCurrentAppName();
-
-// while(1)
-// {
-//      // handle = GetForegroundWindow();
-//      // GetWindowThreadProcessId(handle, ptr);
-//      // phandle = OpenProcess(0x0400, false, ptr[0]);
-//      await setTimeout(() => {
-//           console.log("running code")
-//           getCurrentAppName();
-//      }, "1000")
-//      /*QueryFullProcessImageNameA(phandle, 0, string4, string4.length);
-//      console.log(string4[0]);
-//      query = GetModuleFileNameExA(process, string4, string4.length);
-//      console.log(query);
-//      */
-// }
+module.exports = getCurrentAppName

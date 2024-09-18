@@ -1,20 +1,21 @@
 const koffi = require('koffi');
+const {
+    DWORD,
+    HANDLE,
+    HWND, 
+    BOOL,
+    HMODULE,
+    LPCSTR,
+    LPVOID,
+    LPDWORD,
+    PUINT
+} = require('./winapi-types')
 
 const lib = koffi.load('user32.dll');
 const kern = koffi.load('kernel32.dll');
 const sys = koffi.load('Api-ms-win-core-version-l1-1-0.dll');
 const ps = koffi.load('psapi.dll')
 const version = koffi.load('version.dll');
-
-const DWORD = koffi.alias('DWORD', 'uint32_t');
-const HANDLE = koffi.pointer('HANDLE', koffi.opaque());
-const HWND = koffi.alias('HWND', HANDLE);
-const BOOL = koffi.alias('BOOL', 'bool');
-const HMODULE = koffi.alias('HMODULE', HANDLE)
-const LPCSTR = koffi.alias('LPCSTR', 'const char*')
-const LPVOID = koffi.alias('LPVOID', "void*")
-const LPDWORD = koffi.alias('LPDWORD', "DWORD*")
-const PUINT = koffi.alias('PUINT', 'uint32_t*')
 
 module.exports = {
     GetForegroundWindow: lib.func('__stdcall', 'GetForegroundWindow', 'void *', []),
