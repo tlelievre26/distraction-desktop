@@ -1,6 +1,11 @@
 // Import Koffi
 const koffi = require('koffi');
 const getCurrentAppName = require('./collector')
+const {
+    DWORD,
+    HMODULE,
+    UINT
+} = require('./winapi-types')
 
 // Load necessary WinAPI functions
 const user32 = koffi.load('user32.dll');
@@ -12,6 +17,7 @@ const EVENT_MIN = 0x00000001;
 const EVENT_MAX = 0x7FFFFFFF;
 
 const winCallback = (hWinEventHook, event, hwnd, idObject, idChild, dwEventThread, dwmsEventTime) => {
+    console.log("Triggered")
     if (event === EVENT_OBJECT_FOCUS) {
         // Trigger the JavaScript function when the focus event occurs
         getCurrentAppName();
@@ -20,15 +26,17 @@ const winCallback = (hWinEventHook, event, hwnd, idObject, idChild, dwEventThrea
 
 // Define the WinEventProc callback function (signature: HWINEVENTHOOK, DWORD, HWND, LONG, LONG, DWORD, DWORD)
 const WinEventProc = koffi.proto('void winCallback(HWINEVENTHOOK, DWORD, HWND, LONG, LONG, DWORD, DWORD)')
-const WINEVENTPROC = koffi.alias('WINEVENTPROC', WinEventProc)
 
-// SetWinEventHook function (signature: HWINEVENTHOOK SetWinEventHook (DWORD, DWORD, HMODULE, WINEVENTPROC, DWORD, DWORD, UINT))
-const SetWinEventHook = user32.func('HWINEVENTHOOK SetWinEventHook(DWORD, DWORD, HMODULE, WINEVENTPROC, DWORD, DWORD, UINT)');
+const SetWinEventHook = user32.func('SetWinEventHook', 'HWINEVENTHOOK', [DWORD, DWORD, HMODULE, koffi.pointer(WinEventProc), DWORD, DWORD, DWORD]);
+
+let callback = koffi.register(winCallback, koffi.pointer(WinEventProc))
 
 // Hook for EVENT_OBJECT_FOCUS
-const hEventHook = SetWinEventHook(EVENT_OBJECT_FOCUS, EVENT_OBJECT_FOCUS, null, WINEVENTPROC, 0, 0, WINEVENT_OUTOFCONTEXT);
+const hEventHook = SetWinEventHook(EVENT_OBJECT_FOCUS, EVENT_OBJECT_FOCUS, null, callback, 0, 0, WINEVENT_OUTOFCONTEXT);
+console.log(hEventHook)
+
 
 // Keep the script running
-setInterval(() => {
-    // The script needs to keep running to listen for events
-}, 1000);
+while(1) {
+    continue
+}

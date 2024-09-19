@@ -47,4 +47,9 @@ const getCurrentAppName = () => {
      console.log(GetLastError());
 }
 
+// while (1) {
+//      getCurrentAppName()
+// }
+
+
 module.exports = getCurrentAppName
