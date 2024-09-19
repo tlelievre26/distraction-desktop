@@ -5,6 +5,7 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 
 const { beginSession, endSession } = require("./study-session/session-control");
 const log = require('./util/logger');
+const setCallback = require('./collector/focus-event');;
 
 const createWindow = () => {
   let win = new BrowserWindow({
