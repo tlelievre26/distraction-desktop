@@ -190,6 +190,8 @@ async function grabTimesForApp (appName) {
 };
 
 
+module.exports = { AppData };
+
 // Uses the query session and time gathered from the grab_time functions in order to 
 async function SpecificAppProcessing(appName){
 
