@@ -1,42 +1,42 @@
-// Import the function
-const { AppData } = require('./influxqueries.js'); // Adjust the path as necessary
+import { InfluxDB, Point, currentTime } from '@influxdata/influxdb-client';
+import { AppData } from '../influxqueries'; 
 
-// Mock the necessary dependencies
-const client = require('./client');
-const { Point } = require('@influxdata/influxdb-client');
-const currentTime = require('./currentTime');
-
-jest.mock('./client', () => ({
-  getWriteApi: jest.fn(),
-}));
-
-jest.mock('@influxdata/influxdb-client', () => ({
-  Point: jest.fn().mockImplementation(() => ({
-    stringField: jest.fn().mockReturnThis(),
-    timestamp: jest.fn().mockReturnThis(),
-    tag: jest.fn().mockReturnThis(),
-  })),
-}));
-
-jest.mock('./currentTime', () => ({
-  seconds: jest.fn(),
-}));
-
-describe('AppData', () => {
-  it('should create a point and write it using the write client', () => {
-    // Arrange
-    const writeClientMock = {
-      writePoint: jest.fn(),
-      close: jest.fn(),
+jest.mock('@influxdata/influxdb-client', () => {
+    const mockWriteApi = {
+        writePoint: jest.fn(),
+        close: jest.fn(),
     };
-    client.getWriteApi.mockReturnValue(writeClientMock);
-    currentTime.seconds.mockReturnValue(1234567890);
 
-    // Act
-    AppData('TestSource', 'TestApp', 'TestSession');
+    const mockQueryApi = {
+        queryRows: jest.fn(), 
+    };
 
-    // Assert
-    expect(writeClientMock.writePoint).toHaveBeenCalled();
-    expect(writeClientMock.close).toHaveBeenCalled();
+    return {
+        InfluxDB: jest.fn().mockImplementation(() => ({
+            getWriteApi: jest.fn().mockReturnValue(mockWriteApi),
+            getQueryApi: jest.fn().mockReturnValue(mockQueryApi), 
+        })),
+        Point: jest.fn().mockImplementation(() => ({
+            stringField: jest.fn().mockReturnThis(),
+            timestamp: jest.fn().mockReturnThis(),
+            tag: jest.fn().mockReturnThis(),
+        })),
+        currentTime: {
+            seconds: jest.fn().mockReturnValue(Date.now() / 1000),
+        },
+    };
+});
+
+// Your tests
+describe('AppData function', () => {
+  it('should call the writePoint method twice', () => {
+      AppData('Chrome', 'ExampleApp', 5);
+
+      const mockWriteApi = new InfluxDB().getWriteApi();
+      
+  
+      expect(mockWriteApi.writePoint).toHaveBeenCalledTimes(2);
   });
 });
+
+

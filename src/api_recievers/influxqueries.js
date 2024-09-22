@@ -21,8 +21,12 @@ function AppData(source,app_name,current_session){
   
   let app = new Point('AppChange').stringField('AppName',app_name).timestamp(currentTime.seconds()).stringField('Source', source).tag('QuerySession',current_session)
   writeClient.writePoint(app)
-  //console.log(` ${app}`)
-  console.log(currentTime.seconds())
+  console.log(`App added to InfluxDB: 
+    Name: ${app_name}, 
+    Source: ${source}, 
+    QuerySession: ${current_session}, 
+    Timestamp: ${currentTime.seconds()}`);
+  //console.log(currentTime.seconds())
   writeClient.close()
 
 }
@@ -65,6 +69,8 @@ function grab_times(querySessionID) {
   });
 }
 
+
+module.exports = { AppData };
 
 // Uses the query session and time gathered from the grab_time functions in order to 
 async function SpecificStudySessionProcessing(querySessionid, start_time_of_study_session, stop_time_of_study_session){
