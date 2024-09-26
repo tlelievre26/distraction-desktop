@@ -76,6 +76,7 @@
     "react-router-dom": "^6.26.2",
     "webpack": "^5.94.0",
     "koffi": "^2.9.0",
+    "memlab": "^1.1.55",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.1.0",
     "@influxdata/influxdb-client": "^1.35.0"
