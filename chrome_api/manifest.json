@@ -1,6 +1,6 @@
 {
   "manifest_version": 3, 
-  "name": "Tabs",
+  "name": "DistrAction Data Stream",
   "version": "1.0",
   "permissions": ["tabs"],  
   "host_permissions": ["<all_urls>"],  
