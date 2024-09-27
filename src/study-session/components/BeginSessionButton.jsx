@@ -30,7 +30,7 @@ const BeginSessionButton = () => {
     ipcRenderer.send("begin-session", totalSeconds);
     //To add: if the user begins a session that isn't long enough to gather substantial data (say, 30 mins), throw an error message on screen
     navigation("/session", {
-      state: { timerValue: totalSeconds },
+      state: { timerValue: totalSeconds }
     });
   };
 

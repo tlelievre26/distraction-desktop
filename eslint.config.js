@@ -73,7 +73,6 @@ module.exports = [
         }
       ],
       "import/no-unresolved": "error",
-      "import/no-extraneous-dependencies": ["error", { devDependencies: true }],
 
       // Code formatting
       semi: ["error", "always"],

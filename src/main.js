@@ -1,8 +1,9 @@
 require('dotenv').config(); //Load environment variables
 const path = require('path');
 
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 
+const { beginSession, endSession } = require("./study-session/session-control");
 const log = require('./util/logger');
 
 const createWindow = () => {
@@ -24,8 +25,9 @@ const createWindow = () => {
     win.loadFile(path.join(__dirname, '../dist/index.html')); // Load the production build
   }
 
-  log.info("Testing logging", { sample: "data", sample2: "data2"})
-  log.debug("Testing debug logging")
+  log.info("Testing logging", { sample: "data", sample2: "data2"});
+  log.debug("Testing debug logging");
+  
   ipcMain.on("begin-session", (...args) => {
     win.setSize(800, 600);
     beginSession(...args);

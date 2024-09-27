@@ -1,8 +1,8 @@
-const { contextBridge, ipcRenderer } = require('electron')
+const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld(
-    'electronAPI',
-    {
-      startSession: (...args) => ipcRenderer.send('begin-session', ...args)
-    }
-  )
+  'electronAPI',
+  {
+    startSession: (...args) => ipcRenderer.send('begin-session', ...args)
+  }
+);

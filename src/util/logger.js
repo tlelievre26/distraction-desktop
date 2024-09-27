@@ -1,5 +1,3 @@
-// const util = require('node:util');
-
 const log = require('electron-log/main');
 
 const logLevel = process.env.LOG_LEVEL ?? 'info';
