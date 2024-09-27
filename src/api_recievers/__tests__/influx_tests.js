@@ -1,6 +1,7 @@
-import { InfluxDB, Point, currentTime } from '@influxdata/influxdb-client';
+const { InfluxDB } = require('@influxdata/influxdb-client');
 
-import { AppData } from '../influxqueries'; 
+const { AppData } = require('../influxqueries');
+
 
 jest.mock('@influxdata/influxdb-client', () => {
   const mockWriteApi = {
