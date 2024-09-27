@@ -1,0 +1,9 @@
+{
+    "name": "com.distraction.nativehost",
+    "description": "DistrAction Desktop App",
+    "path": "./src/api_recievers/chrome-native-api.js",
+    "type": "stdio",
+    "allowed_origins": [
+      "chrome-extension://mdecoafbdgmhgnmekcgdkgbaglfhkani/"
+    ]
+  }
