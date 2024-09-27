@@ -4,6 +4,6 @@
     "path": "./src/api_recievers/chrome-native-api.js",
     "type": "stdio",
     "allowed_origins": [
-      "chrome-extension://mdecoafbdgmhgnmekcgdkgbaglfhkani/"
+      "chrome-extension://lnbnfocdgikkadpomlehiconnapngakn/"
     ]
   }
