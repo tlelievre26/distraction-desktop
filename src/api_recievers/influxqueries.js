@@ -46,7 +46,6 @@ const appData = (source,appName,currentSession) =>{
   //console.log(currentTime.seconds())
   
   writeClient.close();
-
 };
 
 // Function that will extract the time and the query session associated with that time 
@@ -212,6 +211,6 @@ async function SpecificAppProcessing(appName){
 
 */
 
-appData("Windows","Discord", 2);
-SpecificStudySessionProcessing(2);
+// appData("Windows","Discord", 2);
+// SpecificStudySessionProcessing(2);
 //SpecificAppProcessing("Discord");
