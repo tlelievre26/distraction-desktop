@@ -25,7 +25,7 @@ jest.mock('@influxdata/influxdb-client', () => {
     currentTime: {
       seconds: jest.fn().mockReturnValue(Date.now() / 1000)
     }
-  };s;
+  };
 });
 
 // Your tests
