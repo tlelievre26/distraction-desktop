@@ -1,5 +1,6 @@
 require('dotenv').config(); //Load environment variables
 const path = require('path');
+const { Worker } = require("node:worker_threads");
 
 const { app, BrowserWindow, ipcMain } = require("electron");
 
@@ -27,6 +28,12 @@ const createWindow = () => {
 
   log.info("Testing logging", { sample: "data", sample2: "data2"});
   log.debug("Testing debug logging");
+
+  const winApiThread = new Worker(path.join(__dirname, "collector/focus-event.js"));
+  winApiThread.on('message', (windowTitle) => {
+    console.log('Active window title:', windowTitle);
+    // insertWindowName(windowTitle);  // Insert into the database asynchronously
+  });
   
   ipcMain.on("begin-session", (...args) => {
     win.setSize(800, 600);
