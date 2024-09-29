@@ -1,13 +1,17 @@
-const { time } = require("console");
-const { start } = require("repl");
+// const { time } = require("console");
+// const { start } = require("repl");
 require('dotenv').config();
 
 
+const { resolve } = require('path');
+
 const { currentTime, InfluxDB, Point } = require("@influxdata/influxdb-client");
+
+const log = require('../util/logger');
 
 
 const token = process.env.INFLUXDB_TOKEN;
-const url = 'http://localhost:8086';
+const url = `http://localhost:${process.env.DB_PORT}`;
 const client = new InfluxDB({url, token});
 let org = `Distraction`;
 let bucket = `WebsiteData`;
@@ -19,14 +23,23 @@ let bucket = `WebsiteData`;
 //Must provide the current study session this entry is associaed with
 //Inputs are Strings
 const appData = (source,appName,currentSession) =>{
+
   let writeClient = client.getWriteApi(org, bucket, 's');
-  
+
   let app = new Point('AppChange')
     .stringField('AppName',appName)
     .timestamp(currentTime.seconds())
     .stringField('Source', source)
     .tag('QuerySession',currentSession);
-  writeClient.writePoint(app);
+
+  try {
+    writeClient.writePoint(app);
+  }
+  catch (error) {
+    log.error(error);
+    throw error;
+  }
+
 
   console.log(`App added to InfluxDB: 
     Name: ${appName}, 
@@ -34,6 +47,7 @@ const appData = (source,appName,currentSession) =>{
     QuerySession: ${currentSession}, 
     Timestamp: ${currentTime.seconds()}`);
   //console.log(currentTime.seconds())
+  
   writeClient.close();
 
 };
@@ -68,6 +82,7 @@ const grabTimesForStudySession = (querySessionID) => {
         allEndTimes.push(tableObject._stop);
       },
       error: (error) => {
+        log.error(error);
         reject(error); // Reject the promise if an error occurs
       },
       complete: () => {
@@ -86,6 +101,7 @@ const SpecificStudySessionProcessing = async (querySessionid) =>{
   try {
     // Await the result from grab_times
     const result = await grabTimesForStudySession(querySessionid);
+    console.log(result);
     const timesOfSessions = result.allTimes;
     const idsOfSessions = result.allqueryIds;
     const startTimes = result.allStartTimes;
@@ -97,21 +113,21 @@ const SpecificStudySessionProcessing = async (querySessionid) =>{
     SpecificStudySession(timesOfSessions[0], timesOfSessions[(timesOfSessions.length) - 1], idsOfSessions[0], startTimes[0], endTimes[0]);
 
   } catch (error) {
-    console.error('Error:', error);
+    console.error(error);
   }
 };
 
 
 const SpecificStudySession = async (startTime, endTime, idsOfSession, startTimes, endTimes) =>{
 
-  time_of_current_session = currentTime.seconds(); 
+  timeOfCurrentSession = currentTime.seconds(); 
 
 
-  console.debug("Start Time of Session: " + new Date(startTime)); //Study Session Star ttimes
-  console.debug("End Time of Session:" +new Date(endTime)); // End time of study session
-  console.debug("Session ID:" + " " + idsOfSession); // id of study session
-  console.debug("Start Time:" + " " + new Date(startTimes)); // all the measurements start times
-  console.debug("End Time:" +" " + new Date(endTimes)); // all the end measurements end times
+  log.debug("Start Time of Session: " + new Date(startTime)); //Study Session Star ttimes
+  log.debug("End Time of Session:" +new Date(endTime)); // End time of study session
+  log.debug("Session ID:" + " " + idsOfSession); // id of study session
+  log.debug("Start Time:" + " " + new Date(startTimes)); // all the measurements start times
+  log.debug("End Time:" +" " + new Date(endTimes)); // all the end measurements end times
 
 
   let queryClient = client.getQueryApi(org);  
@@ -121,14 +137,14 @@ const SpecificStudySession = async (startTime, endTime, idsOfSession, startTimes
   queryClient.queryRows(fluxQuery, {
     next: (row, tableMeta) => {
       const tableObject = tableMeta.toObject(row);
-      console.log(tableObject); // the data that comes from the query
+      log.debug(tableObject); // the data that comes from the query
       // return the stuff in this tableObject 
     },
     error: (error) => {
-      console.error('\nError', error);
+      log.error('\nError', error);
     },
     complete: () => {
-      console.log('\nSuccess');
+      log.debug('\nSuccess');
     }
   });
 
