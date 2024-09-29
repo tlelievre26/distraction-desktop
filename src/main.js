@@ -15,6 +15,7 @@ const createWindow = () => {
     webPreferences: {
       preload: path.join(__dirname, "preload.js"), // Optional if using preload script
       nodeIntegration: true,
+      nodeIntegrationInWorker: true,
       contextIsolation: false
     }
   });
