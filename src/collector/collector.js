@@ -20,35 +20,26 @@ const getCurrentAppName = () => {
      
   GetWindowThreadProcessId(handle, ptr);
      
-  let process = OpenProcess(0x1000 | 0x010, false, ptr[0]);
+  const process = OpenProcess(0x1000 | 0x010, false, ptr[0]);
   // console.log("Process Id:", process) 
-  let query = GetModuleFileNameExA(process, null, filepath, MAXPATH);
+  const query = GetModuleFileNameExA(process, null, filepath, MAXPATH);
   // console.log(query)
   const processName = filepath.toString('utf8').replace(/\0/g, '');
-  //console.log(processName)
+  //console.log(processName);
   const fileSize = GetFileVersionInfoSizeA(filepath, null);
-  // console.log(fileSize)
+  //console.log(fileSize);
   // console.log("Ive survived")
   const appInfo = Buffer.alloc(fileSize);
   GetFileVersionInfoA(filepath, 0, fileSize, appInfo);
-  // console.log(appInfo.toString('utf8').replace(/\0/g, ''))
+  //console.log(appInfo.toString('utf8').replace(/\0/g, ''));
+  //console.log("\n");
   const fullAppInfo = Buffer.alloc(100);
   const fullAppInfoSize = Buffer.alloc(100);
   const infoString = Buffer.from('\\StringFileInfo\\040904b0\\ProductName', 'utf8');
   VerQueryValueA(appInfo, infoString, fullAppInfo, fullAppInfoSize);
   const productNamePtr = koffi.decode(fullAppInfo, "string");
-     
-  //if (productNamePtr != null) {
   //console.log(productNamePtr);
-  //console.log(GetLastError());
-  //}
-     
-  //console.log(GetLastError());
-
+  return(productNamePtr);
 };
-/*while (1) {
-     getCurrentAppName()
-}
-*/
 
 module.exports = getCurrentAppName;

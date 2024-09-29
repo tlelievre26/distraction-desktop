@@ -6,8 +6,7 @@ const koffi = require('koffi');
 const getCurrentAppName = require('./collector');
 const {
   DWORD,
-  HMODULE,
-  HWND
+  HMODULE
 } = require('./winapi-types');
 const { 
   //GetLastError
@@ -25,37 +24,29 @@ const WINEVENT_SKIPOWNPROCESS = 0x0002;
 const EVENT_OBJECT_FOCUS = 0x8005;
 
 const setCallback = () => {
-  if (cluster.isPrimary) { 
-    console.log("Main code here...");
-    cluster.fork();
-  } else {
-    const winCallback = (hWinEventHook, event, hwnd, idObject, idChild, dwEventThread, dwmsEventTime) => {
-      if (event === EVENT_OBJECT_FOCUS) {
+  const productName = Buffer.alloc(100);
+  const message = Buffer.alloc(100);
+
+  const winCallback = (hWinEventHook, event, hwnd, idObject, idChild, dwEventThread, dwmsEventTime) => {
+    if (event === EVENT_OBJECT_FOCUS) {
       // Trigger the JavaScript function when the focus event occurs
-        getCurrentAppName();
-      }
-      return 0;
-    };
+      productName = getCurrentAppName();
+      console.log(productName);
+      //return productName;
+    }
+    return productName;
+  };
     
-    const SetWinEventHook = lib.func('SetWinEventHook', 'HWINEVENTHOOK', [DWORD, DWORD, HMODULE, koffi.pointer(WinEventProc), DWORD, DWORD, DWORD]);
+  const SetWinEventHook = lib.func('SetWinEventHook', 'HWINEVENTHOOK', [DWORD, DWORD, HMODULE, koffi.pointer(WinEventProc), DWORD, DWORD, DWORD]);
 
-    let callback = koffi.register(winCallback, koffi.pointer(WinEventProc));
+  const callback = koffi.register(winCallback, koffi.pointer(WinEventProc));
     
-    // Hook for EVENT_OBJECT_FOCUS
-    const hEventHook = SetWinEventHook(EVENT_OBJECT_FOCUS, EVENT_OBJECT_FOCUS, null, callback, 0, 0, WINEVENT_OUTOFCONTEXT | WINEVENT_SKIPOWNPROCESS);
-    // console.log(hEventHook);
-    // console.log(GetLastError());
+  // Hook for EVENT_OBJECT_FOCUS
+  const hEventHook = SetWinEventHook(EVENT_OBJECT_FOCUS, EVENT_OBJECT_FOCUS, null, callback, 0, 0, WINEVENT_OUTOFCONTEXT | WINEVENT_SKIPOWNPROCESS);
 
-    let message = Buffer.alloc(100);
-    let res = GetMessageA(message, null, 0, 0);
-    console.log(res);
-    console.log(message);
-    
-  }
+  const res = GetMessageA(message, null, 0, 0);
+  //console.log(res);
+  koffi.unregister(callback);
+  //return productName;
 };
-while(1)
-{
-  setCallback();
-}
-
 module.exports = setCallback;
