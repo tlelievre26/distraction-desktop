@@ -2,9 +2,6 @@
 // const { start } = require("repl");
 require('dotenv').config();
 
-
-const { resolve } = require('path');
-
 const { currentTime, InfluxDB, Point } = require("@influxdata/influxdb-client");
 
 const log = require('../util/logger');
