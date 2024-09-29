@@ -1,14 +1,15 @@
 require('dotenv').config(); //Load environment variables
 const path = require('path');
 
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 
+const { beginSession, endSession } = require("./study-session/session-control");
 const log = require('./util/logger');
 
 const createWindow = () => {
   let win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 600,
+    height: 400,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"), // Optional if using preload script
       nodeIntegration: true,
@@ -26,6 +27,12 @@ const createWindow = () => {
 
   log.info("Testing logging", { sample: "data", sample2: "data2"});
   log.debug("Testing debug logging");
+  
+  ipcMain.on("begin-session", (...args) => {
+    win.setSize(800, 600);
+    beginSession(...args);
+  });
+  ipcMain.on("end-session", endSession);
 };
   
 app.whenReady().then(() => {
