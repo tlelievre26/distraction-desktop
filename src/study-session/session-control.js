@@ -11,7 +11,7 @@ exports.beginSession = (_event, _time) => {
     const winApiThread = new Worker(path.join(__dirname, "../collector/focus-event.js"));
     winApiThread.on('message', (windowTitle) => {
       console.log('Active window title:', windowTitle);
-      // insertWindowName(windowTitle);  // Insert into the database asynchronously
+      //insertWindowName(windowTitle);  // Insert into the database asynchronously
     });
   }
   catch (error) {
