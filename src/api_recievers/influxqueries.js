@@ -10,8 +10,8 @@ const log = require('../util/logger');
 const token = process.env.INFLUXDB_TOKEN;
 const url = `http://localhost:${process.env.DB_PORT}`;
 const client = new InfluxDB({url, token});
-let org = `Distraction`;
-let bucket = `WebsiteData`;
+let org = process.env.INFLUX_ORG;
+let bucket = process.env.INFLUX_BUCKET;
 
 
 //Write Function

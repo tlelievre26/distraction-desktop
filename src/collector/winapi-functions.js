@@ -30,6 +30,6 @@ module.exports = {
   GetFileVersionInfoSizeA: version.func('DWORD GetFileVersionInfoSizeA(LPCSTR lptstrFilename, _Out_ LPDWORD lpdwHandle)'),
   GetLastError: kern.func('DWORD __stdcall GetLastError()'),
   VerQueryValueA: version.func('BOOL __stdcall VerQueryValueA(LPVOID pBlock, LPCSTR lpSubBlock, LPVOID *lplpBuffer, PUINT puLen)'),
-  GetMessageA: lib.func('BOOL __stdcall GetMessageA(_Out_ void* lpMsg, HWND hWnd, DWORD wMsgFilterMin, DWORD wMsgFilterMax)'),
+  PeekMessage: lib.func('BOOL __stdcall PeekMessageW(_Out_ void* lpMsg, HWND hWnd, DWORD wMsgFilterMin, DWORD wMsgFilterMax, DWORD wRemoveMsg)'),
   WinEventProc: koffi.proto('void __stdcall winCallback(HWINEVENTHOOK hWinEventHook, DWORD event, HWND hwnd, LONG idObject, LONG idChild, DWORD dwEventThread, DWORD dwmsEventTime)')
 };

@@ -5,23 +5,26 @@ const path = require('path');
 
 const log = require('../util/logger');
 
+let winApiThread;
+
 exports.beginSession = (_event, _time) => {
   log.debug("Beginning data gathering");
-  try {
-    const winApiThread = new Worker(path.join(__dirname, "../collector/focus-event.js"));
-    winApiThread.on('message', (windowTitle) => {
-      console.log('Active window title:', windowTitle);
-      //insertWindowName(windowTitle);  // Insert into the database asynchronously
-    });
-  }
-  catch (error) {
-    console.error(error);
-    throw error;
-  }
+
+  winApiThread = new Worker(path.join(__dirname, "../collector/focus-event.js"));
+  winApiThread.on('message', (windowTitle) => {
+    console.log('Active window title:', windowTitle);
+
+  });
+  winApiThread.postMessage("Hi!");
 
 
 };
 
 exports.endSession = (_event) => {
   log.debug("Ending data gathering");
+  winApiThread.postMessage('end-session');
+  winApiThread.on('exit', (code) => {
+    console.log('Worker exited with code ', code);
+
+  });
 };
