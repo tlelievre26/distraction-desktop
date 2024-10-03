@@ -137,7 +137,7 @@ const SpecificStudySession = async (startTime, endTime, idsOfSession, startTimes
   queryClient.queryRows(fluxQuery, {
     next: (row, tableMeta) => {
       const tableObject = tableMeta.toObject(row);
-      console.log(tableObject); // the data that comes from the query
+      log.debug(tableObject); // the data that comes from the query
       // return the stuff in this tableObject 
     },
     error: (error) => {
@@ -164,7 +164,7 @@ const grabTimesForApp = (appName) => {
   queryClient.queryRows(fluxQuery, {
     next: (row, tableMeta) => {
       const tableObject = tableMeta.toObject(row);
-      console.log('Received row:', tableObject);  
+      log.debug('Received row:', tableObject);  
     },
     error: (error) => {
       console.error('Query error:', error); 
@@ -178,4 +178,4 @@ const grabTimesForApp = (appName) => {
 
 //appData("Windows","Discord", 2);
 //SpecificStudySessionProcessing(2);
-grabTimesForApp("Youtube");
+//grabTimesForApp("Youtube");
