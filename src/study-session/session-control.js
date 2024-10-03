@@ -1,10 +1,46 @@
-//Just including this file as an example so that git tracks the directory structure
+const { Worker } = require("worker_threads");
+const path = require('path');
+
+const { v4: uuidv4 } = require('uuid');
+
 const log = require('../util/logger');
+const { appData } = require("../api_recievers/influxqueries");
 
-exports.beginSession = (_event, _time) => {
-  log.debug("Beginning data gathering");
+let winApiThread;
+let sessionId;
+
+const beginSession = (_event, _time) => {
+  sessionId = uuidv4();
+  log.debug("Beginning session with ID " + sessionId);
+
+  winApiThread = new Worker(path.join(__dirname, "../collector/focus-event.js"));
+  winApiThread.on('message', async (windowTitle) => {
+    log.debug('Active window title:', windowTitle);
+    await appData("Windows", windowTitle, sessionId);
+  });
+
+  winApiThread.on('error', (err) => {
+    log.error(err);
+    //Probably should do something on the frontend for this
+    endSession(null, sessionId);
+  });
 };
 
-exports.endSession = (_event) => {
+const endSession = (_event, cleanSession) => {
   log.debug("Ending data gathering");
+  winApiThread.postMessage('end-session');
+  winApiThread.on('exit', (code) => {
+    log.debug('Worker exited with code ', code);
+  });
+  if(sessionId !== undefined && cleanSession) {
+    //TODO:
+    //We should prob have a function to clean all records with a certain session ID in case of failure
+    //Don't want to leave a half-finished session in the DB
+    //Also would just be useful for removing old timelines
+    log.debug("Session ended unexpectedly, cleaning up data");
+  }
+
+  sessionId = undefined;
 };
+
+module.exports = {beginSession, endSession};
