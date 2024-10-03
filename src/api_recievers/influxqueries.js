@@ -8,10 +8,11 @@ const log = require('../util/logger');
 
 
 const token = process.env.INFLUXDB_TOKEN;
-const url = 'http://localhost:8086';
+const url = `http://localhost:${process.env.DB_PORT}`;
 const client = new InfluxDB({url, token});
 let org = process.env.INFLUX_ORG;
 let bucket = process.env.INFLUX_BUCKET;
+
 
 //Track the name of the previously written app, just to prevent accidental duplicate events
 let prevAppName;
@@ -153,29 +154,38 @@ const SpecificStudySession = async (startTime, endTime, idsOfSession, startTimes
 
 
 const grabTimesForApp = (appName) => {
+  return new Promise((resolve, reject) => {
+    const allTimes = []; // exact time of point
+    const allqueryIds = []; // Associated Query Session ID of that point
+    const allStartTimes = []; // When the measurement was started
+    const allEndTimes = []; // When the measurement was ended
 
-  const timeOfCurrentSession = currentTime.seconds();
-  let queryClient = client.getQueryApi(org);
-  let stringVersion = `-${timeOfCurrentSession.toString()}s`;
+    // Get the current time
+    const timeOfCurrentSession = currentTime.seconds();
+    let queryClient = client.getQueryApi(org);
+    let stringVersion = `-${timeOfCurrentSession.toString()}s`;
 
-  const fluxQuery = `from(bucket: "WebsiteData") |> range(start: ${stringVersion}) |> filter(fn: (r) => r._measurement == "AppChange") |> filter(fn: (r) => r._field == "AppName") |> filter(fn: (r) => r._value == "${appName}")`;
-  
+    // Construct the Flux query with the filter for the specific querySessionID
+    const fluxQuery = `from(bucket: "WebsiteData")  |> range(start: ${stringVersion}) |> filter(fn: (r) => r._measurement == "AppChange") |> filter(fn: (r) => r._field == "AppName") |> filter(fn: (r) => r._value == "${appName}")`;
 
-  queryClient.queryRows(fluxQuery, {
-    next: (row, tableMeta) => {
-      const tableObject = tableMeta.toObject(row);
-      log.debug('Received row:', tableObject);  
-    },
-    error: (error) => {
-      console.error('Query error:', error); 
-    },
-    complete: () => {
-      console.log('Query complete.');
-    }
+    queryClient.queryRows(fluxQuery, {
+      next: (row, tableMeta) => {
+        const tableObject = tableMeta.toObject(row);
+        log.debug(tableObject);
+        allTimes.push(tableObject._time);
+        allqueryIds.push(tableObject.QuerySession);
+        allStartTimes.push(tableObject._start);
+        allEndTimes.push(tableObject._stop);
+      },
+      error: (error) => {
+        log.error(error);
+        reject(error); // Reject the promise if an error occurs
+      },
+      complete: () => {
+        resolve({ allTimes, allqueryIds, allStartTimes, allEndTimes }); // Resolve the promise once complete
+      }
+    });
   });
 };
 
 
-//appData("Windows","Discord", 2);
-//SpecificStudySessionProcessing(2);
-//grabTimesForApp("Youtube");
