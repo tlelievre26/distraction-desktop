@@ -1,6 +1,6 @@
 const { InfluxDB } = require('@influxdata/influxdb-client');
 
-const { AppData } = require('../influxqueries');
+const { appData } = require('../influxqueries');
 
 
 jest.mock('@influxdata/influxdb-client', () => {
