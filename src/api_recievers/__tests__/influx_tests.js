@@ -32,7 +32,7 @@ jest.mock('@influxdata/influxdb-client', () => {
 // Your tests
 describe('AppData function', () => {
   it('should call the writePoint method twice', () => {
-    AppData('Chrome', 'ExampleApp', 5);
+    appData('Chrome', 'ExampleApp', 5);
 
     const mockWriteApi = new InfluxDB().getWriteApi();
       
