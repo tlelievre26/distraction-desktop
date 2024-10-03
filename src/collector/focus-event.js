@@ -8,7 +8,6 @@ const {
   HMODULE
 } = require('./winapi-types');
 const { 
-  GetWindowTextA,
   WinEventProc,
   PeekMessage,
   GetWindowThreadProcessId,
@@ -49,10 +48,6 @@ const winCallback = (hWinEventHook, event, hwnd, idObject, idChild, dwEventThrea
     var ptr = [null];
     const MAXPATH = 260;
     const filepath = Buffer.alloc(MAXPATH);
-       
-    const windowBuf = Buffer.alloc(100);
-    GetWindowTextA(hwnd, windowBuf, 100);
-    const windowName = windowBuf.toString('utf8').replace(/\0/g, '');
 
     GetWindowThreadProcessId(hwnd, ptr);
     if (ptr[0] === null) {
@@ -88,9 +83,6 @@ const winCallback = (hWinEventHook, event, hwnd, idObject, idChild, dwEventThrea
     const infoString = Buffer.from('\\StringFileInfo\\040904b0\\ProductName', 'utf8');
     if (!VerQueryValueA(appInfo, infoString, fullAppInfo, fullAppInfoSize)) {
       log.error("Failed to query version value: " + GetLastError());
-      if(windowName !== '' && windowName !== null) {
-        parentPort.postMessage(windowName);
-      }
       return;
     }
     // console.log('fullAppInfoSize: ', koffi.decode(fullAppInfoSize, "int"));
