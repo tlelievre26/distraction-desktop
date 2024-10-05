@@ -4,10 +4,11 @@ const path = require('path');
 const { app, BrowserWindow, ipcMain } = require("electron");
 
 const { beginSession, endSession } = require("./study-session/session-control");
+// const { createWebsocket } = require('./api_recievers/create-websocket');
 // const log = require('./util/logger');
 
 const createWindow = () => {
-  let win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 600,
     height: 400,
     webPreferences: {
