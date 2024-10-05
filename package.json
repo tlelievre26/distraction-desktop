@@ -85,6 +85,7 @@
     "webpack": "^5.94.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.1.0",
+    "ws": "^8.18.0",
     "win32-api": "^26.0.2"
   },
   "_moduleAliases": {

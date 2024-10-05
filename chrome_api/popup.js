@@ -1,4 +1,3 @@
-
 const tabData = () =>{
   document.addEventListener('DOMContentLoaded', () => {
 
@@ -23,5 +22,19 @@ const tabData = () =>{
 
 };
 
-
 tabData();
+
+const connectButton = document.getElementById('connect-ws');
+connectButton.addEventListener('click', () => {
+  chrome.runtime.sendMessage('connect-ws');
+});
+
+chrome.runtime.onMessage.addListener((message) => {
+  if(message === 'connection-success') {
+    connectButton.disabled = true;
+  }
+  else if(message === 'close-ws') {
+    connectButton.disabled = false;
+  }
+  
+});

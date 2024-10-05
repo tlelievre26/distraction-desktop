@@ -6,12 +6,13 @@ const SessionScreen = () => {
   const startingTime = useLocation().state.timerValue;
   const navigation = useNavigate();
   const [timeLeft, setTimeLeft] = React.useState(startingTime);
+  const [extStatus, setExtStatus] = React.useState(false);
   const goToTimeline = () => {
     ipcRenderer.send("end-session");
     navigation("/timeline");
   };
 
-  React.useEffect(() => {
+  React.useEffect(() => { // Handles the timer countdown
     const timerInterval = setInterval(() => {
       setTimeLeft((prevTime) => {
         if (prevTime > 0) return prevTime - 1;
@@ -21,6 +22,19 @@ const SessionScreen = () => {
     }, 1000);
 
     return () => clearInterval(timerInterval);
+  }, []);
+
+  React.useEffect(() => { //Recieves messages about whether or not the Chrome extension is connected
+    const handleExtensionStatus = (_event, status) => {
+      setExtStatus(status);  // Update sendState based on message from main process
+    };
+
+    ipcRenderer.on('extension-status', handleExtensionStatus);
+
+    // Cleanup listener on unmount
+    return () => {
+      ipcRenderer.removeListener('extension-status', handleExtensionStatus);
+    };
   }, []);
 
   const hours = Math.floor(timeLeft / 3600);
@@ -34,6 +48,11 @@ const SessionScreen = () => {
         {minutes.toString().padStart(2, "0")}:
         {seconds.toString().padStart(2, "0")}
       </p>
+      {!extStatus && (
+        <p style={{ color: "red", fontWeight: "bold" }}>
+          Chrome Extension not connected
+        </p>
+      )}
       <button type="submit" className="btn btn-danger" onClick={goToTimeline}>
         End Study Session
       </button>

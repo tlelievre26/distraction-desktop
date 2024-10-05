@@ -1,6 +1,7 @@
 const { Worker } = require("worker_threads");
 const path = require('path');
 
+const { WebSocketServer } = require('ws');
 const { v4: uuidv4 } = require('uuid');
 
 const log = require('../util/logger');
@@ -8,8 +9,11 @@ const { appData } = require("../api_recievers/influxqueries");
 
 let winApiThread;
 let sessionId;
+let wss;
 
-const beginSession = (_event, _time) => {
+const beginSession = (event, _time) => {
+  createWebsocket(event);
+
   sessionId = uuidv4();
   log.debug("Beginning session with ID " + sessionId);
 
@@ -41,6 +45,38 @@ const endSession = (_event, cleanSession) => {
   }
 
   sessionId = undefined;
+  closeWebsocket();
 };
 
-module.exports = {beginSession, endSession};
+
+const createWebsocket = (event) => {
+  wss = new WebSocketServer({ port: 8090 });
+  const webContents = event.sender;
+  webContents.send('test');
+
+  log.debug("Successfully created WebSocketServer on port 8090");
+  wss.on('connection', (ws) => {
+    webContents.send('extension-status', true);
+
+    ws.on('error', log.error);
+  
+    ws.on('message', (data) => {
+      log.debug('received: ', data);
+    });
+
+    ws.on('close', () => {
+      log.debug("Connection closed");
+      webContents.send('extension-status', true);
+    });
+
+    ws.send('something');
+  });
+};
+
+const closeWebsocket = () => {
+  log.debug("Closing WebSocket server");
+  wss.clients.forEach((ws) => ws.send('Closing'));
+  wss.close();
+};
+
+module.exports = {beginSession, endSession };
