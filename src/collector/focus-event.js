@@ -1,4 +1,4 @@
-const { isMainThread, parentPort } = require('worker_threads');
+const {parentPort } = require('worker_threads');
 
 const koffi = require('koffi');
 
@@ -36,35 +36,87 @@ const winCallback = (hWinEventHook, event, hwnd, idObject, idChild, dwEventThrea
   //parentPort.postMessage("User has switched tabs");
   if (event === EVENT_OBJECT_FOCUS) {
     // Trigger the JavaScript function when the focus event occurs
-    let handle = GetForegroundWindow();
+    const productNamePtr = Buffer.alloc(1024);
+    const handle = GetForegroundWindow();
+    if( koffi.decode(handle, "string") === null)
+    {
+      parentPort.postMessage("GetForegroundWindow returned null. According to documentation, potential reasons include: when a window is losing activation.");
+    }
+    else
+    {
+    //productNamePtr.write(handle);
+      /*var ptr = [null];
+      const MAXPATH = 260;
+      const filepath = Buffer.alloc(260);
+       
+      const processId = GetWindowThreadProcessId(handle, ptr);
+      //console.log(processId);
+      if(koffi.decode(processId, "int") === 0)
+      {
+        parentPort.postMessage("Unable to get foreground window's process ID");
+      }
+      else
+      {
+        const process = OpenProcess(0x1000 | 0x010, false, ptr[0]);
 
-    var ptr = [null];
-    const MAXPATH = 260;
-    const filepath = Buffer.alloc(260);
-       
-    GetWindowThreadProcessId(handle, ptr);
-       
-    const process = OpenProcess(0x1000 | 0x010, false, ptr[0]);
-    // console.log("Process Id:", process) 
-    const query = GetModuleFileNameExA(process, null, filepath, MAXPATH);
-    // console.log(query)
-    const processName = filepath.toString('utf8').replace(/\0/g, '');
-    //console.log(processName);
-    const fileSize = GetFileVersionInfoSizeA(filepath, null);
-    //console.log(fileSize);
-    // console.log("Ive survived")
-    const appInfo = Buffer.alloc(fileSize);
-    GetFileVersionInfoA(filepath, 0, fileSize, appInfo);
-    //console.log(appInfo.toString('utf8').replace(/\0/g, ''));
-    //console.log("\n");
-    const fullAppInfo = Buffer.alloc(100);
-    const fullAppInfoSize = Buffer.alloc(100);
-    const infoString = Buffer.from('\\StringFileInfo\\040904b0\\ProductName', 'utf8');
-    VerQueryValueA(appInfo, infoString, fullAppInfo, fullAppInfoSize);
-    const productNamePtr = koffi.decode(fullAppInfo, "string");
-    appData("Windows", productNamePtr, 1);
-    parentPort.postMessage(productNamePtr);
+        if(koffi.decode(process, "string") === null)
+        {
+          parentPort.postMessage("Unable to open process");
+        }
+        else
+        {
+        // console.log("Process Id:", process) 
+          const query = GetModuleFileNameExA(process, null, filepath, MAXPATH);
+          if(koffi.decode(query, "int") === 0)
+          {
+            parentPort.postMessage("Unable to get filepath");
+          }
+          else
+          {*/
+      /*const fileSize = GetFileVersionInfoSizeA(filepath, null);
+
+            if(fileSize == 0)
+            {
+              productNamePtr = "Unable to get version info size";
+            }
+            else
+            {
+              const appInfo = Buffer.alloc(fileSize);
+              const versioninfo = GetFileVersionInfoA(filepath, 0, fileSize, appInfo);
+              if(versioninfo == 0)
+              {
+                productNamePtr = "Unable to get version info";
+              }
+              else
+              {
+                //console.log(appInfo.toString('utf8').replace(/\0/g, ''));
+                //console.log("\n");
+                const fullAppInfo = Buffer.alloc(100);
+                const fullAppInfoSize = Buffer.alloc(100);
+                const infoString = Buffer.from('\\StringFileInfo\\040904b0\\ProductName', 'utf8');
+                const getProductName = VerQueryValueA(appInfo, infoString, fullAppInfo, fullAppInfoSize);
+
+                if(getProductName == 0)
+                {
+                  productNamePtr = "Unable to get product name";
+                }
+                else
+                {
+                  productNamePtr = koffi.decode(fullAppInfo, "string");
+                  console.log(productNamePtr);
+                  appData("Windows", productNamePtr, 1);
+                }
+              }*/
+    }
   }
+  // console.log(query)
+  //const processName = filepath.toString('utf8').replace(/\0/g, '');
+  //console.log(processName);
+  //}
+  //}
+  //}
+  //parentPort.postMessage(productNamePtr);
+  //}
   return 0;
 };
 const SetWinEventHook = lib.func('SetWinEventHook', 'HWINEVENTHOOK', [DWORD, DWORD, HMODULE, koffi.pointer(WinEventProc), DWORD, DWORD, DWORD]);
@@ -82,8 +134,3 @@ parentPort.on('exit', () => {
   koffi.unregister(callback);
   UnhookWinEvent(hEventHook);
 });
-//console.log(res);
-
-//return productName;
-// };
-// module.exports = setCallback;

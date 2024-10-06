@@ -65,6 +65,7 @@
   },
   "dependencies": {
     "@influxdata/influxdb-client": "^1.35.0",
+    "@microsoft/microsoft-graph-client": "^3.0.7",
     "@popperjs/core": "^2.11.8",
     "@waiting/shared-core": "^23.21.0",
     "babel": "^6.23.0",
@@ -72,6 +73,7 @@
     "bootstrap": "^5.3.3",
     "dotenv": "^16.4.5",
     "electron-log": "^5.2.0",
+    "isomorphic-fetch": "^3.0.0",
     "jquery": "^3.7.1",
     "koffi": "^2.9.0",
     "memlab": "^1.1.55",
