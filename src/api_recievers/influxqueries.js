@@ -10,42 +10,46 @@ const log = require('../util/logger');
 const token = process.env.INFLUXDB_TOKEN;
 const url = `http://localhost:${process.env.DB_PORT}`;
 const client = new InfluxDB({url, token});
-let org = `Distraction`;
-let bucket = `WebsiteData`;
+let org = process.env.INFLUX_ORG;
+let bucket = process.env.INFLUX_BUCKET;
 
+//Track the name of the previously written app, just to prevent accidental duplicate events
+let prevAppName;
 
 //Write Function
 //Source is from Chrome API or OS 
 //Must provide the application_name
 //Must provide the current study session this entry is associaed with
 //Inputs are Strings
-const appData = (source,appName,currentSession) =>{
+const appData = async (source, appName, currentSession) =>{
 
-  let writeClient = client.getWriteApi(org, bucket, 's');
+  if(prevAppName === undefined || prevAppName !== appName) {
+    let writeClient = client.getWriteApi(org, bucket, 's');
 
-  let app = new Point('AppChange')
-    .stringField('AppName',appName)
-    .timestamp(currentTime.seconds())
-    .stringField('Source', source)
-    .tag('QuerySession',currentSession);
-
-  try {
-    writeClient.writePoint(app);
-  }
-  catch (error) {
-    log.error(error);
-    throw error;
-  }
-
-
-  console.log(`App added to InfluxDB: 
-    Name: ${appName}, 
-    Source: ${source}, 
-    QuerySession: ${currentSession}, 
-    Timestamp: ${currentTime.seconds()}`);
-  //console.log(currentTime.seconds())
+    let app = new Point('AppChange')
+      .stringField('AppName',appName)
+      .timestamp(currentTime.seconds())
+      .stringField('Source', source)
+      .tag('QuerySession',currentSession);
   
-  writeClient.close();
+    try {
+      writeClient.writePoint(app);
+    }
+    catch (error) {
+      log.error(error);
+      throw error;
+    }
+  
+    prevAppName = appName;
+    log.debug(`App added to InfluxDB: 
+      Name: ${appName}, 
+      Source: ${source}, 
+      QuerySession: ${currentSession}, 
+      Timestamp: ${currentTime.seconds()}`);
+    
+    await writeClient.close();
+  }
+
 };
 
 // Function that will extract the time and the query session associated with that time 
@@ -97,7 +101,7 @@ const SpecificStudySessionProcessing = async (querySessionid) =>{
   try {
     // Await the result from grab_times
     const result = await grabTimesForStudySession(querySessionid);
-    console.log(result);
+    log.debug(result);
     const timesOfSessions = result.allTimes;
     const idsOfSessions = result.allqueryIds;
     const startTimes = result.allStartTimes;
@@ -109,7 +113,7 @@ const SpecificStudySessionProcessing = async (querySessionid) =>{
     SpecificStudySession(timesOfSessions[0], timesOfSessions[(timesOfSessions.length) - 1], idsOfSessions[0], startTimes[0], endTimes[0]);
 
   } catch (error) {
-    console.error(error);
+    log.error(error);
   }
 };
 
