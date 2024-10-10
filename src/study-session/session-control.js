@@ -32,20 +32,21 @@ const beginSession = (event, _time) => {
 
 const endSession = (_event, cleanSession) => {
   log.debug("Ending data gathering");
-  winApiThread.postMessage('end-session');
-  winApiThread.on('exit', (code) => {
-    log.debug('Worker exited with code ', code);
-  });
   if(sessionId !== undefined && cleanSession) {
+    winApiThread.postMessage('end-session');
+    winApiThread.on('exit', (code) => {
+      log.debug('Worker exited with code ', code);
+    });
     //TODO:
     //We should prob have a function to clean all records with a certain session ID in case of failure
     //Don't want to leave a half-finished session in the DB
     //Also would just be useful for removing old timelines
     log.debug("Session ended unexpectedly, cleaning up data");
+    
+    sessionId = undefined;
+    closeWebsocket();
   }
-
-  sessionId = undefined;
-  closeWebsocket();
+  return;
 };
 
 

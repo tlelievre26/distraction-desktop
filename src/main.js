@@ -31,6 +31,11 @@ const createWindow = () => {
     beginSession(...args);
   });
   ipcMain.on("end-session", endSession);
+
+
+  win.on('closed', () => {
+    win = null;
+  });
 };
   
 app.whenReady().then(() => {

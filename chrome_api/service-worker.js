@@ -51,34 +51,39 @@ const keepAlive = () => {
 };
 
 const connect = () => {
-  try {
-    webSocket = new WebSocket('ws://localhost:8090');
-  }
-  catch (error) {
-    console.error(error);
-    //ADD CHECK FOR IF IT'S A DIFFERENT ERROR THAN THE ONE WE EXPECT
-  }
 
-  chrome.runtime.sendMessage('connection-success');
+  webSocket = new WebSocket('ws://localhost:8090');
+
   webSocket.onopen = (event) => {
     console.log('websocket open');
+
+    chrome.runtime.sendMessage('connection-success');
+
+    chrome.storage.sync.set({ statusMsg: "Successfully connected to desktop app" });
     keepAlive();
   };
 
   webSocket.onmessage = (event) => {
     console.log(`websocket received message: ${event.data}`);
+    if(event.data === "Closing") {
+      console.log("Server has closed");
+      disconnect();
+    }
   };
 
   webSocket.onclose = (event) => {
     console.log('websocket connection closed');
-    chrome.runtime.sendMessage('close-ws');
+    chrome.runtime.sendMessage('close-ws'); //Sending a msg while the popup isnt open causes an error but its not a big deal
+
+    chrome.storage.sync.clear(() => {
+      console.log("Cleared status msg");
+    });
     webSocket = null;
   };
 
   webSocket.onerror = (event) => {
     console.error("WebSocket failed");
-    chrome.runtime.sendMessage('close-ws');
-    webSocket = null;
+    chrome.runtime.sendMessage('conn-failed'); //Sending a msg while the popup isnt open causes an error but its not a big deal
   };
 };
 
