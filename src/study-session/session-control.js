@@ -1,10 +1,12 @@
 const { Worker } = require("worker_threads");
 const path = require('path');
+require('dotenv').config();
 
 const { v4: uuidv4 } = require('uuid');
 
 const log = require('../util/logger');
 const { appData } = require("../api_recievers/influxqueries");
+//const {auth} = require("../task_list/google_tasklist");
 
 let winApiThread;
 let sessionId;
@@ -12,7 +14,6 @@ let sessionId;
 const beginSession = (_event, _time) => {
   sessionId = uuidv4();
   log.debug("Beginning session with ID " + sessionId);
-
   winApiThread = new Worker(path.join(__dirname, "../collector/focus-event.js"));
   winApiThread.on('message', async (windowTitle) => {
     log.debug('Active window title:', windowTitle);
