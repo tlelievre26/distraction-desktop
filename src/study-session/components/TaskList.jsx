@@ -2,29 +2,18 @@
 const React = require("react");
 const { useState } = require("react");
 const { v4: uuidv4 } = require('uuid');
+const { useLocation } = require('react-router-dom');
 
-require('./ToDO.css');
+require('./TaskDisplay.css');
 const TaskInput = require('./TaskInput');
-const ToDOItem = require("./ToDOItem");
+const Task = require("./Task");
 //Code referenced from: https://medium.com/@worachote/building-a-todo-list-app-with-reactjs-a-step-by-step-guide-2c58b9b6c0f5
 //                      https://pusher.com/tutorials/todo-app-react-hooks/#setup
-const ToDOScreen = () => {
+const TaskList = () => {
+  const location = useLocation();
   const [tasks, setTasks] = useState([{
-    id: uuidv4(),
-    text: 'ECE463 Lab',
-    completed: false
-  },
-  {
-    id: uuidv4(),
-    text: 'Senior Design',
-    completed: false
-  },
-  {
-    id: uuidv4(),
-    text: ':(',
-    completed: true
-  }
-  ]);
+    text: ''
+  }]);
 
   toggleCompleted =(index)=> {
     const newTasks = [...tasks];
@@ -50,7 +39,7 @@ const ToDOScreen = () => {
       <div className="todo-list">
         <div className="header">To-Do List</div>
         <div className="tasks">{tasks.map((task, index)=> (
-          <ToDOItem
+          <Task
             key={task.id} 
             task={task}
             deleteTask={deleteTask}
@@ -59,12 +48,14 @@ const ToDOScreen = () => {
           />
         ))}
         </div>
-        <div className="create-task">
-          <TaskInput addTask={addTask} />
-        </div>
+        {location.pathname !=="/session" && 
+          <div className="create-task">
+            <TaskInput addTask={addTask} />
+          </div>
+        }
       </div>
     </>
   );
 };
 
-module.exports = ToDOScreen;
+module.exports = TaskList;

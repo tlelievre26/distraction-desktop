@@ -1,12 +1,12 @@
 const React = require("react");
 
 const BeginSessionButton = require("./BeginSessionButton");
-const ToDOScreen = require("./ToDOScreen");
+const TaskList = require("./TaskList");
 
 const HomePage = () => (
   <div>
     <BeginSessionButton />
-    <ToDOScreen />
+    <TaskList />
   </div>
 );
 
