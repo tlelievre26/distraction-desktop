@@ -12,7 +12,7 @@ const getCurrentTab = async (_activeInfo) => {
     let [tab] = await chrome.tabs.query(queryOptions);
     console.log(tab);
     // return tab;
-    webSocket.send(tab);
+    webSocket.send(JSON.stringify(tab));
   }
 };
   
@@ -32,7 +32,7 @@ const connectToWebsocket = () => {
     disconnect();
   } else {
     connect();
-    keepAlive();
+    // keepAlive();
   }
 };
 
@@ -57,7 +57,7 @@ const connect = () => {
   webSocket.onopen = (event) => {
     console.log('websocket open');
 
-    chrome.runtime.sendMessage('connection-success');
+    chrome.runtime.sendMessage('connection-success'); //Sending a msg while the popup isnt open causes an error but its not a big deal
 
     chrome.storage.sync.set({ statusMsg: "Successfully connected to desktop app" });
     keepAlive();

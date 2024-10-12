@@ -11,6 +11,8 @@ let winApiThread;
 let sessionId;
 let wss;
 
+let connected = false; //Represents if the Chrome Ext has connected to the WSS
+
 const beginSession = (event, _time) => {
   createWebsocket(event);
 
@@ -20,7 +22,10 @@ const beginSession = (event, _time) => {
   winApiThread = new Worker(path.join(__dirname, "../collector/focus-event.js"));
   winApiThread.on('message', async (windowTitle) => {
     log.debug('Active window title:', windowTitle);
-    await appData("Windows", windowTitle, sessionId);
+    if(connected && !windowTitle.includes("Google Chrome")) { //Don't want to register switching to Chrome if the connection is sending data
+      await appData("Windows", windowTitle, sessionId);
+    }
+
   });
 
   winApiThread.on('error', (err) => {
@@ -53,21 +58,33 @@ const endSession = (_event, cleanSession) => {
 const createWebsocket = (event) => {
   wss = new WebSocketServer({ port: 8090 });
   const webContents = event.sender;
-  webContents.send('test');
 
   log.debug("Successfully created WebSocketServer on port 8090");
   wss.on('connection', (ws) => {
+    connected = true;
     webContents.send('extension-status', true);
 
     ws.on('error', log.error);
   
-    ws.on('message', (data) => {
-      log.debug('received: ', data);
+    ws.on('message', async (event) => {
+      if(event.toString() !== 'keepalive') {
+        const tabData = JSON.parse(event.toString());
+        if(tabData.url !== undefined && tabData.url !== '') {
+          const parseUrl = tabData.url.match(/https?:\/\/(www\.)?([^\/]+)/);
+          let urlRoot;
+          if(parseUrl.length >= 2) { //So it doesn't break for non http URLs
+            urlRoot = parseUrl[2];
+            log.debug('Active tab: ', urlRoot);
+            await appData("Chrome", urlRoot, sessionId);
+          }
+        }
+      }
     });
 
     ws.on('close', () => {
       log.debug("Connection closed");
       webContents.send('extension-status', true);
+      connected = false;
     });
 
     ws.send('something');
@@ -78,6 +95,7 @@ const closeWebsocket = () => {
   log.debug("Closing WebSocket server");
   wss.clients.forEach((ws) => ws.send('Closing'));
   wss.close();
+  connected = false;
 };
 
 module.exports = {beginSession, endSession };
