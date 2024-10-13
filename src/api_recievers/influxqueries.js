@@ -36,6 +36,7 @@ const appData = async (source, appName, currentSession) =>{
   
     try {
       writeClient.writePoint(app);
+      
     }
     catch (error) {
       log.error(error);
@@ -63,6 +64,7 @@ const grabTimesForStudySession = (querySessionID) => {
     const allStartTimes = []; // When the measurement was started
     const allEndTimes = []; // When the measurement was ended
     const allAppNames = []; 
+    const allObjects = [];
 
     // Get the current time
     const timeOfCurrentSession = currentTime.seconds();
@@ -87,13 +89,14 @@ const grabTimesForStudySession = (querySessionID) => {
         allStartTimes.push(tableObject._start);
         allEndTimes.push(tableObject._stop);
         allAppNames.push(tableObject._value);
+        allObjects.push(tableObject);
       },
       error: (error) => {
         log.error(error);
         reject(error); // Reject the promise if an error occurs
       },
       complete: () => {
-        resolve({ allTimes, allqueryIds, allStartTimes, allEndTimes, allAppNames }); // Resolve the promise once complete
+        resolve({ allTimes, allqueryIds, allStartTimes, allEndTimes, allAppNames, allObjects }); // Resolve the promise once complete
       }
     });
   });
@@ -103,13 +106,14 @@ const grabTimesForStudySession = (querySessionID) => {
 const SpecificStudySessionProcessing = async (querySessionid) => {
   try {
     const result = await grabTimesForStudySession(querySessionid);
-    //console.log(result);
     
     const timesOfSessions = result.allTimes;
     const idsOfSessions = result.allqueryIds;
     const startTimes = result.allStartTimes;
     const endTimes = result.allEndTimes;
-    const nameOfSession = result.appName;
+    const nameOfSession = result.appAppNames;
+    const Objects = result.allObjects;
+
 
     const sessionData = {
       startTime: timesOfSessions,
@@ -117,7 +121,8 @@ const SpecificStudySessionProcessing = async (querySessionid) => {
       sessionId: idsOfSessions,
       startTimes: startTimes,
       endTimes: endTimes,
-      nameOfSession: nameOfSession
+      nameOfSession: nameOfSession,
+      Objects: Objects
     };
     
 
@@ -128,10 +133,7 @@ const SpecificStudySessionProcessing = async (querySessionid) => {
   }
 };
 
-module.exports = {
-  SpecificStudySessionProcessing
-};
-module.exports = { appData };
+module.exports = { SpecificStudySessionProcessing,appData };
 
 
 /*const SpecificStudySession = async (startTime, endTime, idsOfSession, startTimes, endTimes) =>{
