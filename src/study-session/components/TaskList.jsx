@@ -12,7 +12,10 @@ const Task = require("./Task");
 const TaskList = () => {
   const location = useLocation();
   const [tasks, setTasks] = useState([{
-    text: ''
+    text: "",
+    key: uuidv4(),
+    completed: false,
+    currentTask: false
   }]);
 
   toggleCompleted =(index)=> {
@@ -21,17 +24,24 @@ const TaskList = () => {
     setTasks(newTasks);
   };
 
-  addTask = (taskName) => {
+  addTask =(taskName)=> {
     const newTask = [...tasks, {
       id: uuidv4(),
       text: taskName,
-      completed: false
+      completed: false,
+      currentTask: false
     }];
     setTasks(newTask);
   };
 
   deleteTask =(id)=> {
     setTasks(tasks.filter(task => task.id !== id));
+  };
+
+  setCurrentTask =(index)=> {
+    const newTasks = [...tasks];
+    newTasks[index].currentTask = !newTasks[index].currentTask;
+    setTasks(newTasks);
   };
 
   return (
@@ -45,6 +55,8 @@ const TaskList = () => {
             deleteTask={deleteTask}
             toggleCompleted={toggleCompleted} 
             index={index}
+            setCurrentTask={setCurrentTask}
+            length={tasks.length}
           />
         ))}
         </div>

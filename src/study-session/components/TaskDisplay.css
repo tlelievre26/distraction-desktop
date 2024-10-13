@@ -5,7 +5,7 @@
       }
       
       .todo-list {
-        background: rgb(255 255, 255);
+        background: rgb(12, 124, 251);;
         width: 40vw;
         margin: 10em auto;
         border-radius: 15px;
@@ -19,9 +19,14 @@
         border-radius: 5px;
         padding: 0.5em;
         margin: 0.5em;
+        display: 'flex';
+        justify-content:'flex-start';
+        align-items:'flex-start';
+        height: '5vh';
+        -webkit-text-fill-color: #ffffff;
       }
       
-      .task button{
+      .completed button{
         background: rgb(12, 124, 251);
         border-radius: 5px;
         margin: 0px 5px;
@@ -36,6 +41,7 @@
         margin: 0.5em;
         font-size: 2em;
         text-align: center;
+        -webkit-text-fill-color: #ffffff;
       }
       
       .create-task input[type=text] {
@@ -47,10 +53,17 @@
         padding: 0.7em;
       }
 
-      todo-item {
-        display: 'flex';
-        justify-content:'flex-start';
-        align-items:'flex-start';
-        height: '5vh';
+      .star button{
+        background-color: rgb(12, 124, 251);;
+        border: none;
+        outline: none;
+        cursor: pointer;
       }
-  
+
+      .on {
+        color: #000000;
+      }
+      
+      .off {
+        color: #ffffff;
+      }

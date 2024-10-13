@@ -2,8 +2,6 @@ const { ipcRenderer } = require("electron");
 const React = require("react");
 const { useLocation, useNavigate } = require("react-router-dom");
 
-const TaskList = require("./TaskList");
-
 const SessionScreen = () => {
   const startingTime = useLocation().state.timerValue;
   const navigation = useNavigate();
@@ -39,7 +37,6 @@ const SessionScreen = () => {
       <button type="submit" className="btn btn-danger" onClick={goToTimeline}>
         End Study Session
       </button>
-      <TaskList />
     </div>
   );
 };
