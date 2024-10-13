@@ -93,9 +93,6 @@ const grabTimesForStudySession = (querySessionID) => {
   });
 };
 
-
-module.exports = { appData };
-
 // Uses the query session and time gathered from the grab_time functions in order to 
 const SpecificStudySessionProcessing = async (querySessionid) =>{
 
@@ -188,4 +185,4 @@ const grabTimesForApp = (appName) => {
   });
 };
 
-
+module.exports = { appData, SpecificStudySessionProcessing, grabTimesForApp  };

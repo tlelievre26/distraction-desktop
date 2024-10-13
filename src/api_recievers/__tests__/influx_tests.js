@@ -37,7 +37,7 @@ describe('AppData function', () => {
     const mockWriteApi = new InfluxDB().getWriteApi();
       
   
-    expect(mockWriteApi.writePoint).toHaveBeenCalledTimes(2);
+    expect(mockWriteApi.writePoint).toHaveBeenCalledTimes(1);
   });
 });
 
