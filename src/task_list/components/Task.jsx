@@ -8,34 +8,34 @@ const Task =({ task, deleteTask, toggleCompleted, index, setCurrentTask, length 
   };
  
   return (
-    <div>
+    <>
       {task.text !== "" && length !== 1 &&
-    <div className="task" style={{textDecoration: task.completed ? "line-through" : ""}}>
-      <div className="star">
+      <div>
         {location.pathname !=="/" && task.text !== "" &&
-        <button 
+        <button className="star"
           onClick={() => setCurrentTask(index)} >
           <span className={task.currentTask === true ? "on" : "off"}>&#9733;</span>
         </button>
         }
-      </div>
-      <p>{task.text}</p>
-      {location.pathname !=="/session" && task.text !== "" && 
+        <div className="task" style={{textDecoration: task.completed ? "line-through" : ""}}>
+          {task.text}
+          {task.text !== "" && 
         <button onClick={() => deleteTask(task.id)}>
         Delete Task
         </button>
+          }
+          {location.pathname !== "/" && task.text !== "" &&
+        <button onClick={() => toggleCompleted(index)}>Complete</button>
+          }
+        </div>
+      </div>
       }
-      <div>
-        {location.pathname !=="/" && task.text !== "" &&
-      <button onClick={() => toggleCompleted(index)}>Complete</button>
+      <div className="no-task">
+        {task.text === "" && length === 1 && 
+        <p>No Tasks!</p>
         }
       </div>
-    </div>
-      }
-      {task.text === "" && length === 1 && 
-        <p>No Tasks! :)</p>
-      }
-    </div>
+    </>
   );
 };
 module.exports = Task;

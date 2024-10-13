@@ -2,7 +2,7 @@ const React = require("react");
 const { useState } = require("react");
 
 const TaskInput = ({ addTask }) => {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();

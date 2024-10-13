@@ -10,12 +10,12 @@
         margin: 10em auto;
         border-radius: 15px;
         padding: 20px 10px;
-        color: black;
+        color: rgb(0,0,0);
         border: 3px solid rgb(36, 110, 194);
       }
       
       .task {
-        border: 1px solid white;
+        border: 1px solid rgb(255,255,255);
         border-radius: 5px;
         padding: 0.5em;
         margin: 0.5em;
@@ -23,17 +23,17 @@
         justify-content:'flex-start';
         align-items:'flex-start';
         height: '5vh';
-        -webkit-text-fill-color: #ffffff;
+        -webkit-text-fill-color: rgb(255,255,255);
       }
       
-      .completed button{
-        background: rgb(12, 124, 251);
+      .task button{
+        background: rgb(5, 75, 155);
         border-radius: 5px;
-        margin: 0px 5px;
+        margin: -2.75px 5px;
         padding: 3px 5px;
         border: none;
         cursor: pointer;
-        color: white;
+        color: rgb(255,255,255);
         float: right;
       }
       
@@ -41,19 +41,19 @@
         margin: 0.5em;
         font-size: 2em;
         text-align: center;
-        -webkit-text-fill-color: #ffffff;
+        -webkit-text-fill-color: rgb(255,255,255);
       }
       
       .create-task input[type=text] {
         margin: 2.5em 2em;
         width: 80%;
         outline: none;
-        border: black;
-        color: black;
+        border: rgb(0,0,0);
+        color: rgb(0,0,0);
         padding: 0.7em;
       }
 
-      .star button{
+      .star {
         background-color: rgb(12, 124, 251);;
         border: none;
         outline: none;
@@ -61,9 +61,16 @@
       }
 
       .on {
-        color: #000000;
+        color: rgb(0,0,0);
       }
       
       .off {
-        color: #ffffff;
+        color: rgb(255,255,255);
+      }
+
+      .no-task {
+        margin: 0.5em;
+        font-size: 1em;
+        text-align: center;
+        -webkit-text-fill-color: rgb(255,255,255);
       }

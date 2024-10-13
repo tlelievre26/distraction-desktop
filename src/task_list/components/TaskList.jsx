@@ -3,8 +3,8 @@ const { useState } = require("react");
 const { v4: uuidv4 } = require('uuid');
 
 require('./TaskDisplay.css');
-const TaskInput = require('../../task_list/components/TaskInput');
-const Task = require("../../task_list/components/Task");
+const TaskInput = require('./TaskInput');
+const Task = require("./Task");
 //Code referenced from: https://medium.com/@worachote/building-a-todo-list-app-with-reactjs-a-step-by-step-guide-2c58b9b6c0f5
 //                      https://pusher.com/tutorials/todo-app-react-hooks/#setup
 const TaskList = () => {
