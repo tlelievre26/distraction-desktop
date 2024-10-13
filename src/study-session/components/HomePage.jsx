@@ -1,12 +1,13 @@
 const React = require("react");
 
 const BeginSessionButton = require("./BeginSessionButton");
+const TimeLine = require("./timeline");
 
-const HomePage = () => {
-  return (
-    <div>
-      <BeginSessionButton />
-    </div>
-  );
-};
+const HomePage = () => (
+  <div>
+    <BeginSessionButton />
+    <TimeLine />
+  </div>
+);
+
 module.exports = HomePage;
