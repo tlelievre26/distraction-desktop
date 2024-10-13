@@ -13,6 +13,7 @@ const client = new InfluxDB({url, token});
 let org = process.env.INFLUX_ORG;
 let bucket = process.env.INFLUX_BUCKET;
 
+
 //Track the name of the previously written app, just to prevent accidental duplicate events
 let prevAppName;
 
@@ -92,9 +93,6 @@ const grabTimesForStudySession = (querySessionID) => {
   });
 };
 
-
-module.exports = { appData };
-
 // Uses the query session and time gathered from the grab_time functions in order to 
 const SpecificStudySessionProcessing = async (querySessionid) =>{
 
@@ -152,14 +150,12 @@ const SpecificStudySession = async (startTime, endTime, idsOfSession, startTimes
 };
 
 
-/* Work on this 
-async function grabTimesForApp (appName) {
+const grabTimesForApp = (appName) => {
   return new Promise((resolve, reject) => {
     const allTimes = []; // exact time of point
     const allqueryIds = []; // Associated Query Session ID of that point
     const allStartTimes = []; // When the measurement was started
-    const allEndTimes = []; // When the measreuemnt was ended 
-
+    const allEndTimes = []; // When the measurement was ended
 
     // Get the current time
     const timeOfCurrentSession = currentTime.seconds();
@@ -167,54 +163,26 @@ async function grabTimesForApp (appName) {
     let stringVersion = `-${timeOfCurrentSession.toString()}s`;
 
     // Construct the Flux query with the filter for the specific querySessionID
-    const fluxQuery = ` from(bucket: "WebsiteData") |> range(start: ${stringVersion}) |> filter(fn: (r) => r.AppName == "${appName}")
-    `;
+    const fluxQuery = `from(bucket: "WebsiteData")  |> range(start: ${stringVersion}) |> filter(fn: (r) => r._measurement == "AppChange") |> filter(fn: (r) => r._field == "AppName") |> filter(fn: (r) => r._value == "${appName}")`;
 
     queryClient.queryRows(fluxQuery, {
       next: (row, tableMeta) => {
         const tableObject = tableMeta.toObject(row);
+        log.debug(tableObject);
         allTimes.push(tableObject._time);
         allqueryIds.push(tableObject.QuerySession);
         allStartTimes.push(tableObject._start);
         allEndTimes.push(tableObject._stop);
-        
       },
       error: (error) => {
-        reject(error);
+        log.error(error);
+        reject(error); // Reject the promise if an error occurs
       },
       complete: () => {
-        resolve({ allTimes, allqueryIds, allStartTimes, allEndTimes });
+        resolve({ allTimes, allqueryIds, allStartTimes, allEndTimes }); // Resolve the promise once complete
       }
     });
   });
 };
 
-
-// Uses the query session and time gathered from the grab_time functions in order to 
-async function SpecificAppProcessing(appName){
-
-  try {
-    // Await the result from grab_times
-    const result = await grabTimesForApp(appName);
-    let times_of_sessions = result.allTimes;
-    let ids_of_sessions = result.allqueryIds;
-    let start_times = result.allStartTimes;
-    let end_times = result.allEndTimes;
-
-    console.log(ids_of_sessions);
-
-
-    //console.log('Times of Sessions:', times_of_sessions);
-    //console.log('Query IDs:', result.allqueryIds);
-    //SpecificStudySession(times_of_sessions[0], times_of_sessions[(times_of_sessions.length) - 1], ids_of_sessions[0], start_times[0], end_times[0]);
-
-  } catch (error) {
-    console.error('Error:', error);
-  }
-}
-
-*/
-
-// appData("Windows","Discord", 2);
-// SpecificStudySessionProcessing(2);
-//SpecificAppProcessing("Discord");
+module.exports = { appData, SpecificStudySessionProcessing, grabTimesForApp  };
