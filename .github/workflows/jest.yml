@@ -23,3 +23,5 @@ jobs:
 
       - name: Run Jest tests
         run: npm run test:unit
+        env:
+          DB_WRITE: true

@@ -1,10 +1,6 @@
 name: Publish Chrome Ext
 
 on:
-  push:
-    branches:
-        - main
-        - chrome_ext
   pull_request:
     branches:
         main
