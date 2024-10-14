@@ -2,17 +2,20 @@ const React = require("react");
 const { Chrono } = require("react-chrono");
 
 const { SpecificStudySessionProcessing } = require("../../api_recievers/influxqueries.js");
+
 const { useState, useEffect } = React;
+const { useLocation } = require("react-router-dom");
 
 const TimeLine = () => {
   // Define state for items and loading
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true); // Add loading state
+  const sessionId = useLocation().state.sessionId;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const sessionData = await SpecificStudySessionProcessing(2);
+        const sessionData = await SpecificStudySessionProcessing(sessionId);
         console.log("Session Data:", sessionData['Objects']); // Log the output of the function
 
         const newItems = []; // Initialize an empty array to store new items
@@ -22,8 +25,8 @@ const TimeLine = () => {
           // Create a new dictionary for each object
           const item = {
             title: sessionData['Objects'][i]['_value'], // Use _value for title
-            cardTitle: sessionData['Objects'][i]['_value'], // Use _value for title
-            cardSubtitle: sessionData['Objects'][i]['_value'], // Use _value for title
+            cardTitle: sessionData['Objects'][i]['_measurement'], // Use _value for title
+            cardSubtitle: sessionData['Objects'][i]['_time'], // Use _value for title
             cardDetailedText: sessionData['Objects'][i]['_value'] // Use _value for title
           };
 

@@ -7,9 +7,12 @@ const SessionScreen = () => {
   const navigation = useNavigate();
   const [timeLeft, setTimeLeft] = React.useState(startingTime);
   const [extStatus, setExtStatus] = React.useState(false);
+  const [sessionId, setSessionId] = React.useState('undefined');
   const goToTimeline = () => {
     ipcRenderer.send("end-session");
-    navigation("/timeline");
+    navigation("/timeline", {
+      state: { sessionId }
+    });
   };
 
   React.useEffect(() => { // Handles the timer countdown
@@ -30,6 +33,10 @@ const SessionScreen = () => {
     };
 
     ipcRenderer.on('extension-status', handleExtensionStatus);
+
+    ipcRenderer.on('session-id', (_event, newSessionId) => {
+      setSessionId(newSessionId);
+    });
 
     // Cleanup listener on unmount
     return () => {
