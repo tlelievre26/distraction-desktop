@@ -24,7 +24,7 @@ let prevAppName;
 //Inputs are Strings
 const appData = async (source, appName, currentSession) =>{
 
-  if(prevAppName === undefined || prevAppName !== appName) {
+  if(process.env.DB_WRITE === 'true' && (prevAppName === undefined || prevAppName !== appName)) {
     let writeClient = client.getWriteApi(org, bucket, 's');
 
     let app = new Point('AppChange')
