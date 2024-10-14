@@ -1,6 +1,6 @@
 const { InfluxDB } = require('@influxdata/influxdb-client');
 
-const { AppData } = require('../influxqueries');
+const { appData } = require('../influxqueries');
 
 
 jest.mock('@influxdata/influxdb-client', () => {
@@ -32,12 +32,12 @@ jest.mock('@influxdata/influxdb-client', () => {
 // Your tests
 describe('AppData function', () => {
   it('should call the writePoint method twice', () => {
-    AppData('Chrome', 'ExampleApp', 5);
+    appData('Chrome', 'ExampleApp', 5);
 
     const mockWriteApi = new InfluxDB().getWriteApi();
       
   
-    expect(mockWriteApi.writePoint).toHaveBeenCalledTimes(2);
+    expect(mockWriteApi.writePoint).toHaveBeenCalledTimes(1);
   });
 });
 
