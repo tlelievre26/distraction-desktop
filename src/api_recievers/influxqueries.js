@@ -12,10 +12,11 @@ const url = `http://localhost:${process.env.DB_PORT}`;
 const client = new InfluxDB({url, token});
 let org = process.env.INFLUX_ORG;
 let bucket = process.env.INFLUX_BUCKET;
+log.debug(process.env.DB_WRITE);
 
 
 //Track the name of the previously written app, just to prevent accidental duplicate events
-let prevAppName;
+let prevAppName = undefined;
 
 //Write Function
 //Source is from Chrome API or OS 
@@ -25,6 +26,7 @@ let prevAppName;
 const appData = async (source, appName, currentSession) =>{
 
   if(process.env.DB_WRITE === 'true' && (prevAppName === undefined || prevAppName !== appName)) {
+    log.debug("Writing to db");
     let writeClient = client.getWriteApi(org, bucket, 's');
 
     let app = new Point('AppChange')
@@ -76,7 +78,7 @@ const grabTimesForStudySession = (querySessionID) => {
       from(bucket: "WebsiteData")
       |> range(start: ${stringVersion})
       |> filter(fn: (r) => r._measurement == "AppChange" and r.QuerySession == "${querySessionID}")
-      |> filter(fn: (r) => r._field == "Source")
+      |> filter(fn: (r) => r._field == "AppName")
     `;
 
 
@@ -132,8 +134,6 @@ const SpecificStudySessionProcessing = async (querySessionid) => {
     throw error;
   }
 };
-
-module.exports = { SpecificStudySessionProcessing,appData };
 
 
 /*const SpecificStudySession = async (startTime, endTime, idsOfSession, startTimes, endTimes) =>{
@@ -207,6 +207,6 @@ const grabTimesForApp = (appName) => {
   });
 };
 
-appData("Windows","HolyCow", 8);
-SpecificStudySessionProcessing("8");
+// appData("Windows","HolyCow", 8);
+// SpecificStudySessionProcessing("8");
 module.exports = { appData, SpecificStudySessionProcessing, grabTimesForApp  };

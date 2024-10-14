@@ -25,7 +25,7 @@ const beginSession = (event, _time) => {
   winApiThread = new Worker(path.join(__dirname, "../collector/focus-event.js"));
   winApiThread.on('message', async (windowTitle) => {
     log.debug('Active window title:', windowTitle);
-    if(connected && !windowTitle.includes("Google Chrome")) { //Don't want to register switching to Chrome if the connection is sending data
+    if(!connected ||(connected && !windowTitle.includes("Google Chrome"))) { //Don't want to register switching to Chrome if the connection is sending data
       await appData("Windows", windowTitle, sessionId);
     }
 
@@ -40,16 +40,18 @@ const beginSession = (event, _time) => {
 
 const endSession = (_event, cleanSession) => {
   log.debug("Ending data gathering");
-  if(sessionId !== undefined && cleanSession) {
+  if(sessionId !== undefined) {
     winApiThread.postMessage('end-session');
     winApiThread.on('exit', (code) => {
       log.debug('Worker exited with code ', code);
     });
-    //TODO:
-    //We should prob have a function to clean all records with a certain session ID in case of failure
-    //Don't want to leave a half-finished session in the DB
-    //Also would just be useful for removing old timelines
-    log.debug("Session ended unexpectedly, cleaning up data");
+    if(cleanSession) {
+      //TODO:
+      //We should prob have a function to clean all records with a certain session ID in case of failure
+      //Don't want to leave a half-finished session in the DB
+      //Also would just be useful for removing old timelines
+      log.debug("Session ended unexpectedly, cleaning up data");
+    }
     
     sessionId = undefined;
     closeWebsocket();
