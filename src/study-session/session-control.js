@@ -17,6 +17,10 @@ const beginSession = (event, _time) => {
   createWebsocket(event);
 
   sessionId = uuidv4();
+
+  const webContents = event.sender;
+  webContents.send('session-id', sessionId);
+
   log.debug("Beginning session with ID " + sessionId);
   winApiThread = new Worker(path.join(__dirname, "../collector/focus-event.js"));
   winApiThread.on('message', async (windowTitle) => {
