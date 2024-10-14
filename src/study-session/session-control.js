@@ -12,7 +12,6 @@ let sessionId;
 const beginSession = (_event, _time) => {
   sessionId = uuidv4();
   log.debug("Beginning session with ID " + sessionId);
-
   winApiThread = new Worker(path.join(__dirname, "../collector/focus-event.js"));
   winApiThread.on('message', async (windowTitle) => {
     log.debug('Active window title:', windowTitle);

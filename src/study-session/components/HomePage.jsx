@@ -2,10 +2,11 @@ const React = require("react");
 
 const BeginSessionButton = require("./BeginSessionButton");
 
-const HomePage = () => (
-  <div>
-    <BeginSessionButton />
-  </div>
-);
-
+const HomePage = () => {
+  return (
+    <div>
+      <BeginSessionButton />
+    </div>
+  );
+};
 module.exports = HomePage;
