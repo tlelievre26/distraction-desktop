@@ -14,7 +14,7 @@ const TimeLine = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const sessionData = await SpecificStudySessionProcessing(sessionId);
+        const sessionData = await SpecificStudySessionProcessing(2);
         console.log("Session Data:", sessionData['Objects']);
 
         const newItems = []; 
@@ -53,7 +53,7 @@ const TimeLine = () => {
   }
 
   return (
-    <div style={{ width: "500px", height: "500px" }}>
+    <div style={{ width: "1000px", height: "500px" }}>
       <Chrono items={items} mode="HORIZONTAL" />
     </div>
   );
