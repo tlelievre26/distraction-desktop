@@ -1,12 +1,10 @@
 const { Worker } = require("worker_threads");
 const path = require('path');
-require('dotenv').config();
 
 const { v4: uuidv4 } = require('uuid');
 
 const log = require('../util/logger');
 const { appData } = require("../api_recievers/influxqueries");
-//const {auth} = require("../task_list/google_tasklist");
 
 let winApiThread;
 let sessionId;
