@@ -1,10 +1,11 @@
 const React = require("react");
 const { Chrono } = require("react-chrono");
+const { useLocation } = require("react-router-dom");
 
 const { SpecificStudySessionProcessing } = require("../../api_recievers/influxqueries.js");
 
 const { useState, useEffect } = React;
-const { useLocation } = require("react-router-dom");
+
 
 const TimeLine = () => {
   const [items, setItems] = useState([]);
@@ -14,7 +15,7 @@ const TimeLine = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const sessionData = await SpecificStudySessionProcessing(2);
+        const sessionData = await SpecificStudySessionProcessing(sessionId);
         console.log("Session Data:", sessionData['Objects']);
 
         const newItems = []; 
@@ -53,7 +54,7 @@ const TimeLine = () => {
   }
 
   return (
-    <div style={{ width: "1000px", height: "500px" }}>
+    <div style={{ width: "100vw", height: "100vh" }}>
       <Chrono items={items} mode="HORIZONTAL" />
     </div>
   );
