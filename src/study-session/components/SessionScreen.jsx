@@ -1,6 +1,7 @@
 const { ipcRenderer } = require("electron");
 const React = require("react");
 const { useLocation, useNavigate } = require("react-router-dom");
+require("./start-styling.css");
 
 const SessionScreen = () => {
   const startingTime = useLocation().state.timerValue;
@@ -42,14 +43,14 @@ const SessionScreen = () => {
   const seconds = timeLeft % 60;
 
   return (
-    <div>
-      <p>
+    <div class="centered">
+      <p class="header">
         Time remaining: {hours.toString().padStart(2, "0")}:
         {minutes.toString().padStart(2, "0")}:
         {seconds.toString().padStart(2, "0")}
       </p>
       {!extStatus && (
-        <p style={{ color: "red", fontWeight: "bold" }}>
+        <p class="chrome-warning">
           Chrome Extension not connected
         </p>
       )}
