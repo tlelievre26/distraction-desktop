@@ -3,3 +3,35 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+.ui {
+  justify-content:"center";
+  align-items: "center";
+  background-color: rgb(86, 165, 255);
+}
+
+body, html {
+  background-color: rgb(86, 165, 255);
+}
+
+.header {
+  margin: 0.5em;
+  text-align: center;
+  -webkit-text-fill-color: rgb(255,255,255);
+}
+
+.text-countdown {
+  -webkit-text-fill-color: rgb(255,255,255);
+  font-size: 1.5em;
+}
+
+.centered {
+  justify-content:center;
+  align-items: center;
+  text-align: center;
+}
+
+.chrome-warning {
+    -webkit-text-fill-color: rgb(160, 34, 34);
+    font-weight: bold;
+}

@@ -35,50 +35,59 @@ const BeginSessionButton = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <h1>Set Countdown Time (HH:MM:SS)</h1>
+    <div className ="centered">
+      <div className="container mt-5">
+        <h1 className="header">Set Countdown Time (HH:MM:SS)</h1>
 
-      {/* Input group to combine the inputs for hours, minutes, and seconds */}
-      <div className="input-group mb-3">
-        <input
-          type="number"
-          className="form-control"
-          onChange={handleHoursChange}
-          min="0"
-          max="23"
-          placeholder="HH"
-          aria-label="Hours"
-        />
-        <span className="input-group-text">:</span>
-        <input
-          type="number"
-          className="form-control"
-          onChange={handleMinutesChange}
-          min="0"
-          max="59"
-          placeholder="MM"
-          aria-label="Minutes"
-        />
-        <span className="input-group-text">:</span>
-        <input
-          type="number"
-          className="form-control"
-          onChange={handleSecondsChange}
-          min="0"
-          max="59"
-          placeholder="SS"
-          aria-label="Seconds"
-        />
-      </div>
+        {/* Input group to combine the inputs for hours, minutes, and seconds */}
+        <form className="form-inline">
+          <div class="form-group">
+            <input
+              type="number"
+              className="form-control form-control-lg"
+              onChange={handleHoursChange}
+              min="0"
+              max="23"
+              placeholder="HH"
+              aria-label="Hours"
+            />
+          </div>
+          <span className="text-countdown">:</span>
+          <div class="form-group">
+            <input
+              type="number"
+              className="form-control form-control-lg"
+              onChange={handleMinutesChange}
+              min="0"
+              max="59"
+              placeholder="MM"
+              aria-label="Minutes"
+            />
+          </div>
+          <span className="text-countdown">:</span>
+          <div class="form-group">
+            <input
+              type="number"
+              className="form-control form-control-lg"
+              onChange={handleSecondsChange}
+              min="0"
+              max="59"
+              placeholder="SS"
+              aria-label="Seconds"
+            />
+          </div>
 
-      {/* Start button */}
-      <button
-        type="button"
-        className="btn btn-primary btn-lg"
-        onClick={startTimer}
-      >
+        </form>
+
+        {/* Start button */}
+        <button
+          type="button"
+          className="btn btn-primary btn-lg"
+          onClick={startTimer}
+        >
         Start Study Session
-      </button>
+        </button>
+      </div>
     </div>
   );
 };
