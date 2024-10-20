@@ -50,14 +50,14 @@ const SessionScreen = () => {
   const seconds = timeLeft % 60;
 
   return (
-    <div class="centered">
-      <p class="header">
+    <div className="centered">
+      <p className="header">
         Time remaining: {hours.toString().padStart(2, "0")}:
         {minutes.toString().padStart(2, "0")}:
         {seconds.toString().padStart(2, "0")}
       </p>
       {!extStatus && (
-        <p class="chrome-warning">
+        <p className="chrome-warning">
           Chrome Extension not connected
         </p>
       )}

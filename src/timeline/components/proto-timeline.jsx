@@ -16,7 +16,7 @@ const TimeLine = () => {
     const fetchData = async () => {
       try {
         const sessionData = await SpecificStudySessionProcessing(sessionId);
-        console.log("Session Data:", sessionData['Objects']);
+        // console.log("Session Data:", sessionData['Objects']);
 
         const newItems = []; 
 

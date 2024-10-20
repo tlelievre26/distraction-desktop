@@ -1,0 +1,19 @@
+.dropdown-menu {
+    line-height: normal;
+    padding: 0px 0px !important;
+    margin: 0px;
+}
+
+.dropdown-item {
+    width: 100%;
+    white-space: nowrap;
+    padding: 5px 10px; /* Adjust padding: top/bottom and left/right */
+    /* You can also add margins or borders if needed */
+    border: none; /* Remove any default borders */
+    background-color: white; /* Set background color if needed */
+    color: black;
+}
+
+.dropdown-item:hover {
+    background-color: #e2e6ea;
+}

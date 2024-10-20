@@ -1,0 +1,22 @@
+.custom-navbar {
+    height: 80px;
+}
+
+.custom-navbar .navbar-brand,
+.custom-navbar .nav-link,
+.custom-navbar .d-flex {
+    height: inherit;
+    line-height: 80px;
+}
+
+.navbar-button {
+    height: inherit;
+    text-align: center;
+    display: inline-block;
+    width: auto;
+    padding: 0px 5px;
+}
+
+.timeline-body-div {
+    padding: 0px 30px;
+}
