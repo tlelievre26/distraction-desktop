@@ -1,6 +1,6 @@
 const { ipcRenderer } = require("electron");
 const React = require("react");
-const { useNavigate } = require("react-router-dom");
+
 require("./../../timeline/components/navbarStyles.css");
 
 const EndSessionButton = () => {

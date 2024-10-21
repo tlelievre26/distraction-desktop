@@ -1,6 +1,6 @@
 const { ipcRenderer } = require("electron");
 const React = require("react");
-const { useLocation, useNavigate } = require("react-router-dom");
+const { useNavigate } = require("react-router-dom");
 const ChromeWarning = require("./ChromeWarning");
 const EndSessionButton = require("./EndSessionButton.jsx");
 const CountdownTimer = require("./CountdownTimer.jsx");
@@ -37,7 +37,7 @@ const SessionScreen = () => {
   return (
     <>
       <nav className="navbar navbar-dark bg-primary custom-navbar">
-        <div className="container-fluid d-flex justify-content-end mx-auto align-items-center">
+        <div className="container-fluid d-flex justify-content-start mx-auto align-items-center">
           <CountdownTimer/>
           <EndSessionButton/>
         </div>

@@ -1,8 +1,6 @@
 const React = require('react');
 const { useContext, createContext, useState } = React;
 
-const { v4: uuidv4 } = require('uuid');
-
 // Create the context
 const TaskContext = createContext();
 
@@ -10,7 +8,7 @@ const TaskContext = createContext();
 const TaskProvider = ({ children }) => {
   const [tasks, setTasks] = useState([{
     text: "",
-    key: uuidv4(),
+    key: "",
     completed: false,
     currentTask: false
   }]);

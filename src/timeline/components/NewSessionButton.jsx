@@ -10,7 +10,7 @@ const NewSessionButton = () => {
   };
 
   return (
-    <div className="navbar-button">
+    <div className="navbar-button p-2">
       <button type="button" className="btn btn-success" onClick={goToStart}>
         New Session
       </button>

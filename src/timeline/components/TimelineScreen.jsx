@@ -3,10 +3,11 @@ const { useState } = React;
 
 const DeleteSessionButton = require("./DeleteSessionButton");
 const NewSessionButton = require("./NewSessionButton");
-const PrevSessionsMenu = require("./PrevSessionsMenu");
 const SelectChunkMenuSize = require("./SelectChunkSizeMenu");
 const Timeline = require("./timeline-components/Timeline");
 const SessionDuration = require("./SessionDuration");
+const { PrevSessionProvider } = require("./PrevSessionContext");
+const PrevSessionsMenu = require("./PrevSessionsMenu");
 
 // const Timeline = require("./timeline.jsx");
 
@@ -18,8 +19,10 @@ const TimelineScreen = () => {
   return (
     <div>
       <nav className="navbar navbar-light bg-primary custom-navbar">
-        <div className="container-fluid d-flex justify-content-end mx-auto align-items-center">
-          <PrevSessionsMenu/> 
+        <div className="container-fluid d-flex">
+          <PrevSessionProvider>
+            <PrevSessionsMenu/>
+          </PrevSessionProvider>
           <NewSessionButton/>
           <DeleteSessionButton/>
         </div>

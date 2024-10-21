@@ -5,11 +5,15 @@
 .custom-navbar .navbar-brand,
 .custom-navbar .nav-link,
 .custom-navbar .d-flex {
+    display: flex;
     height: inherit;
     line-height: 80px;
+    justify-content: flex-end;
+    padding: 0px 30px;
 }
 
 .navbar-button {
+    line-height: inherit;
     height: inherit;
     text-align: center;
     display: inline-block;

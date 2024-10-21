@@ -1,5 +1,6 @@
 const React = require("react");
-const { Dropdown } = require('react-bootstrap');
+const { Dropdown } = require("react-bootstrap");
+const { usePrevSession } = require("./PrevSessionContext");
 
 require("./navbarStyles.css");
 require("./PrevSessionStyles.css");
@@ -7,19 +8,19 @@ const PrevSessionsMenu = () => {
 
   const loadPrevSession = (sessionId) => {
     console.log("Loading session with ID :", sessionId);
-    //Here, we would load in the timeline for the old sessio
+    //Figure out how to set the "sessionId" state variable to the new value, which should update it automatically
   };
 
-  const prevStudySessions = [{ name: "MM/DD/YY HH:MM to HH:MM", sessionId: 0 }, { name: "MM/DD/YY HH:MM to HH:MM", sessionId: 1 }]; //In the future we'll load these from the DB
+  const { prevSessionIds } = usePrevSession();
 
   return (
-    <div className="navbar-button">
+    <div className="navbar-button p-2">
       <Dropdown>
         <Dropdown.Toggle variant="info" id="dropdown-basic">
-            Previous Sessions
+          Previous Sessions
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          {prevStudySessions.map((session, index) => (
+          {prevSessionIds.map((session, index) => (
             <Dropdown.Item
               as="button"
               key={index}

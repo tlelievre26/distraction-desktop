@@ -18,7 +18,7 @@ const TaskList = () => {
     setTasks(newTasks);
   };
 
-  addTask =(taskName)=> {
+  addTask = (taskName)=> {
     const newTask = {
       id: uuidv4(),
       text: taskName,
@@ -32,7 +32,7 @@ const TaskList = () => {
     setTasks(tasks.filter(task => task.id !== id));
   };
 
-  setCurrentTask =(index)=> {
+  setCurrentTask = (index)=> {
     const newTasks = [...tasks];
     newTasks[index].currentTask = !newTasks[index].currentTask;
     setTasks(newTasks);
