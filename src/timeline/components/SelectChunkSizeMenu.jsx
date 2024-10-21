@@ -1,8 +1,7 @@
 const React = require("react");
 
 
-const SelectChunkMenuSize = () => {
-  const [chunkSize, setChunkSize] = React.useState('30');
+const SelectChunkMenuSize = ({chunkSize, setChunkSize}) => {
 
   const handleChange = (event) => {
     setChunkSize(event.target.value); // Update state with the new value
