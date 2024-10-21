@@ -2,22 +2,20 @@ const React = require("react");
 const ReactDOM = require("react-dom/client");
 const { createHashRouter, RouterProvider } = require("react-router-dom");
 
-const HomePage = require("./study-session/components/HomePage");
+const HomePage = require("./start-screen/components/HomePage");
 const SessionScreen = require("./study-session/components/SessionScreen");
 const TimelineScreen = require("./timeline/components/TimelineScreen");
-const MaintainTaskList = require("./study-session/components/MaintainTaskList");
+const MaintainTaskList = require("./task_list/components/MaintainTaskList");
 require("bootstrap/dist/css/bootstrap.min.css");
 
 const router = createHashRouter([
   {
     path: "/",
-    element: <MaintainTaskList 
-      Component={HomePage}/>
+    element: <HomePage/>
   },
   {
     path: "/session",
-    element: <MaintainTaskList 
-      Component={SessionScreen}/>
+    element: <SessionScreen/>
   },
   {
     path: "/timeline",

@@ -1,0 +1,20 @@
+.timeline {
+    display: flex;
+    justify-content: space-between; /* Space out the chunks evenly */
+    width: 100%; /* Full width of the container */
+    border-bottom: 3px solid #000000; /* Optional border for the timeline */
+    padding: 0px 50px;
+}
+  
+.chunk {
+  width: 100%; /* Fixed width for each chunk */
+  height: 50px; /* Fixed height for each chunk */
+  background-color: #4caf50; /* Chunk color */
+  border-radius: 0px; /* Rounded corners */
+  border: 2px solid #000000;
+  margin: 0px -1px -2px -1px; /* Space between chunks */
+}
+
+.chunk:hover {
+    filter: brightness(80%);
+}
