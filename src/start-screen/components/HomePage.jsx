@@ -2,9 +2,7 @@ const React = require("react");
 
 const BeginSessionButton = require("./BeginSessionButton");
 const MaintainTaskList = require("../../task_list/components/MaintainTaskList");
-const {
-  PrevSessionProvider,
-} = require("../../timeline/components/PrevSessionContext");
+const { PrevSessionProvider } = require("../../timeline/components/PrevSessionContext");
 const PrevSessionsMenu = require("../../timeline/components/PrevSessionsMenu");
 
 require("./../../timeline/components/navbarStyles.css");

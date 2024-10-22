@@ -1,5 +1,4 @@
 const React = require("react");
-const { useState } = require("react");
 const { v4: uuidv4 } = require('uuid');
 
 require('./TaskDisplay.css');
@@ -10,7 +9,7 @@ const { useTasks } = require("./TaskContext");
 //                      https://pusher.com/tutorials/todo-app-react-hooks/#setup
 const TaskList = () => {
   const {tasks, setTasks } = useTasks();
-  console.log(tasks)
+  console.log(tasks);
 
   toggleCompleted =(index)=> {
     const newTasks = [...tasks];
@@ -24,7 +23,7 @@ const TaskList = () => {
       text: taskName,
       completed: false,
       currentTask: false
-    }
+    };
     setTasks([...tasks, newTask]);
   };
 

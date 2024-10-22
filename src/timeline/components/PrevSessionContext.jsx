@@ -8,7 +8,7 @@ const PrevSessionContext = createContext();
 const PrevSessionProvider = ({children}) => {
   const prevSessions = [
     { name: "MM/DD/YY HH:MM to HH:MM", sessionId: 0 },
-    { name: "MM/DD/YY HH:MM to HH:MM", sessionId: 1 },
+    { name: "MM/DD/YY HH:MM to HH:MM", sessionId: 1 }
   ]; //REPLACE THIS ARRAY with an array of session IDs queried from the database
   const [prevSessionIds, setPrevSessionIds] = useState(prevSessions);
 

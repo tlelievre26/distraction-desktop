@@ -18,7 +18,7 @@ let connected = false; //Represents if the Chrome Ext has connected to the WSS
 const beginSession = (event, duration) => {
   createWebsocket(event);
   startTime = duration;
-  timeLeft = startTime
+  timeLeft = startTime;
   sessionId = uuidv4();
 
   const webContents = event.sender;
@@ -41,12 +41,12 @@ const beginSession = (event, duration) => {
   });
   
   timerInterval = setInterval(() => { //Counts down the timer
-      if (timeLeft > 0) {
-        timeLeft -= 1
-        return timeLeft;
-      }
-      endSession(event, false)
-      clearInterval(timerInterval);
+    if (timeLeft > 0) {
+      timeLeft -= 1;
+      return timeLeft;
+    }
+    endSession(event, false);
+    clearInterval(timerInterval);
   }, 1000);
 };
 

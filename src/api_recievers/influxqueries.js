@@ -33,7 +33,6 @@ const appData = async (source, appName, currentSession) =>{
       .stringField('AppName',appName)
       .timestamp(currentTime.seconds())
       .stringField('Source', source)
-      .stringField('Lol', "BRO")
       .tag('QuerySession',currentSession);
   
     try {

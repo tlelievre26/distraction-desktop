@@ -8,7 +8,7 @@ const ChromeWarning = () => {
     //Recieves messages about whether or not the Chrome extension is connected
 
     const handleExtensionStatus = (_event, status) => {
-        setExtStatus(status); // Update sendState based on message from main process
+      setExtStatus(status); // Update sendState based on message from main process
     };
 
     ipcRenderer.on("extension-status", handleExtensionStatus);

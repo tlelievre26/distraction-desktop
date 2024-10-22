@@ -1,4 +1,3 @@
-const { ipcRenderer } = require("electron");
 const React = require("react");
 const { useLocation } = require("react-router-dom");
 

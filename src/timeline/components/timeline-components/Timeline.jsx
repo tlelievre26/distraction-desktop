@@ -1,6 +1,8 @@
+/* eslint-disable no-unused-vars */
+// Only disable this temporarily so the linter stops yelling at us
 const React = require("react");
 const { useLocation } = require("react-router-dom");
-const { useState, useEffect } = React;
+const { useEffect } = React;
 
 require("./TimelineStyles.css");
 
@@ -17,7 +19,7 @@ const Timeline = ({ chunkSize }) => {
       try {
         const sessionData = await SpecificStudySessionProcessing(sessionId);
       } catch (error) {
-        onsole.error("Error fetching session data:", error);
+        console.error("Error fetching session data:", error);
       }
     };
   });

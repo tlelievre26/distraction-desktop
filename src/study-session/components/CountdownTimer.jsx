@@ -1,6 +1,5 @@
-const { ipcRenderer } = require("electron");
 const React = require("react");
-const { useLocation, useNavigate } = require("react-router-dom");
+const { useLocation } = require("react-router-dom");
 require("./session-styling.css");
 
 const CountdownTimer = () => {

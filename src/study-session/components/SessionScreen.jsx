@@ -1,6 +1,7 @@
 const { ipcRenderer } = require("electron");
 const React = require("react");
 const { useNavigate } = require("react-router-dom");
+
 const ChromeWarning = require("./ChromeWarning");
 const EndSessionButton = require("./EndSessionButton.jsx");
 const CountdownTimer = require("./CountdownTimer.jsx");
@@ -23,9 +24,9 @@ const SessionScreen = () => {
     });
 
     ipcRenderer.on('backend-end-session', (_event, duration) => {
-      console.log("Recieved signal to end study session with duration", duration)
-      goToTimeline(duration)
-    })
+      console.log("Recieved signal to end study session with duration", duration);
+      goToTimeline(duration);
+    });
 
     // Cleanup listener on unmount
     return () => {

@@ -5,7 +5,6 @@ const { createHashRouter, RouterProvider } = require("react-router-dom");
 const HomePage = require("./start-screen/components/HomePage");
 const SessionScreen = require("./study-session/components/SessionScreen");
 const TimelineScreen = require("./timeline/components/TimelineScreen");
-const MaintainTaskList = require("./task_list/components/MaintainTaskList");
 require("bootstrap/dist/css/bootstrap.min.css");
 
 const router = createHashRouter([

@@ -14,7 +14,7 @@ const PrevSessionsMenu = require("./PrevSessionsMenu");
 require("./navbarStyles.css");
 
 const TimelineScreen = () => {
-  const [chunkSize, setChunkSize] = useState(30)
+  const [chunkSize, setChunkSize] = useState(30);
 
   return (
     <div>
@@ -43,7 +43,7 @@ const TimelineScreen = () => {
       {/* <Timeline /> */}
     </div>
   );
-}
+};
 
 
 module.exports = TimelineScreen;

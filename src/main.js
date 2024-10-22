@@ -21,7 +21,7 @@ const createWindow = () => {
 
   const isDev = process.env.NODE_ENV === "development";
   if (isDev) {
-    win.loadURL('http://localhost:8080'); // Load from webpack-dev-server
+    win.loadURL(`http://localhost:8080`); // Load from webpack-dev-server
   } else {
     win.loadFile(path.join(__dirname, '../dist/index.html')); // Load the production build
   }
