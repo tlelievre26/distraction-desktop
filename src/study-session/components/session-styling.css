@@ -1,0 +1,7 @@
+.countdown {
+    font-size: 2em;
+    height: inherit;
+    text-align: right;
+    -webkit-text-fill-color: rgb(255,255,255);
+    margin-right: auto;
+}

@@ -7,22 +7,18 @@ input::-webkit-inner-spin-button {
 .ui {
   justify-content:"center";
   align-items: "center";
-  background-color: rgb(86, 165, 255);
+  /* background-color: rgb(86, 165, 255); */
 }
 
-body, html {
+/* body, html {
   background-color: rgb(86, 165, 255);
-}
+} */
 
-.header {
+.countdown-text {
   margin: 0.5em;
   text-align: center;
-  -webkit-text-fill-color: rgb(255,255,255);
-}
-
-.text-countdown {
-  -webkit-text-fill-color: rgb(255,255,255);
-  font-size: 1.5em;
+  -webkit-text-fill-color: rgb(0, 0, 0);
+  font-size: 2em;
 }
 
 .centered {

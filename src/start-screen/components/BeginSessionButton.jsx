@@ -37,11 +37,11 @@ const BeginSessionButton = () => {
   return (
     <div className ="centered">
       <div className="container mt-5">
-        <h1 className="header">Set Countdown Time (HH:MM:SS)</h1>
+        <h1 className="countdown-text">Set Countdown Time (HH:MM:SS)</h1>
 
         {/* Input group to combine the inputs for hours, minutes, and seconds */}
         <form className="form-inline">
-          <div class="form-group">
+          <div className="form-group">
             <input
               type="number"
               className="form-control form-control-lg"
@@ -53,7 +53,7 @@ const BeginSessionButton = () => {
             />
           </div>
           <span className="text-countdown">:</span>
-          <div class="form-group">
+          <div className="form-group">
             <input
               type="number"
               className="form-control form-control-lg"
@@ -65,7 +65,7 @@ const BeginSessionButton = () => {
             />
           </div>
           <span className="text-countdown">:</span>
-          <div class="form-group">
+          <div className="form-group">
             <input
               type="number"
               className="form-control form-control-lg"

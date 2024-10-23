@@ -60,7 +60,7 @@ module.exports = [
 
       // Best practices
       eqeqeq: "warn",
-      "no-console": "warn",
+      "no-console": ["warn"],
       "no-unused-vars": ["error", { vars: "local", argsIgnorePattern: "^_|(log)" }],
       "no-await-in-loop": "error",
 

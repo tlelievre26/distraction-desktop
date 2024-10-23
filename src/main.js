@@ -9,8 +9,8 @@ const { beginSession, endSession } = require("./study-session/session-control");
 
 const createWindow = () => {
   win = new BrowserWindow({
-    width: 600,
-    height: 400,
+    width: 800,
+    height: 600,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"), // Optional if using preload script
       nodeIntegration: true,
@@ -21,7 +21,7 @@ const createWindow = () => {
 
   const isDev = process.env.NODE_ENV === "development";
   if (isDev) {
-    win.loadURL('http://localhost:8080'); // Load from webpack-dev-server
+    win.loadURL(`http://localhost:8080`); // Load from webpack-dev-server
   } else {
     win.loadFile(path.join(__dirname, '../dist/index.html')); // Load the production build
   }
@@ -30,7 +30,11 @@ const createWindow = () => {
     win.setSize(800, 600);
     beginSession(...args);
   });
-  ipcMain.on("end-session", endSession);
+  ipcMain.on("end-session", (...args) => {
+    win.maximize();
+    win.setResizable(false);
+    endSession(...args); 
+  });
 
 
   win.on('closed', () => {
