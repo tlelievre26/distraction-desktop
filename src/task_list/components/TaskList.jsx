@@ -8,8 +8,7 @@ const { useTasks } = require("./TaskContext");
 //Code referenced from: https://medium.com/@worachote/building-a-todo-list-app-with-reactjs-a-step-by-step-guide-2c58b9b6c0f5
 //                      https://pusher.com/tutorials/todo-app-react-hooks/#setup
 const TaskList = () => {
-  const {tasks, setTasks } = useTasks();
-  console.log(tasks);
+  const { tasks, setTasks } = useTasks();
 
   toggleCompleted =(index)=> {
     const newTasks = [...tasks];
@@ -38,7 +37,7 @@ const TaskList = () => {
   };
 
   return (
-    <>
+    <div className="ui">
       <div className="todo-list">
         <div className="header">To-Do List</div>
         <div className="tasks">{tasks.map((task, index)=> (
@@ -53,11 +52,11 @@ const TaskList = () => {
           />
         ))}
         </div>
-        <div className="create-task">
+        <div className="create-task centered">
           <TaskInput addTask={addTask} />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

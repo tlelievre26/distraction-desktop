@@ -7,18 +7,15 @@ input::-webkit-inner-spin-button {
 .ui {
   justify-content:"center";
   align-items: "center";
-  /* background-color: rgb(86, 165, 255); */
 }
 
-/* body, html {
-  background-color: rgb(86, 165, 255);
-} */
-
 .countdown-text {
-  margin: 0.5em;
+  margin: 10px;
+  width: 300px;
   text-align: center;
-  -webkit-text-fill-color: rgb(0, 0, 0);
   font-size: 2em;
+  display: inline-block;
+  -webkit-text-fill-color: rgb(255, 255, 255);
 }
 
 .centered {
@@ -27,7 +24,28 @@ input::-webkit-inner-spin-button {
   text-align: center;
 }
 
-.chrome-warning {
-    -webkit-text-fill-color: rgb(160, 34, 34);
-    font-weight: bold;
+/* This is the class for specifically the colons between each part of the timer */
+.text-countdown { 
+  -webkit-text-fill-color: rgb(255, 255, 255);
+}
+
+.ui-element {
+    background: rgb(12, 124, 251);;
+    width: 40vw;
+    max-width: 600px;
+    margin: 3em auto;
+    height: auto;
+    border-radius: 15px;
+    padding: 10px 10px;
+    border: 3px solid rgb(36, 110, 194);
+}
+
+.form-group {
+  margin: 0px 5px;
+}
+
+.begin-session-button {
+  margin-top: 15px;
+  margin-bottom: 5px !important;
+  border: 2px solid rgb(196, 201, 215) !important;
 }
