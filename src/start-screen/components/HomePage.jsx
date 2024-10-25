@@ -11,6 +11,7 @@ const HomePage = () => (
   <>
     <nav className="navbar navbar-dark bg-primary custom-navbar">
       <div className="container-fluid d-flex justify-content-end mx-auto align-items-center">
+        <p className="countdown">Welcome to DistrAction!</p>
         <PrevSessionProvider>
           <PrevSessionsMenu/>
         </PrevSessionProvider>
