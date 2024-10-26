@@ -1,8 +1,9 @@
 const React = require("react");
-const { useLocation } = require("react-router-dom");
+
+const { useSessionMetrics } = require("../SessionMetricsContext");
 
 const SessionDuration = () => {
-  const duration = useLocation().state.duration;
+  const { duration } = useSessionMetrics();
   const hours = Math.floor(duration / 3600);
   const minutes = Math.floor((duration % 3600) / 60);
   const seconds = duration % 60;

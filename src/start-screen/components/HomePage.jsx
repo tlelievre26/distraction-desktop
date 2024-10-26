@@ -2,8 +2,8 @@ const React = require("react");
 
 const BeginSessionButton = require("./BeginSessionButton");
 const { PrevSessionProvider } = require("../../timeline/components/PrevSessionContext");
-const PrevSessionsMenu = require("../../timeline/components/PrevSessionsMenu");
 const TaskList = require("../../task_list/components/TaskList");
+const StartPrevSessionsMenu = require("./StartPrevSessionsMenu");
 
 require("./../../timeline/components/navbarStyles.css");
 
@@ -13,7 +13,7 @@ const HomePage = () => (
       <div className="container-fluid d-flex justify-content-end mx-auto align-items-center">
         <p className="countdown">Welcome to DistrAction!</p>
         <PrevSessionProvider>
-          <PrevSessionsMenu/>
+          <StartPrevSessionsMenu/>
         </PrevSessionProvider>
       </div>
     </nav>

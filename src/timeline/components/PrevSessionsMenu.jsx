@@ -1,15 +1,20 @@
+/* eslint-disable no-console */
 const React = require("react");
 const { Dropdown } = require("react-bootstrap");
 
 const { usePrevSession } = require("./PrevSessionContext");
+const { useSessionMetrics } = require("./SessionMetricsContext");
 
 require("./navbarStyles.css");
 require("./PrevSessionStyles.css");
 const PrevSessionsMenu = () => {
 
+  const { setSessionId } = useSessionMetrics();
+
   const loadPrevSession = (sessionId) => {
     console.log("Loading session with ID :", sessionId);
-    //Figure out how to set the "sessionId" state variable to the new value, which should update it automatically
+    //Changing the session ID here should update everything automatically
+    setSessionId(sessionId);
   };
 
   const { prevSessionIds } = usePrevSession();
