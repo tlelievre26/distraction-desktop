@@ -1,6 +1,5 @@
 const React = require("react");
 
-const SessionDuration = require("./SessionDuration");
 const { useSessionMetrics } = require("../SessionMetricsContext");
 
 require("./metricStyles.css");
@@ -13,7 +12,13 @@ const FullSessionMetrics = () => {
     <div className="metrics-container">
       <div className="metrics-box">
         <div className="generic-metrics">
-          <SessionDuration/>
+          <div>
+            <p>
+              Total Session Length: {hours.toString().padStart(2, "0")}:
+              {minutes.toString().padStart(2, "0")}:
+              {seconds.toString().padStart(2, "0")}
+            </p>
+          </div>
           <div>
             <p># Tasks Completed: {sessionMetrics.numTasks}</p>
           </div>
