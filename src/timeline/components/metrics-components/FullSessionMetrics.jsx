@@ -5,8 +5,10 @@ const { useSessionMetrics } = require("../SessionMetricsContext");
 require("./metricStyles.css");
 
 const FullSessionMetrics = () => {
-  const { sessionMetrics } = useSessionMetrics(); 
-  console.log(sessionMetrics);
+  const { duration, sessionMetrics } = useSessionMetrics(); 
+  const hours = Math.floor(duration / 3600);
+  const minutes = Math.floor((duration % 3600) / 60);
+  const seconds = duration % 60;
 
   return (
     <div className="metrics-container">
