@@ -1,12 +1,12 @@
 const React = require("react");
 
+const { useSessionMetrics } = require("./SessionMetricsContext");
 
-const SelectChunkMenuSize = ({chunkSize, setChunkSize}) => {
 
+const SelectChunkMenuSize = () => {
+  const {chunkSize, setChunkSize} = useSessionMetrics();
   const handleChange = (event) => {
     setChunkSize(event.target.value); // Update state with the new value
-    console.log('Selected option:', event.target.value); // Trigger additional logic here
-    //Somehow send this to the timeline component
   };
 
   return (

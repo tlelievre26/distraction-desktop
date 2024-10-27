@@ -7,9 +7,12 @@ const PrevSessionContext = createContext();
 // Create a provider component
 const PrevSessionProvider = ({children}) => {
   const prevSessions = [
-    { name: "MM/DD/YY HH:MM to HH:MM", sessionId: 0 },
-    { name: "MM/DD/YY HH:MM to HH:MM", sessionId: 1 }
-  ]; //REPLACE THIS ARRAY with an array of session IDs queried from the database
+    { name: "MM/DD/YY HH:MM to HH:MM", sessionId: 0, duration: 10000 },
+    { name: "MM/DD/YY HH:MM to HH:MM", sessionId: 1, duration: 10000 }
+  ];
+  
+  //REPLACE THIS ARRAY with the data for each study session as queries from the database
+  
   const [prevSessionIds, setPrevSessionIds] = useState(prevSessions);
 
   return (

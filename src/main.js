@@ -4,13 +4,13 @@ const path = require('path');
 const { app, BrowserWindow, ipcMain } = require("electron");
 
 const { beginSession, endSession } = require("./study-session/session-control");
-// const { createWebsocket } = require('./api_recievers/create-websocket');
-// const log = require('./util/logger');
 
 const createWindow = () => {
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1000,
+    height: 800,
+    minWidth: 1000,
+    minHeight: 800,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"), // Optional if using preload script
       nodeIntegration: true,
@@ -27,12 +27,13 @@ const createWindow = () => {
   }
   
   ipcMain.on("begin-session", (...args) => {
+    win.setMinimumSize(800, 600);
     win.setSize(800, 600);
     beginSession(...args);
   });
   ipcMain.on("end-session", (...args) => {
+    win.setMinimumSize(1200, 800);
     win.maximize();
-    win.setResizable(false);
     endSession(...args); 
   });
 
