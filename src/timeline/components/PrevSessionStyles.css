@@ -1,7 +1,17 @@
+.dropdown-toggle {
+    position: absolute;
+    right: 0;
+    top: 23.7px;
+}
+
 .dropdown-menu {
     line-height: normal;
     padding: 0px 0px !important;
     margin: 0px;
+    position: absolute !important;
+    top: 100%;
+    z-index: 1000;
+    display: block;
 }
 
 .dropdown-item {

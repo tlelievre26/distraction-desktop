@@ -5,3 +5,8 @@
     -webkit-text-fill-color: rgb(255,255,255);
     margin-right: auto;
 }
+
+.chrome-warning {
+    -webkit-text-fill-color: rgb(160, 34, 34);
+    font-weight: bold;
+}

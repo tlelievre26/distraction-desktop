@@ -5,7 +5,7 @@ const { useNavigate } = require("react-router-dom");
 const ChromeWarning = require("./ChromeWarning");
 const EndSessionButton = require("./EndSessionButton.jsx");
 const CountdownTimer = require("./CountdownTimer.jsx");
-const MaintainTaskList = require("../../task_list/components/MaintainTaskList.jsx");
+const TaskList = require("../../task_list/components/TaskList.jsx");
 require("./../../timeline/components/navbarStyles.css");
 
 const SessionScreen = () => {
@@ -46,7 +46,7 @@ const SessionScreen = () => {
       <div className="centered">
         <ChromeWarning/>
       </div>
-      <MaintainTaskList/>
+      <TaskList/>
     </>
 
   );

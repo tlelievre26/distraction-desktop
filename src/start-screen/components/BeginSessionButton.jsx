@@ -35,9 +35,9 @@ const BeginSessionButton = () => {
   };
 
   return (
-    <div className ="centered">
-      <div className="container mt-5">
-        <h1 className="countdown-text">Set Countdown Time (HH:MM:SS)</h1>
+    <div className ="centered ui-element">
+      <div className="container-sm mt-5">
+        <p className="countdown-text">Set Session Duration</p>
 
         {/* Input group to combine the inputs for hours, minutes, and seconds */}
         <form className="form-inline">
@@ -82,7 +82,7 @@ const BeginSessionButton = () => {
         {/* Start button */}
         <button
           type="button"
-          className="btn btn-primary btn-lg"
+          className="btn btn-primary btn-lg begin-session-button"
           onClick={startTimer}
         >
         Start Study Session

@@ -14,6 +14,10 @@
         border: 3px solid rgb(36, 110, 194);
       }
       
+      .tasks {
+        padding: 0 4.5%;
+      }
+
       .task {
         border: 1px solid rgb(255,255,255);
         border-radius: 5px;
@@ -25,7 +29,7 @@
         height: '5vh';
         -webkit-text-fill-color: rgb(255,255,255);
       }
-      
+
       .task button{
         background: rgb(5, 75, 155);
         border-radius: 5px;
@@ -43,10 +47,10 @@
         text-align: center;
         -webkit-text-fill-color: rgb(255,255,255);
       }
-      
+
       .create-task input[type=text] {
-        margin: 2.5em 2em;
-        width: 80%;
+        margin: 2.5em 0em;
+        width: 90%;
         outline: none;
         border: rgb(0,0,0);
         color: rgb(0,0,0);
