@@ -2,8 +2,9 @@
 const React = require("react");
 const { useLocation } = require("react-router-dom");
 
-const calcMetrics = require("../build-timeline");
+const { calcMetrics, chunkData } = require("../build-timeline");
 const { useContext, createContext, useState, useEffect } = React;
+const data = require("../two_hr_session.json"); //sample data
 
 // Create the context
 const SessionMetricsContext = createContext();
@@ -30,10 +31,10 @@ const SessionMetricsProvider = ({children}) => {
       try {
         //Returns the session data
         // const data = await SpecificStudySessionProcessing(sessionId);
-        const data = {}; //Placeholder
+        //const data = {}
 
         //We might want to do the data processing/chunking here?
-        setSessionData(data);
+        setSessionData(chunkData(data));
 
         //Right now calcMetrics just returns a sample
         setSessionMetrics(calcMetrics(data));
