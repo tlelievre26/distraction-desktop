@@ -1,0 +1,1528 @@
+[
+ {
+   "_time": "2024-10-22T18:40:20Z",
+   "_value": "Google Chrome",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:40:26Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:40:28Z",
+   "_value": "Discord",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:40:49Z",
+   "_value": "purdue.brightspace.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:40:56Z",
+   "_value": "notion.so",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:41:06Z",
+   "_value": "chatgpt.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:41:08Z",
+   "_value": "api-1b9bef70.duosecurity.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:41:39Z",
+   "_value": "Discord",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:42:48Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:43:21Z",
+   "_value": "Discord",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:43:46Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:43:51Z",
+   "_value": "youtube.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:43:53Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:44:20Z",
+   "_value": "purdue.brightspace.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:44:23Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:44:38Z",
+   "_value": "purdue.brightspace.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:44:45Z",
+   "_value": "Discord",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:45:09Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:45:17Z",
+   "_value": "Discord",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:45:40Z",
+   "_value": "purdue.brightspace.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:45:45Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:48:12Z",
+   "_value": "purdue.brightspace.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:48:16Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:49:04Z",
+   "_value": "Discord",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:51:56Z",
+   "_value": "Zoom",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:52:10Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:52:46Z",
+   "_value": "Discord",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:54:52Z",
+   "_value": "purdue.brightspace.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T18:55:05Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:03:48Z",
+   "_value": "purdue.brightspace.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:03:55Z",
+   "_value": "notion.so",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:04:09Z",
+   "_value": "purdue.brightspace.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:04:22Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:04:32Z",
+   "_value": "purdue.brightspace.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:04:37Z",
+   "_value": "linkedin.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:05:25Z",
+   "_value": "careers.intuitive.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:05:36Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:05:38Z",
+   "_value": "localhost:8086",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:05:39Z",
+   "_value": "piazza.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:05:41Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:05:42Z",
+   "_value": "purdue.brightspace.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:06:07Z",
+   "_value": "github.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:06:09Z",
+   "_value": "purdue.brightspace.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:06:12Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:06:20Z",
+   "_value": "purdue.brightspace.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:06:25Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:06:43Z",
+   "_value": "purdue.brightspace.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:07:20Z",
+   "_value": "Outlook",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:09:58Z",
+   "_value": "youtube.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:10:02Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:10:27Z",
+   "_value": "twitter.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:13:12Z",
+   "_value": "youtube.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:13:13Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:13:14Z",
+   "_value": "youtube.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:13:15Z",
+   "_value": "careers.intuitive.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:13:18Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:15:15Z",
+   "_value": "Slack",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:15:26Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:15:36Z",
+   "_value": "Slack",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:16:01Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:16:19Z",
+   "_value": "Slack",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:16:20Z",
+   "_value": "Slack",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:16:21Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:16:27Z",
+   "_value": "Slack",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:16:28Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:17:55Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:18:11Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:18:24Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:18:37Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:18:48Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:18:58Z",
+   "_value": "Slack",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:19:25Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:19:53Z",
+   "_value": "Slack",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:21:42Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:21:47Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:22:19Z",
+   "_value": "youtube.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:22:22Z",
+   "_value": "arxiv.org",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:22:56Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:22:57Z",
+   "_value": "purdue.brightspace.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:22:58Z",
+   "_value": "drive.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:22:59Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:23:45Z",
+   "_value": "Slack",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:25:19Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:26:49Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:26:53Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:26:58Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:27:07Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:28:06Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:28:29Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:29:13Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:29:39Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:36:27Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:36:59Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:37:47Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:39:11Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:40:03Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:40:39Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:41:25Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:41:30Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:42:18Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:42:46Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:43:17Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:44:42Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:44:46Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:45:09Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:45:27Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:45:50Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:46:35Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:46:41Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:47:29Z",
+   "_value": "chatgpt.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:48:10Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:52:01Z",
+   "_value": "purdue.brightspace.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:52:04Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:52:07Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:54:31Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:54:38Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:54:39Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:54:53Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:55:37Z",
+   "_value": "localhost:8080",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:55:51Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:56:18Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:56:32Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:56:44Z",
+   "_value": "localhost:8081",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:56:47Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:56:59Z",
+   "_value": "localhost:8081",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:57:37Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:58:13Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:58:23Z",
+   "_value": "localhost:8081",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:58:25Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:58:34Z",
+   "_value": "localhost:8081",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:58:38Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:59:34Z",
+   "_value": "chatgpt.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T19:59:56Z",
+   "_value": "localhost:8081",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:00:22Z",
+   "_value": "Outlook",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:03:28Z",
+   "_value": "contentful.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:03:49Z",
+   "_value": "Outlook",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:07:45Z",
+   "_value": "contentful.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:07:46Z",
+   "_value": "localhost:8081",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:07:48Z",
+   "_value": "Outlook",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:07:50Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:07:54Z",
+   "_value": "Outlook",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:07:55Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:08:07Z",
+   "_value": "localhost:8081",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:08:37Z",
+   "_value": "Outlook",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:08:39Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:08:52Z",
+   "_value": "Outlook",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:08:55Z",
+   "_value": "chatgpt.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:09:18Z",
+   "_value": "localhost:8080",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:09:19Z",
+   "_value": "localhost:8081",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:09:32Z",
+   "_value": "Outlook",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:09:34Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:10:32Z",
+   "_value": "localhost:8081",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:11:01Z",
+   "_value": "Slack",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:11:05Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:11:28Z",
+   "_value": "Slack",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:18:39Z",
+   "_value": "Outlook",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:22:02Z",
+   "_value": "Slack",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:22:22Z",
+   "_value": "localhost:8081",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:22:42Z",
+   "_value": "Slack",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:23:18Z",
+   "_value": "localhost:8081",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:23:21Z",
+   "_value": "Slack",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:23:30Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:24:04Z",
+   "_value": "localhost:8081",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:24:11Z",
+   "_value": "Slack",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:24:27Z",
+   "_value": "chatgpt.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:24:47Z",
+   "_value": "localhost:8081",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:24:49Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:24:50Z",
+   "_value": "Slack",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:25:18Z",
+   "_value": "chatgpt.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:25:34Z",
+   "_value": "Slack",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:25:36Z",
+   "_value": "google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:25:37Z",
+   "_value": "localhost:8081",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:25:48Z",
+   "_value": "Slack",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:25:52Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:26:28Z",
+   "_value": "Slack",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:26:30Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:27:00Z",
+   "_value": "Slack",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:27:03Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:27:33Z",
+   "_value": "chatgpt.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:28:00Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:28:06Z",
+   "_value": "purdue.brightspace.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:28:08Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:28:09Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:28:24Z",
+   "_value": "google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:28:25Z",
+   "_value": "localhost:8081",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:28:36Z",
+   "_value": "google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:28:37Z",
+   "_value": "Slack",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:29:04Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:29:17Z",
+   "_value": "google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:29:18Z",
+   "_value": "localhost:8081",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:29:19Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:30:00Z",
+   "_value": "Slack",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:30:02Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:30:35Z",
+   "_value": "chatgpt.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:30:48Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:31:02Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:31:13Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:31:26Z",
+   "_value": "localhost:8081",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:31:56Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:32:06Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:33:02Z",
+   "_value": "chatgpt.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:33:16Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:33:36Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:33:40Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:34:31Z",
+   "_value": "localhost:8081",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:35:00Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:36:12Z",
+   "_value": "chatgpt.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:36:38Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:36:41Z",
+   "_value": "localhost:8081",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:37:02Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:37:30Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:37:49Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:38:58Z",
+   "_value": "localhost:8081",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:39:22Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:39:39Z",
+   "_value": "docs.google.com",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:39:53Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:40:20Z",
+   "_value": "localhost:8081",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ },
+ {
+   "_time": "2024-10-22T20:40:25Z",
+   "_value": "Visual Studio Code",
+   "QuerySession": "e3b6777e-8f06-4ee8-866f-caad987d4c82",
+   "_field": "AppName",
+   "_measurement": "AppChange"
+ }
+]
