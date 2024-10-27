@@ -42,13 +42,12 @@ const chunkData = (sessionData) => {
     return 0;
   });
 
-  const data = { time: [], chunks: [] };
+  const data = { chunks: [] };
 
   timeConversion.reduce((acc, time, idx) => {
     if (acc.currentSum + time > 900) {
       if (acc.currentSum === 900 || idx === timeConversion.length - 1) { // Push the chunk if it sums to 900 or if youve reached the end of the session 
         data.chunks.push(acc.currentChunk); 
-        data.time.push(acc.currentTime);
       }
       else {
         acc.currentChunk.push({name: sessionData[idx]._value, timeSpent: 900 - acc.currentSum});
@@ -67,6 +66,7 @@ const chunkData = (sessionData) => {
     return acc;
   }, { currentChunk: [{}], currentSum: 0 });
 
+  data.chunks.shift();
   return data;
 };
 
