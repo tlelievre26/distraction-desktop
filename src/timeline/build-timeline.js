@@ -24,4 +24,50 @@ const calcMetrics = (data, sessionId) => {
 
 };
 
-module.exports = calcMetrics;
+const chunkData = (sessionData) => {
+
+  const time = sessionData.map((element) => {
+    return new Date(element._time);
+  });
+
+  const getSeconds = (utc) => {
+    return utc.getUTCSeconds() + utc.getUTCMinutes() * 60 + utc.getUTCHours() * 3600;
+  };
+
+  const timeConversion = time.map((element, index, arr) => {
+    if (index + 1 < arr.length) {
+      const endTime = arr[index+1];
+      return getSeconds(endTime) - getSeconds(element);
+    }
+    return 0;
+  });
+
+  const data = { time: [], chunks: [] };
+
+  timeConversion.reduce((acc, time, idx) => {
+    if (acc.currentSum + time > 900) {
+      if (acc.currentSum === 900 || idx === timeConversion.length - 1) { // Push the chunk if it sums to 900 or if youve reached the end of the session 
+        data.chunks.push(acc.currentChunk); 
+        data.time.push(acc.currentTime);
+      }
+      else {
+        acc.currentChunk.push({name: sessionData[idx]._value, timeSpent: 900 - acc.currentSum});
+        data.chunks.push(acc.currentChunk);
+        time = time - (900 - acc.currentSum);
+      }
+      // Reset for the next chunk
+      acc.currentChunk = [{name: sessionData[idx]._value, timeSpent: time}];
+      acc.currentSum = time; // Reset currentSum      
+    } 
+    else {
+      // Add to the current chunk
+      acc.currentChunk.push({name: sessionData[idx]._value, timeSpent: time});
+      acc.currentSum += time;
+    }
+    return acc;
+  }, { currentChunk: [{}], currentSum: 0 });
+
+  return data;
+};
+
+module.exports = {calcMetrics, chunkData};
