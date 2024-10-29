@@ -8,11 +8,11 @@ const log = require('../util/logger');
 
 
 const token = process.env.INFLUXDB_TOKEN;
-const url = `http://localhost:${process.env.DB_PORT}`;
+const url = `http://localhost:${process.env.DB_PORT ?? 8086}`;
 const client = new InfluxDB({url, token});
-let org = process.env.INFLUX_ORG;
-let bucket = process.env.INFLUX_BUCKET;
-log.debug(process.env.DB_WRITE);
+let org = process.env.INFLUX_ORG ?? "Distraction";
+let bucket = process.env.INFLUX_BUCKET ?? "WebsiteData";
+let write = process.env.DB_WRITE ?? 'true';
 
 
 //Track the name of the previously written app, just to prevent accidental duplicate events
@@ -25,7 +25,7 @@ let prevAppName = undefined;
 //Inputs are Strings
 const appData = async (source, appName, currentSession) =>{
 
-  if(process.env.DB_WRITE === 'true' && (prevAppName === undefined || prevAppName !== appName)) {
+  if(write === 'true' && (prevAppName === undefined || prevAppName !== appName)) {
     log.debug("Writing to db");
     let writeClient = client.getWriteApi(org, bucket, 's');
 
