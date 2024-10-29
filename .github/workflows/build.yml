@@ -2,7 +2,9 @@ name: Build/release
 
 on:
   push:
-    branches: main
+    branches:
+      - main
+      - build-fixes
 
 jobs:
   release:
