@@ -2,7 +2,6 @@ const { parentPort, threadId } = require('worker_threads');
 
 const koffi = require('koffi');
 
-const log = require('../util/logger');
 const {
   DWORD,
   HMODULE
@@ -24,11 +23,11 @@ const lib = koffi.load('user32.dll');
 
 parentPort.on('message', (message) => {
   if(message === 'end-session') {
-    log.debug("Worker exiting");
+    parentPort.postMessage({ debug: `Worker thread on process ${threadId} is exiting`});
     cleanupAndExit();
   }
 });
-log.debug(`Worker thread on process ${threadId}`);
+parentPort.postMessage({ debug: `Worker thread on process ${threadId}`});
 
 // Define constants
 const WINEVENT_OUTOFCONTEXT = 0x0000;
@@ -51,30 +50,31 @@ const winCallback = (hWinEventHook, event, hwnd, idObject, idChild, dwEventThrea
 
     GetWindowThreadProcessId(hwnd, ptr);
     if (ptr[0] === null) {
-      log.error("Failed to get process ID: " + GetLastError());
+      parentPort.postMessage({ error: `Failed to get process ID: ${GetLastError()}`});
       return;
     }
        
     const process = OpenProcess(0x1000 | 0x010, false, ptr[0]);
     if (process === null) {
-      log.error("Failed to open process: " + GetLastError());
+      parentPort.postMessage({ error: `Failed to open process with ID ${ptr[0]}: ${GetLastError()}`});
+
       return;
     }
 
     if (!GetModuleFileNameExA(process, null, filepath, MAXPATH)) {
-      log.error("Failed to get module file name: " + GetLastError());
+      parentPort.postMessage({ error: `Failed to get module file name: ${GetLastError()}`});
       return;
     }
 
     const fileSize = GetFileVersionInfoSizeA(filepath, null);
     if (fileSize === 0) {
-      log.error("Failed to get file version info size: " + GetLastError());
+      parentPort.postMessage({ error: `Failed to get file version info size for filepath ${koffi.decode(filepath, "string")}: ${GetLastError()}`});
       return;
     }
     // console.log("File size: " + fileSize);
     const appInfo = Buffer.alloc(fileSize);
     if (!GetFileVersionInfoA(filepath, 0, fileSize, appInfo)) {
-      log.error("Failed to get file version info: " + GetLastError());
+      parentPort.postMessage({ error: `Failed to get file version info for filepath ${koffi.decode(filepath, "string")}: ${GetLastError()}`});
       return;
     }
  
@@ -82,7 +82,7 @@ const winCallback = (hWinEventHook, event, hwnd, idObject, idChild, dwEventThrea
     const fullAppInfoSize = Buffer.alloc(16);
     const infoString = Buffer.from('\\StringFileInfo\\040904b0\\ProductName', 'utf8');
     if (!VerQueryValueA(appInfo, infoString, fullAppInfo, fullAppInfoSize)) {
-      log.error("Failed to query version value: " + GetLastError());
+      parentPort.postMessage({ error: `Failed to query version value: ${GetLastError()}`});
       return;
     }
     // console.log('fullAppInfoSize: ', koffi.decode(fullAppInfoSize, "int"));
@@ -90,7 +90,7 @@ const winCallback = (hWinEventHook, event, hwnd, idObject, idChild, dwEventThrea
     // console.log("Product name: " + productNamePtr);
     if(!productNamePtr.includes("Operating System")) {
       // Ignore from Microsoft OS
-      parentPort.postMessage(productNamePtr);
+      parentPort.postMessage({ windowTitle: productNamePtr });
     }
   }
   return 0;
