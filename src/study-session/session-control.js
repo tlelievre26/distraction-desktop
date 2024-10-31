@@ -26,10 +26,18 @@ const beginSession = (event, duration) => {
 
   log.debug("Beginning session with ID " + sessionId);
   winApiThread = new Worker(path.join(__dirname, "../collector/focus-event.js"));
-  winApiThread.on('message', async (windowTitle) => {
-    log.debug('Active window title:', windowTitle);
-    if(!connected ||(connected && !windowTitle.includes("Google Chrome"))) { //Don't want to register switching to Chrome if the connection is sending data
-      await appData("Windows", windowTitle, sessionId);
+  winApiThread.on('message', async (msg) => {
+    if(msg.hasOwnProperty("debug")) {
+      log.debug(msg.debug);
+    }
+    else if(msg.hasOwnProperty("error")) {
+      log.error(msg.error);
+    }
+    else {
+      log.debug('Active window title:', msg.windowTitle);
+      if(!connected ||(connected && !msg.windowTitle.includes("Google Chrome"))) { //Don't want to register switching to Chrome if the connection is sending data
+        await appData("Windows", msg.windowTitle, sessionId);
+      }
     }
 
   });

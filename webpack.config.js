@@ -35,7 +35,8 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: [".js", ".jsx"]
+    extensions: [".js", ".jsx"],
+    mainFields: ['main', 'browser']
   },
   plugins: [
     new HtmlWebpackPlugin({

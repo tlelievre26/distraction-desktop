@@ -2,7 +2,8 @@ name: Build/release
 
 on:
   push:
-    branches: main
+    branches:
+      - main
 
 jobs:
   release:
@@ -16,6 +17,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
+
+      # Install Python to satisfy node-gyp dependencies
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'  # Recommended version range for node-gyp
 
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
