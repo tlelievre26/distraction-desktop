@@ -4,7 +4,7 @@ const { ipcRenderer } = require("electron"); // Assuming Electron is used
 const { useNavigate } = require("react-router-dom");
 require("./start-styling.css");
 
-const BeginSessionButton = () => {
+const BeginSessionButton = ({dbSuccess}) => {
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
@@ -26,12 +26,17 @@ const BeginSessionButton = () => {
   };
 
   const startTimer = () => {
-    const totalSeconds = hours * 3600 + minutes * 60 + seconds;
-    ipcRenderer.send("begin-session", totalSeconds);
-    //To add: if the user begins a session that isn't long enough to gather substantial data (say, 30 mins), throw an error message on screen
-    navigation("/session", {
-      state: { timerValue: totalSeconds }
-    });
+    if(!dbSuccess) {
+      ipcRenderer.send("error-msg", "Cannot begin session until successful InfluxDB connection");
+    }
+    else {
+      const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+      ipcRenderer.send("begin-session", totalSeconds);
+      //To add: if the user begins a session that isn't long enough to gather substantial data (say, 30 mins), throw an error message on screen
+      navigation("/session", {
+        state: { timerValue: totalSeconds }
+      });
+    }
   };
 
   return (
