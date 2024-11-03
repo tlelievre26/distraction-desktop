@@ -5,9 +5,15 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 
 const { beginSession, endSession } = require("./study-session/session-control");
 const showErrorPopup = require('./util/error-popup');
-const startInfluxDb = require('./api_recievers/start-influx-db');
+const { startInfluxDb, stopInfluxDb } = require('./api_recievers/start-influx-db');
+const log = require('./util/logger');
 
-const store = new Store();
+//For whatever reason, the electron-store module doesn't support using require, so we have to do this to get i
+const importElectronStore = async () => {
+  const Store = (await import('electron-store')).default; // Use .default to access the ES module export
+  const store = new Store();
+  return store;
+};
 
 const createWindow = async () => {
   win = new BrowserWindow({
@@ -29,6 +35,7 @@ const createWindow = async () => {
     win.loadFile(path.join(__dirname, '../dist/index.html')); // Load the production build
   }
 
+  const store = await importElectronStore();
   const influxPath = store.get("influxPath", '');
   //The API key should prob be stored in something more secure than electron-store
   //But bc it's only a key for a local DB that would be really easy to access for an attacker anyways, I'd rather save the hassle
@@ -41,10 +48,11 @@ const createWindow = async () => {
   if(apiKey !== '' && influxPath !== '') { //Dont try to connect if the user hasn't input either field yet
     try {
       await startInfluxDb(influxPath, apiKey);
+      log.debug("Successfully connected to Influx DB on startup");
       win.webContents.send('db-conn-success');
     }
     catch(error) {
-      showErrorPopup(`Failed to connect to InfluxDB: ${error.message}`);
+      log.error(`Failed to connect to InfluxDB: ${error.message}`);
       win.webContents.send('db-conn-failed');
     }
   }
@@ -61,6 +69,7 @@ const createWindow = async () => {
     endSession(...args); 
   });
   ipcMain.on("attempt-reconnect", async (_event, influxPath, apiKey) => {
+    stopInfluxDb();
     try {
       await startInfluxDb(influxPath, apiKey);
       showErrorPopup({ //Using the error popup function to show an info popup but ehhhh whatever
@@ -74,8 +83,7 @@ const createWindow = async () => {
       store.set("influxPath", influxPath);
       win.webContents.send('db-conn-success');
     }
-    catch(error) {
-      showErrorPopup(`Failed to connect to InfluxDB: ${error.message}`);
+    catch {
       win.webContents.send('db-conn-failed');
     }
   });

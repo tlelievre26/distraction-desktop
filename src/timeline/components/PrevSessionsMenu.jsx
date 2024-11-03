@@ -21,8 +21,8 @@ const PrevSessionsMenu = ({setName}) => {
   const { prevSessionIds } = usePrevSession();
 
   return (
-    <div className="navbar-button p-2">
-      <Dropdown>
+    <div className="navbar-button">
+      <Dropdown className="navbar-button">
         <Dropdown.Toggle variant="info" id="dropdown-basic">
           Previous Sessions
         </Dropdown.Toggle>
@@ -32,6 +32,7 @@ const PrevSessionsMenu = ({setName}) => {
               as="button"
               key={index}
               onClick={() => loadPrevSession(session.sessionId, session.duration, session.name)}
+              className="prev-session-item"
             >
               {session.name}
             </Dropdown.Item>

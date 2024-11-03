@@ -38,13 +38,13 @@ const HomePage = () => {
 
   return(
     <>
-      <nav className="navbar navbar-dark bg-primary custom-navbar">
-        <div className="container-fluid d-flex justify-content-end mx-auto align-items-center">
+      <nav className="navbar bg-primary custom-navbar">
+        <div className="container-fluid d-flex">
           <p className="countdown">Welcome to DistrAction!</p>
-          <SettingsButton apiKey={apiKey} setApikey={setApiKey} filepath={filepath} setFilepath={setFilepath}/>
           <PrevSessionProvider>
             <StartPrevSessionsMenu/>
           </PrevSessionProvider>
+          <SettingsButton apiKey={apiKey} setApikey={setApiKey} filepath={filepath} setFilepath={setFilepath}/>
         </div>
       </nav>
       <BeginSessionButton dbSuccess={dbSuccess}/>

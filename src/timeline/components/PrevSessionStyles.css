@@ -1,3 +1,8 @@
+.dropdown {
+    display: inline-block;
+    width: auto;
+}
+
 .dropdown-toggle {
     position: absolute;
     right: 0;
@@ -24,6 +29,6 @@
     color: black;
 }
 
-.dropdown-item:hover {
+.prev-session-item:hover {
     background-color: #e2e6ea;
 }

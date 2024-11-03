@@ -20,7 +20,7 @@ const showErrorPopup = async (error) => {
     //Main use case I can think of for this is the user ending the study session before 15 mins and giving them a popup that says "Are you sure"
     
     //Await here means system waits for user to confirm before doing anything else
-    const response = await dialog.showMessageBox(defaultErr);
+    const response = await dialog.showMessageBox(error);
     //May want to add custom logic based on the response
 
     return response; //Only returning response so it doesn't cause a linter error

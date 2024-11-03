@@ -27,6 +27,8 @@ const SessionScreen = () => {
     ipcRenderer.on('backend-end-session', (_event, duration, startTime, endTime) => {
       const name = formatDate(startTime, endTime);
       goToTimeline(duration, name);
+    ipcRenderer.on('backend-end-session', (_event, duration) => {
+      goToTimeline(duration);
     });
 
     // Cleanup listener on unmount

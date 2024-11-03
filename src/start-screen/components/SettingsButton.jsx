@@ -1,12 +1,14 @@
  
 const { ipcRenderer } = require("electron");
 const React = require("react");
-const { Dropdown, DropdownButton } = require("react-bootstrap");
+const { useState } = React;
+const { Dropdown, Form, Button } = require("react-bootstrap");
 
 require("./../../timeline/components/navbarStyles.css");
+require("./../../timeline/components/PrevSessionStyles.css");
+require("./start-styling.css");
 
 const SettingsButton = ({filepath, setFilepath, apiKey, setApikey}) => {
-
 
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -19,43 +21,58 @@ const SettingsButton = ({filepath, setFilepath, apiKey, setApikey}) => {
   };
 
   const useNewSettings = () => {
-    ipcRenderer.send('attempt-reconnect');
+    ipcRenderer.send('attempt-reconnect', filepath, apiKey);
+    setShowDropdown(false);
+  };
+
+  // Thanks ChatGPT
+  const toggleDropdown = (e) => {
+    e.stopPropagation(); // Prevents closing when clicking inside
+    setShowDropdown((prev) => !prev);
   };
 
   return (
-    <div className="navbar-button p-2">
-      <DropdownButton
-        title="Settings"
-        show={showDropdown}
-        onClick={() => setShowDropdown(!showDropdown)}
-        className="secondary"
-      >
-        <Dropdown.Item as="div" className="p-3">
-          <Form.Group controlId="filepath">
-            <Form.Label>Path to Influx:</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter path to InfluxDB"
-              value={filepath}
-              onChange={setNewFilepath}
-            />
-          </Form.Group>
+    <div className="navbar-button settings-button">
+      <Dropdown show={showDropdown} className="navbar-button">
+        <Dropdown.Toggle
+          show={showDropdown}
+          onClick={toggleDropdown}
+          variant="success"
+        >
+            Settings
+        </Dropdown.Toggle>
 
-          <Form.Group controlId="apiKey" className="mt-3">
-            <Form.Label>Influx API Key:</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter InfluxDB API key"
-              value={apiKey}
-              onChange={setNewApikey}
-            />
-          </Form.Group>
+        <Dropdown.Menu onClick={(e) => e.stopPropagation()} className="settings-menu">
+          <Dropdown.Item as="div" className="p-3">
+            <Form.Group controlId="filepath" className="form-group">
+              <Form.Label>Path to Influx:</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter path to InfluxDB"
+                value={filepath}
+                onChange={setNewFilepath}
+                className="settings-form-control"
+              />
+            </Form.Group>
 
-          <Button variant="primary" className="mt-3" onClick={useNewSettings}>
-          Save
-          </Button>
-        </Dropdown.Item>
-      </DropdownButton>
+            <Form.Group controlId="apiKey" className="form-group">
+              <Form.Label>Influx API Key:</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter InfluxDB API key"
+                value={apiKey}
+                onChange={setNewApikey}
+                className="settings-form-control"
+              />
+            </Form.Group>
+
+            <Button variant="primary" className="settings-save-button" onClick={useNewSettings}>
+                Connect
+            </Button>
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+      
     </div>
   );
 };

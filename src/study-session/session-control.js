@@ -100,6 +100,7 @@ const endSession = (event, cleanSession) => {
     }
     sessionId = undefined;
   }
+  stopInfluxDb();
   return;
 };
 
