@@ -6,6 +6,7 @@ require("./navbarStyles.css");
 const NewSessionButton = () => {
   const navigation = useNavigate();
   const goToStart = () => {
+
     navigation("/");
   };
 

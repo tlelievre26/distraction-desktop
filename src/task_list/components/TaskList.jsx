@@ -13,6 +13,13 @@ const TaskList = () => {
   toggleCompleted =(index)=> {
     const newTasks = [...tasks];
     newTasks[index].completed = !newTasks[index].completed;
+    newTasks[index].currentTask = false;
+
+    if (index !== newTasks.length - 1) {
+      const currentTask = newTasks[index];
+      newTasks.splice(index, 1);
+      newTasks.push(currentTask);
+    }
     setTasks(newTasks);
   };
 
@@ -33,6 +40,19 @@ const TaskList = () => {
   setCurrentTask = (index)=> {
     const newTasks = [...tasks];
     newTasks[index].currentTask = !newTasks[index].currentTask;
+    newTasks[index].completed = false;
+    newTasks.map((task, i)=> {
+      if(i !== index && newTasks[i].currentTask === true) {
+        newTasks[i].currentTask = false;
+      }
+      return task;
+    });
+
+    if (index !== 0) {
+      const currentTask = newTasks[index];
+      newTasks.splice(index, 1);
+      newTasks.unshift(currentTask);
+    }
     setTasks(newTasks);
   };
 

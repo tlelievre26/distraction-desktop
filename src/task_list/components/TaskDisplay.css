@@ -28,13 +28,14 @@
         align-items:'flex-start';
         height: '5vh';
         -webkit-text-fill-color: rgb(255,255,255);
+         width: 100%
       }
 
       .task button{
         background: rgb(5, 75, 155);
         border-radius: 5px;
         margin: -2.75px 5px;
-        padding: 3px 5px;
+        padding: 3px 10px;
         border: none;
         cursor: pointer;
         color: rgb(255,255,255);
@@ -65,7 +66,7 @@
       }
 
       .on {
-        color: rgb(0,0,0);
+        color: rgb(255, 195, 66);
       }
       
       .off {
