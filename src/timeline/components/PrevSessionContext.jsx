@@ -1,19 +1,37 @@
 const React = require("react");
-const { useContext, createContext, useState } = React;
 
-// Create the context
+const { useContext, createContext, useState, useEffect } = React;
+const { AllStudySessionProcessing } = require("../../api_recievers/influxqueries");
+
+
 const PrevSessionContext = createContext();
 
-// Create a provider component
-const PrevSessionProvider = ({children}) => {
-  const prevSessions = [
-    { name: "MM/DD/YY HH:MM to HH:MM", sessionId: 0, duration: 10000 },
-    { name: "MM/DD/YY HH:MM to HH:MM", sessionId: 1, duration: 10000 }
-  ];
-  
-  //REPLACE THIS ARRAY with the data for each study session as queries from the database
-  
-  const [prevSessionIds, setPrevSessionIds] = useState(prevSessions);
+const PrevSessionProvider = ({ children }) => {
+  const [prevSessionIds, setPrevSessionIds] = useState([]);
+
+  useEffect(() => {
+    
+    AllStudySessionProcessing()
+      .then((prevSessionData) => {
+      
+        let sessionIds = prevSessionData.sessionId; 
+        let startTimes = prevSessionData.startTimes; 
+        let endTimes = prevSessionData.endTimes; 
+
+        console.log(sessionIds);
+        console.log(startTimes);
+        console.log(endTimes);
+
+        const prevSessions = sessionIds.map((sessionId, index) => ({
+          name: `${startTimes[index]} to ${endTimes[index]}`, sessionId: sessionIds[index],duration: startTimes[index] - endTimes[index]
+        }));
+
+        setPrevSessionIds(prevSessions);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []); 
 
   return (
     <PrevSessionContext.Provider value={{ prevSessionIds, setPrevSessionIds }}>

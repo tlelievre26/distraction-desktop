@@ -12,6 +12,7 @@ const url = `http://localhost:${process.env.DB_PORT ?? 8086}`;
 const client = new InfluxDB({url, token});
 let org = process.env.INFLUX_ORG ?? "Distraction";
 let bucket = process.env.INFLUX_BUCKET ?? "WebsiteData";
+let bucket_study_session = process.env.INFLUX_BUCKET_2;
 let write = process.env.DB_WRITE ?? 'true';
 
 
@@ -206,6 +207,99 @@ const grabTimesForApp = (appName) => {
   });
 };
 
+
+// Write into previous study sessions
+const insertStudySessionData = (id, startTime, endTime) =>{
+ 
+  let writeClientStudy = client.getWriteApi(org, bucket_study_session, 's');
+
+  let studySessionHistory = new Point('studySession')
+    .stringField('id', id) // ID of study sesssion we are saving
+    .stringField('startTime', startTime) // Start time of study session
+    .stringField('endTime', endTime)  //End time of study session
+    .timestamp(currentTime.seconds()); // Time you pushed a new study session in
+  
+  try {
+    writeClientStudy.writePoint(studySessionHistory);
+      
+  }
+  catch (error) {
+    log.error(error);
+    throw error;
+  }
+  
+  /* log.debug(`Study Session added to InfluxDB: 
+      ID: ${id}, 
+      StartTime: ${startTime}, 
+      EndTime: ${endTime}, 
+      Timestamp: ${currentTime.seconds()}`);
+
+      */
+};
+
+
+//Query out just all the IDs to choose from
+const grabAllPreviousStudySessionIDs = () => {
+  return new Promise((resolve, reject) => {
+
+    const allQueryIds = [];
+    const allStartTimes = [];
+    const allEndTimes = [];
+
+    let queryClient = client.getQueryApi(org);
+    const timeOfCurrentSession = currentTime.seconds();
+    let stringVersion = `-${timeOfCurrentSession.toString()}s`;
+
+    // Construct the Flux query with the filter for the specific querySessionID
+    const fluxQuery = `
+    
+      from(bucket: "StudySessionData")
+      |> range(start: ${stringVersion})
+      |> filter(fn: (r) => r._measurement == "studySession")
+    `;
+
+    queryClient.queryRows(fluxQuery, {
+      next: (row, tableMeta) => {
+        const tableObject = tableMeta.toObject(row);
+        //console.log(tableObject);
+        allQueryIds.push(tableObject._value);
+        allStartTimes.push(tableObject._time);
+        allEndTimes.push(tableObject._stop);
+      },
+      error: (error) => {
+        log.error(error);
+        reject(error); // Reject the promise if an error occurs
+      },
+      complete: () => {
+        resolve({ allQueryIds, allStartTimes, allEndTimes}); // Resolve the promise once complete
+      }
+    });
+  });
+};
+
+
+const AllStudySessionProcessing = async () => {
+  try {
+    const result = await grabAllPreviousStudySessionIDs();
+    
+    const idsOfSessions = result.allQueryIds;
+    const startTimes = result.allStartTimes;
+    const endTimes = result.allEndTimes;
+
+
+    const sessionData = {
+      sessionId: idsOfSessions,
+      startTimes: startTimes,
+      endTimes: endTimes
+    };
+    
+    return sessionData;
+  } catch (error) {
+    log.error(error);
+    throw error;
+  }
+};
+  
 // appData("Windows","HolyCow", 8);
 // SpecificStudySessionProcessing("8");
-module.exports = { appData, SpecificStudySessionProcessing, grabTimesForApp  };
+module.exports = { appData, SpecificStudySessionProcessing, grabTimesForApp, insertStudySessionData, AllStudySessionProcessing};

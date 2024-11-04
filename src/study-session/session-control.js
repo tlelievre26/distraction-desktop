@@ -3,20 +3,26 @@ const path = require('path');
 
 const { WebSocketServer } = require('ws');
 const { v4: uuidv4 } = require('uuid');
+const { currentTime, InfluxDB, Point } = require("@influxdata/influxdb-client");
 
 const log = require('../util/logger');
-const { appData } = require("../api_recievers/influxqueries");
+const { appData, insertStudySessionData } = require("../api_recievers/influxqueries");
+
+
 let winApiThread;
 let sessionId;
 let wss;
 let startTime;
 let timeLeft;
 let timerInterval;
+let endSessionTime;
+let startSessionTime;
 
 let connected = false; //Represents if the Chrome Ext has connected to the WSS
 
 const beginSession = (event, duration) => {
   createWebsocket(event);
+  startSessionTime = (currentTime.seconds());
   startTime = duration;
   timeLeft = startTime;
   sessionId = uuidv4();
@@ -78,14 +84,21 @@ const endSession = (event, cleanSession) => {
 
     closeWebsocket(); //Close WSS
 
-    sessionId = undefined;
     if(cleanSession) {
       //TODO:
       //We should prob have a function to clean all records with a certain session ID in case of failure
       //Don't want to leave a half-finished session in the DB
       //Also would just be useful for removing old timelines
       log.debug("Session ended unexpectedly, cleaning up data");
+      
     }
+
+    else{
+      endSessionTime = (currentTime.seconds());
+      // function call to write study session id in new bucket 
+      insertStudySessionData(sessionId, startSessionTime ,endSessionTime);
+    }
+    sessionId = undefined;
   }
   return;
 };
