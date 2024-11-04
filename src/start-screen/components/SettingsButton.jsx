@@ -22,6 +22,8 @@ const SettingsButton = ({filepath, setFilepath, apiKey, setApikey}) => {
 
   const useNewSettings = () => {
     ipcRenderer.send('attempt-reconnect', filepath, apiKey);
+    localStorage.setItem('influxApiKey', apiKey);
+    localStorage.setItem('influxFilepath', filepath);
     setShowDropdown(false);
   };
 

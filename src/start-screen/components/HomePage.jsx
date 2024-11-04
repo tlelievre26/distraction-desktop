@@ -13,26 +13,35 @@ require("./../../timeline/components/navbarStyles.css");
 const HomePage = () => {
   
 
-  const [filepath, setFilepath] = useState('');
-  const [apiKey, setApiKey] = useState('');
+  const [filepath, setFilepath] = useState(localStorage.getItem('influxFilepath') || '');
+  const [apiKey, setApiKey] = useState(localStorage.getItem('influxApiKey') || '');
   //Tracks if we've successfully connected to Influx
-  const [dbSuccess, setDbSuccess] = useState(false);
+  const [dbSuccess, setDbSuccess] = useState(localStorage.getItem('db-status') || false);
 
   useEffect(() => {
 
     ipcRenderer.on('db-conn-success', (_event) => {
+      localStorage.setItem('db-status', true);
       setDbSuccess(true);
     });
 
     ipcRenderer.on('db-conn-failed', (_event) => {
+      localStorage.setItem('db-status', false);
       setDbSuccess(false);
     });
 
     ipcRenderer.on('load-settings', (_event, influxPath, apiKey) => {
       setApiKey(apiKey);
       setFilepath(influxPath);
+      localStorage.setItem('influxApiKey', apiKey); //If we reload the page
+      localStorage.setItem('influxFilepath', influxPath);
     });
 
+    return () => {
+      ipcRenderer.removeAllListeners('db-conn-success');
+      ipcRenderer.removeAllListeners('db-conn-failed');
+      ipcRenderer.removeAllListeners('load-settings');
+    };
 
   }, []);
 

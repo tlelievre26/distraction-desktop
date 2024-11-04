@@ -5,7 +5,7 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 
 const { beginSession, endSession } = require("./study-session/session-control");
 const showErrorPopup = require('./util/error-popup');
-const { startInfluxDb, stopInfluxDb } = require('./api_recievers/start-influx-db');
+const { startInfluxDb } = require('./api_recievers/start-influx-db');
 const log = require('./util/logger');
 
 //For whatever reason, the electron-store module doesn't support using require, so we have to do this to get i
@@ -41,21 +41,20 @@ const createWindow = async () => {
   //But bc it's only a key for a local DB that would be really easy to access for an attacker anyways, I'd rather save the hassle
   const apiKey = store.get("apiKey", '');
 
-  win.webContents.on('did-finish-load', () => { 
+  win.webContents.on('did-finish-load', async () => { 
     win.webContents.send('load-settings', influxPath, apiKey);
-  });
+    if(apiKey !== '' && influxPath !== '') { //Dont try to connect if the user hasn't input either field yet
+      if(await startInfluxDb(influxPath, apiKey) === 0 ) {
+        log.debug("Successfully connected to Influx DB on startup");
+        win.webContents.send('db-conn-success');
+      }
+      else {
+        log.error(`Failed to connect to InfluxDB on startup`);
+        win.webContents.send('db-conn-failed');
+      }
 
-  if(apiKey !== '' && influxPath !== '') { //Dont try to connect if the user hasn't input either field yet
-    try {
-      await startInfluxDb(influxPath, apiKey);
-      log.debug("Successfully connected to Influx DB on startup");
-      win.webContents.send('db-conn-success');
     }
-    catch(error) {
-      log.error(`Failed to connect to InfluxDB: ${error.message}`);
-      win.webContents.send('db-conn-failed');
-    }
-  }
+  });
 
   ipcMain.on("begin-session", (...args) => {
     win.setMinimumSize(800, 600);
@@ -69,23 +68,25 @@ const createWindow = async () => {
     endSession(...args); 
   });
   ipcMain.on("attempt-reconnect", async (_event, influxPath, apiKey) => {
-    stopInfluxDb();
-    try {
-      await startInfluxDb(influxPath, apiKey);
-      showErrorPopup({ //Using the error popup function to show an info popup but ehhhh whatever
+    store.set("apiKey", apiKey);
+    store.set("influxPath", influxPath);
+
+    if(await startInfluxDb(influxPath, apiKey) === 0) {
+      log.debug("Successfully connected to InfluxDB");
+      showErrorPopup({ //Using the error popup function to show an info popup is jank but ehhhh whatever
         type: "info",
         title: "Success",
         message: "Successfully connected to InfluxDB",
         buttons: ['OK'],
         defaultId: 0 // 'OK' button   
       });
-      store.set("apiKey", apiKey);
-      store.set("influxPath", influxPath);
+
       win.webContents.send('db-conn-success');
     }
-    catch {
+    else {
       win.webContents.send('db-conn-failed');
     }
+
   });
 
   ipcMain.on('error-msg', (_event, msg) => { //Lets the frontend create error popups

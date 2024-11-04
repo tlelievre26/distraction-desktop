@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const { currentTime, InfluxDB, Point } = require("@influxdata/influxdb-client");
+const { BucketsAPI } = require('@influxdata/influxdb-client-apis');
 
 const log = require('../util/logger');
 
@@ -12,19 +13,55 @@ let write = process.env.DB_WRITE ?? 'true';
 //Track the name of the previously written app, just to prevent accidental duplicate events
 let prevAppName = undefined;
 
-//Moved this into it's own function so we initiate the connection on startup rather than at the start of a session
-const connectToInflux = (apiKey) => {
-  const url = `http://localhost:${process.env.DB_PORT ?? 8086}`;
+//Thx chatGPT
+const isInfluxDBReady = async (bucket) => {
   try {
-    influxClient = new InfluxDB({url, apiKey});
+    await bucket.getBuckets();
     return true;
   }
   catch (error) {
-    log.error("Failed to connect to InfluxDB");
+    if(error.statusCode === 401) {
+      log.error(error);
+      return false;
+    }
     throw error;
   }
 
+
 };
+
+//Moved this into it's own function so we initiate the connection on startup rather than at the start of a session
+const connectToInflux = async (apiKey) => {
+  const url = `http://localhost:${process.env.DB_PORT ?? 8086}`;
+  influxClient = new InfluxDB({url, token: apiKey});
+  const buckets = new BucketsAPI(influxClient);
+  //Thx chatgpt for this one
+  //Basically pings the server until it's running to check the API key works
+  for (let attempt = 1; attempt <= 10; attempt++) {
+       
+    //Ignore errors
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      if (await isInfluxDBReady(buckets))  {
+        return true; // Connection successful
+      }
+      else {
+        log.debug(`Invalid API Key`);
+        return false;
+      }
+    }
+    catch {
+      log.debug(`Failed to connect to InfluxDB after ${attempt} tries, retrying`);
+    }
+
+
+    // Wait before the next retry
+    // eslint-disable-next-line no-await-in-loop
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  }
+  return false; // InfluxDB didn't become ready within the retry limit
+};
+
 
 //Write Function
 //Source is from Chrome API or OS 

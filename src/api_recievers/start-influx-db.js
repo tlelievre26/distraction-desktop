@@ -8,33 +8,54 @@ const showErrorPopup = require("../util/error-popup");
 
 let influxProcess = null;
 
-const startInfluxDb = async (influxPath, apiKey) => {
-//If the user tries to change the influx path or API key while influx is already running this will probably break
-//If we have time we can address that
-
-  const absPath = path.resolve(influxPath);
-  if (!fs.existsSync(absPath)) {
-    throw(`The specified path does not exist: ${absPath}`);
-  }
-
-
-  influxProcess = spawn('influxd', { cwd: absPath });
-  influxProcess.on('error', (err) => {
-    log.error("Failed to start to Influx DB process");
-    log.error(err);
-    showErrorPopup(`Failed to start to Influx DB process. Please ensure your filepath is correct, and that influxDB is not already running`);
-    throw err;
+const spawnInfluxProcess = (absPath) => {
+  return new Promise((resolve, reject) => {
+    const process = spawn('influxd', { cwd: absPath });
+    process.on('spawn', () => {
+      resolve(process);
+    });
+    process.on('error', (err) => {
+      reject(err);
+    });
   });
 
+};
+
+const startInfluxDb = async (influxPath, apiKey) => {
+
+  if(influxProcess === null) {
+    const absPath = path.resolve(influxPath);
+    if (!fs.existsSync(absPath)) {
+      log.error("Invalid path to influx DB");
+      showErrorPopup(`Failed to spawn Influx DB process, invalid file path.`);
+      return -1;
+    }
+  
+    try {
+      influxProcess = await spawnInfluxProcess(absPath);
+    }
+    catch(err) {
+      log.error("Failed to start to Influx DB process");
+      log.error(err);
+      showErrorPopup(`Failed to spawn Influx DB process. Please ensure your file path is correct.`);
+      return -1;
+    }
+  }
+
+
   try {
-    connectToInflux(apiKey);
-    log.debug("Successfuly connected to influxDB");
+    const connSucc = await connectToInflux(apiKey);
+    if(connSucc === false) {
+      log.error("Failed to connect to Influx DB after 10 retries");
+      showErrorPopup(`Failed to connect to Influx DB process. Please ensure your API key is correct.`);
+      return false;
+    }
   }
   catch(err) {
-    log.error("Failed to connect to Influx DB");
+    log.error("An error occured when attempting to connect to Influx DB");
     log.error(err);
     showErrorPopup(`Failed to connect to Influx DB process. Please ensure your API key is correct.`);
-    throw err;
+    return -1;
   }
 
   return 0;

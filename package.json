@@ -66,6 +66,7 @@
   },
   "dependencies": {
     "@influxdata/influxdb-client": "^1.35.0",
+    "@influxdata/influxdb-client-apis": "^1.35.0",
     "@popperjs/core": "^2.11.8",
     "@react-navigation/native": "^6.1.18",
     "@waiting/shared-core": "^23.21.0",
