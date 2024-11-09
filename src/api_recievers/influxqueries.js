@@ -209,7 +209,7 @@ const grabTimesForApp = (appName) => {
 
 
 // Write into previous study sessions
-const insertStudySessionData = (id, startTime, endTime) =>{
+const insertStudySessionData = (id, startTime, endTime, duration) =>{
  
   let writeClientStudy = client.getWriteApi(org, bucket_study_session, 's');
 
@@ -217,6 +217,8 @@ const insertStudySessionData = (id, startTime, endTime) =>{
     .stringField('id', id) // ID of study sesssion we are saving
     .stringField('startTime', startTime) // Start time of study session
     .stringField('endTime', endTime)  //End time of study session
+    .intField('duration', duration)
+    
     .timestamp(currentTime.seconds()); // Time you pushed a new study session in
   
   try {
@@ -228,13 +230,12 @@ const insertStudySessionData = (id, startTime, endTime) =>{
     throw error;
   }
   
-  /* log.debug(`Study Session added to InfluxDB: 
+  log.debug(`Study Session added to InfluxDB: 
       ID: ${id}, 
       StartTime: ${startTime}, 
       EndTime: ${endTime}, 
       Timestamp: ${currentTime.seconds()}`);
 
-      */
 };
 
 
@@ -261,7 +262,8 @@ const grabAllPreviousStudySessionIDs = () => {
     queryClient.queryRows(fluxQuery, {
       next: (row, tableMeta) => {
         const tableObject = tableMeta.toObject(row);
-        //console.log(tableObject);
+        
+        console.log(tableObject);
         allQueryIds.push(tableObject._value);
         allStartTimes.push(tableObject._time);
         allEndTimes.push(tableObject._stop);

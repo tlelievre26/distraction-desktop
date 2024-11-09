@@ -3,7 +3,7 @@ const path = require('path');
 
 const { WebSocketServer } = require('ws');
 const { v4: uuidv4 } = require('uuid');
-const { currentTime, InfluxDB, Point } = require("@influxdata/influxdb-client");
+const { currentTime } = require("@influxdata/influxdb-client");
 
 const log = require('../util/logger');
 const { appData, insertStudySessionData } = require("../api_recievers/influxqueries");
@@ -15,7 +15,6 @@ let wss;
 let startTime;
 let timeLeft;
 let timerInterval;
-let endSessionTime;
 let startSessionTime;
 
 let connected = false; //Represents if the Chrome Ext has connected to the WSS
@@ -66,6 +65,8 @@ const beginSession = (event, duration) => {
 
 const endSession = (event, cleanSession) => {
   if(sessionId !== undefined) {
+    const endSessionTime = currentTime.seconds();
+    const duration = endSessionTime - startSessionTime;
     
     clearInterval(timerInterval); //End the countdown timer
     timerInterval = undefined;
@@ -94,9 +95,9 @@ const endSession = (event, cleanSession) => {
     }
 
     else{
-      endSessionTime = (currentTime.seconds());
+
       // function call to write study session id in new bucket 
-      insertStudySessionData(sessionId, startSessionTime ,endSessionTime);
+      insertStudySessionData(sessionId, startSessionTime, endSessionTime, duration);
     }
     sessionId = undefined;
   }
