@@ -46,7 +46,7 @@ const startInfluxDb = async (influxPath, apiKey) => {
   try {
     const connSucc = await connectToInflux(apiKey);
     if(connSucc === false) {
-      log.error("Failed to connect to Influx DB after 10 retries");
+      log.error("Failed to connect to Influx DB after 10 retries using API key ", apiKey);
       showErrorPopup(`Failed to connect to Influx DB process. Please ensure your API key is correct.`);
       return false;
     }

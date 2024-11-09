@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const { currentTime, InfluxDB, Point } = require("@influxdata/influxdb-client");
-const { BucketsAPI } = require('@influxdata/influxdb-client-apis');
+const { BucketsAPI, OrgsAPI } = require('@influxdata/influxdb-client-apis');
 
 const log = require('../util/logger');
 
@@ -13,36 +13,60 @@ let write = process.env.DB_WRITE ?? 'true';
 //Track the name of the previously written app, just to prevent accidental duplicate events
 let prevAppName = undefined;
 
-//Thx chatGPT
-const isInfluxDBReady = async (bucket) => {
+const influxBuckets = Object.freeze({ //Acts like an enum for our buckets
+  apps: "WebsiteData",
+  sessions: "StudySessionData",
+  tasks: "TaskData",
+  metrics: "SessionMetricsData"
+});
+
+const checkExistingBuckets = async (bucketAPI) => {
+  //Kill 2 birds with one stone here, this endpoint makes sure the auth key is right and that the DB is running
+  //We also need to check which buckets we have anyways, so it's convenient to do both at once
   try {
-    await bucket.getBuckets();
-    return true;
+    const currBuckets = await bucketAPI.getBuckets();
+    return currBuckets.buckets.map((bucket) => bucket.name);
   }
   catch (error) {
+    //If the DB hasn't booted up yet this throws an error that we ignore
+    //If it returns but says we don't have access then we give the user an error saying the API key is invalid
     if(error.statusCode === 401) {
       log.error(error);
-      return false;
+      return null;
     }
     throw error;
   }
+};
 
-
+const initBuckets = async (currBuckets, bucketAPI) => {
+  const orgsAPI = new OrgsAPI(influxClient);
+  const organizations = await orgsAPI.getOrgs({org});
+  const orgID = organizations.orgs[0].id;
+  const ourBuckets = Object.values(influxBuckets);
+  ourBuckets.forEach(async (bucket) => {
+    if (!currBuckets.includes(bucket)) {
+      const newBucket = await bucketAPI.postBuckets({body: {orgID, name: bucket}});
+      log.debug("Successfully created new bucket ", newBucket);
+    }
+  });
 };
 
 //Moved this into it's own function so we initiate the connection on startup rather than at the start of a session
 const connectToInflux = async (apiKey) => {
   const url = `http://localhost:${process.env.DB_PORT ?? 8086}`;
   influxClient = new InfluxDB({url, token: apiKey});
-  const buckets = new BucketsAPI(influxClient);
+  const bucketAPI = new BucketsAPI(influxClient);
+  let currBuckets;
   //Thx chatgpt for this one
   //Basically pings the server until it's running to check the API key works
+  //Tries to connect 10 times with a 1 sec delay between attempts
   for (let attempt = 1; attempt <= 10; attempt++) {
-       
-    //Ignore errors
+
     try {
       // eslint-disable-next-line no-await-in-loop
-      if (await isInfluxDBReady(buckets))  {
+      currBuckets = await checkExistingBuckets(bucketAPI);
+      if (currBuckets !== null)  {
+        initBuckets(currBuckets, bucketAPI);
         return true; // Connection successful
       }
       else {
@@ -51,9 +75,9 @@ const connectToInflux = async (apiKey) => {
       }
     }
     catch {
+      //If the DB isn't running yet
       log.debug(`Failed to connect to InfluxDB after ${attempt} tries, retrying`);
     }
-
 
     // Wait before the next retry
     // eslint-disable-next-line no-await-in-loop
