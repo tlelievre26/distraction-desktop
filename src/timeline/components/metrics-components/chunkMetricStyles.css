@@ -1,0 +1,41 @@
+
+.chunk-screen-layout {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    position: relative;
+}
+
+
+.chunk-screen-layout button:hover {
+    font-weight: bolder;
+}
+
+.close-chunk-metrics {
+    background-color: transparent;
+    border: none;
+    font-size: 25px;
+    color: red;
+    float: left;
+    position: absolute;
+    right: 0;
+}
+
+.app-timeline-container {
+    display: flex;
+    height: 90%;
+}
+
+.app-timeline {
+    padding: 0px 50px;
+    width: 100%;
+    border-bottom: 3px solid #000000; /* Optional border for the timeline */
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    align-items: end;
+}
+
+.app-timeline .chunk {
+    height: 75px;
+}

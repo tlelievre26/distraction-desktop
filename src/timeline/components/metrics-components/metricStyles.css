@@ -1,14 +1,17 @@
 .metrics-container {
     height: 65vh;      /* 65% of the viewport height */
     width: auto;      /* Full viewport width */
-    padding: 75px 300px;
+    padding: 75px 75px;
+    display: flex;
+    justify-content: center;
 }
 
 .metrics-box {
     border: 1px solid black;
     height: 100%;
-    width: auto;
+    width: 100%;
     min-width: 600px;
+    max-width: 800px;
     padding: 20px;
     -webkit-text-fill-color: black;
     font-size: large;

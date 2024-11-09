@@ -76,23 +76,20 @@ const chunkData = (sessionData) => {
         data.chunks.push(acc.currentChunk); 
       }
       else {
-        acc.currentChunk.push({name: sessionData[idx]._value, timeSpent: 900 - acc.currentSum});
-        data.chunks.push(acc.currentChunk);
-        time = time - (900 - acc.currentSum);
+        currentChunk.push({name: sessionData[idx]._value, timeSpent: 900 - totChunkTime});
+        data.chunks.push(currentChunk);
+        time = time - (900 - totChunkTime);
       }
       // Reset for the next chunk
-      acc.currentChunk = [{name: sessionData[idx]._value, timeSpent: time}];
-      acc.currentSum = time; // Reset currentSum      
+      currentChunk = [{name: sessionData[idx]._value, timeSpent: time}];
+      totChunkTime = time; // Reset currentSum      
     } 
     else {
       // Add to the current chunk
-      acc.currentChunk.push({name: sessionData[idx]._value, timeSpent: time});
-      acc.currentSum += time;
+      currentChunk.push({name: sessionData[idx]._value, timeSpent: time});
+      totChunkTime += time;
     }
-    return acc;
-  }, { currentChunk: [{}], currentSum: 0 });
-
-  data.chunks.shift();
+  });
   return data;
 };
 

@@ -4,8 +4,9 @@ const { useSessionMetrics } = require("./SessionMetricsContext");
 
 
 const SelectChunkMenuSize = () => {
-  const {chunkSize, setChunkSize} = useSessionMetrics();
+  const {chunkSize, setChunkSize, setCurrChunkId } = useSessionMetrics();
   const handleChange = (event) => {
+    setCurrChunkId(-1);
     setChunkSize(event.target.value); // Update state with the new value
   };
 

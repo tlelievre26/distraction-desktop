@@ -4,7 +4,7 @@ const { useLocation } = require("react-router-dom");
 
 const { calcMetrics, chunkData } = require("../build-timeline");
 const { useContext, createContext, useState, useEffect } = React;
-const data = require("../two_hr_session.json"); //sample data
+const sampleData = require("../two_hr_session.json"); //sample data
 const {convertTime, getTimeSpent} = require("../calc-time.js");
 const {useTasks} = require("../../task_list/components/TaskContext");
 
@@ -16,7 +16,7 @@ const SessionMetricsProvider = ({children}) => {
   const [duration, setDuration] = useState(useLocation().state.duration); //Once we store this in the database, we should be getting it from there rather than from useLocation().state
   const [chunkSize, setChunkSize] = useState(30);
   const [sessionId, setSessionId] = useState(useLocation().state.sessionId);
-  const [sessionData, setSessionData] = useState([]);
+  const [sessionData, setSessionData] = useState(null);
   const [sessionMetrics, setSessionMetrics] = useState({
     numTasks: 0,
     tabSwitchRate: 0,
@@ -25,6 +25,9 @@ const SessionMetricsProvider = ({children}) => {
     mostUsedApps: []
   });
   const {numCompletedTasks} = useTasks();
+  const [currChunkId, setCurrChunkId] = useState(-1);
+  const [currChunkData, setCurrChunkData] = useState(null); // Stores the data in the current chunk
+  //Null when no chunk is selected
 
   //Essentially what this does is that whenever the sessionId changes, it will load the data for that ID and calc the metrics
   //Once the values get updated here, they automatically get shared with other elements
@@ -34,12 +37,14 @@ const SessionMetricsProvider = ({children}) => {
       try {
         //Returns the session data
         // const data = await SpecificStudySessionProcessing(sessionId);
-        //const data = {}
+        const data = sampleData;
 
         //We might want to do the data processing/chunking here?
         convertTime(data);
         getTimeSpent(data);
         setSessionData(chunkData(data));
+
+        //Also would need to get sessionMetadata
         //Right now calcMetrics just returns a sample
         setSessionMetrics(calcMetrics(data, duration, numCompletedTasks));
       } catch (error) {
@@ -51,7 +56,20 @@ const SessionMetricsProvider = ({children}) => {
 
   //These are all the values accessible within components on the timeline screen
   //We don't want any other element to be able to control the session data and metrics so we leave the state setters out
-  const contextVals = {duration, setDuration, chunkSize, setChunkSize, sessionId, setSessionId, sessionData, sessionMetrics};
+  const contextVals = {
+    duration, 
+    setDuration, 
+    chunkSize, 
+    setChunkSize, 
+    sessionId, 
+    setSessionId, 
+    sessionData, 
+    sessionMetrics, 
+    currChunkId, 
+    setCurrChunkId, 
+    currChunkData, 
+    setCurrChunkData
+  };
 
   return (
     <SessionMetricsContext.Provider value={contextVals}>
