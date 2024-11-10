@@ -14,8 +14,12 @@ const TaskProvider = ({ children }) => {
   }]);
   const [screen, setScreen] = useState('start');
 
+  const removeCompletedTasks = () => {
+    setTasks((prevTasks) => prevTasks.filter(task => !task.completed));
+  };
+
   return (
-    <TaskContext.Provider value={{ tasks, setTasks, screen, setScreen }}>
+    <TaskContext.Provider value={{ tasks, setTasks, removeCompletedTasks, screen, setScreen }}>
       {children}
     </TaskContext.Provider>
   );

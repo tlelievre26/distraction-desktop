@@ -16,9 +16,9 @@ const TaskList = () => {
     const newTasks = [...tasks];
     newTasks[index].completed = !newTasks[index].completed;
     newTasks[index].currentTask = false;
-    if(getSessionId() !== null) {
+    /*     if(getSessionId() !== null) {
       await appData("TaskList", newTasks[index].text, getSessionId());
-    }   
+    }    */
     if (index !== newTasks.length - 1) {
       const currentTask = newTasks[index];
       newTasks.splice(index, 1);
@@ -46,9 +46,9 @@ const TaskList = () => {
     const newTasks = [...tasks];
     newTasks[index].currentTask = !newTasks[index].currentTask;
     newTasks[index].completed = false;
-    if(getSessionId() !== null) {
+    /*     if(getSessionId() !== null) {
       await appData("TaskList", newTasks[index].text, getSessionId());
-    }
+    } */
     newTasks.map((task, i)=> {
       if(i !== index && newTasks[i].currentTask === true) {
         newTasks[i].currentTask = false;
