@@ -2,7 +2,7 @@
 const React = require("react");
 const { useLocation } = require("react-router-dom");
 
-const { calcMetrics, chunkData } = require("../build-timeline");
+const { calcMetrics, chunkData, calcAppSpecificMetrics } = require("../build-timeline");
 const { useContext, createContext, useState, useEffect } = React;
 const data = require("../two_hr_session.json"); //sample data
 
@@ -35,7 +35,6 @@ const SessionMetricsProvider = ({children}) => {
 
         //We might want to do the data processing/chunking here?
         setSessionData(chunkData(data));
-
         //Right now calcMetrics just returns a sample
         setSessionMetrics(calcMetrics(data));
       } catch (error) {
@@ -47,6 +46,7 @@ const SessionMetricsProvider = ({children}) => {
 
   //These are all the values accessible within components on the timeline screen
   //We don't want any other element to be able to control the session data and metrics so we leave the state setters out
+  calcAppSpecificMetrics("Visual Studio Code", data);
   const contextVals = {duration, chunkSize, setChunkSize, sessionId, setSessionId, sessionData, sessionMetrics};
 
   return (
