@@ -7,7 +7,7 @@ const { v4: uuidv4 } = require('uuid');
 const log = require('../util/logger');
 const { appData } = require("../api_recievers/influxqueries");
 let winApiThread;
-let sessionId;
+let sessionId = null;
 let wss;
 let startTime;
 let timeLeft;
@@ -69,7 +69,6 @@ const endSession = (event, cleanSession) => {
       const webContents = event.sender;
       webContents.send('backend-end-session', startTime - timeLeft);
     }
-
     //End winAPI worker
     winApiThread.postMessage('end-session');
     winApiThread.on('exit', (code) => {
@@ -132,4 +131,8 @@ const closeWebsocket = () => {
   connected = false;
 };
 
-module.exports = {beginSession, endSession };
+const getSessionId = () => {
+  return sessionId;
+};
+
+module.exports = {beginSession, endSession, getSessionId};

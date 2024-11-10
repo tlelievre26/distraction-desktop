@@ -18,7 +18,6 @@ const createWindow = () => {
       contextIsolation: false
     }
   });
-
   const isDev = process.env.NODE_ENV === "development";
   if (isDev) {
     win.loadURL(`http://localhost:8080`); // Load from webpack-dev-server
@@ -29,14 +28,13 @@ const createWindow = () => {
   ipcMain.on("begin-session", (...args) => {
     win.setMinimumSize(800, 600);
     win.setSize(800, 600);
-    beginSession(...args);
+    sessionId = beginSession(...args);
   });
   ipcMain.on("end-session", (...args) => {
     win.setMinimumSize(1200, 800);
     win.maximize();
     endSession(...args); 
   });
-
 
   win.on('closed', () => {
     win = null;
