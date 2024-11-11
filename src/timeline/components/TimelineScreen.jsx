@@ -1,4 +1,6 @@
 const React = require("react");
+const { useState } = React;
+const { useLocation } = require('react-router-dom');
 
 const DeleteSessionButton = require("./DeleteSessionButton");
 const NewSessionButton = require("./NewSessionButton");
@@ -14,6 +16,7 @@ const { SessionMetricsProvider } = require("./SessionMetricsContext");
 require("./navbarStyles.css");
 
 const TimelineScreen = () => {
+  const [name, setName] = useState(useLocation().state.name);
 
   return (
     <div>
@@ -21,9 +24,9 @@ const TimelineScreen = () => {
         <nav className="navbar navbar-light bg-primary custom-navbar">
           <div className="container-fluid d-flex">
             {/* At some point, replace this with the actual start and end times of the session */}
-            <p className="countdown">MM/DD/YY HH:MM to HH:MM</p> 
+            <p className="countdown">{name}</p> 
             <PrevSessionProvider>
-              <PrevSessionsMenu/>
+              <PrevSessionsMenu setName={setName}/>
             </PrevSessionProvider>
             <NewSessionButton/>
             <DeleteSessionButton/>

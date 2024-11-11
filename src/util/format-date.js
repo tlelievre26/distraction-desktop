@@ -1,8 +1,8 @@
 const formatDate = (startTime, endTime) => {
   const startDate = new Date(startTime * 1000);
   const endDate =  new Date(endTime * 1000);
-  const dateStr = `${String(startDate.getUTCMonth() + 1)}/${String(startDate.getUTCDate())}/${startDate.getUTCFullYear()} `;
-  const timeStr = `${String(startDate.getUTCHours())}:${String(startDate.getUTCMinutes())}:${String(startDate.getUTCSeconds())} to ${String(endDate.getUTCHours())}:${String(endDate.getUTCMinutes())}:${String(endDate.getUTCSeconds())}`;
+  const dateStr = `${String(startDate.getMonth() + 1)}/${String(startDate.getDate())}/${startDate.getFullYear()} `;
+  const timeStr = `${String(startDate.getHours()).padStart(2, '0')}:${String(startDate.getMinutes()).padStart(2, '0')}:${String(startDate.getSeconds()).padStart(2, '0')} to ${String(endDate.getHours()).padStart(2, '0')}:${String(endDate.getMinutes()).padStart(2, '0')}:${String(endDate.getSeconds()).padStart(2, '0')}`;
   return `${dateStr} ${timeStr}`;
 };
 

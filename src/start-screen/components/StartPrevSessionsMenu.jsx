@@ -14,9 +14,9 @@ const StartPrevSessionsMenu = () => {
   const navigation = useNavigate();
 
 
-  const loadPrevSession = (duration, sessionId) => {
+  const loadPrevSession = (duration, name, sessionId) => {
     navigation("/timeline", {
-      state: { duration, sessionId }
+      state: { duration, name, sessionId }
     });
   };
 
@@ -33,7 +33,7 @@ const StartPrevSessionsMenu = () => {
             <Dropdown.Item
               as="button"
               key={index}
-              onClick={() => loadPrevSession(session.duration, session.sessionId)}
+              onClick={() => loadPrevSession(session.duration, session.name, session.sessionId)}
             >
               {session.name}
             </Dropdown.Item>

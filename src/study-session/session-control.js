@@ -74,7 +74,7 @@ const endSession = (event, cleanSession) => {
 
     if(event !== null) {
       const webContents = event.sender;
-      webContents.send('backend-end-session', startTime - timeLeft);
+      webContents.send('backend-end-session', startTime - timeLeft, startSessionTime, endSessionTime);
     }
 
     //End winAPI worker
