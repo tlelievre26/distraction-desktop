@@ -24,7 +24,7 @@ const SessionScreen = () => {
     });
 
     ipcRenderer.on('backend-end-session', (_event, duration) => {
-      console.log("Recieved signal to end study session with duration", duration);
+      // console.log("Recieved signal to end study session with duration", duration);
       goToTimeline(duration);
     });
 
