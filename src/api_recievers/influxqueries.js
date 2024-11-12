@@ -220,10 +220,9 @@ const insertStudySessionData = (id, startTime, endTime, duration) =>{
 
   let studySessionHistory = new Point('studySession')
     .tag('sessionId', id) // ID of study sesssion we are saving
-    .intField('startTime', new Date(startTime)) // Start time of study session
-    .intField('endTime', new Date(endTime))  //End time of study session
+    .intField('startTime', startTime) // Start time of study session
+    .intField('endTime', endTime)  //End time of study session
     .intField('duration', duration)
-    
     .timestamp(currentTime.seconds()); // Time you pushed a new study session in
   
   try {
@@ -255,8 +254,7 @@ const grabAllPreviousStudySessionIDs = () => {
     let stringVersion = `-${timeOfCurrentSession.toString()}s`;
 
     // Construct the Flux query with the filter for the specific querySessionID
-    const fluxQuery = `
-    
+    const fluxQuery = ` 
       from(bucket: "StudySessionData")
       |> range(start: ${stringVersion})
       |> filter(fn: (r) => r._measurement == "studySession")
