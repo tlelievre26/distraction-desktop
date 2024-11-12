@@ -8,12 +8,21 @@ require("./chunkMetricStyles.css");
 
 const ChunkMetrics = () => {
   const { currChunkData, setCurrChunkData, currChunkId, setCurrChunkId, chunkSize } = useSessionMetrics();
+  const [ currZoom, setCurrZoom ] = useState(1);
   const [ focusedApp, setFocusedApp ] =  useState('');
   //   const 
   
   const closeChunkScreen = () => {
     setCurrChunkId(-1);
     setCurrChunkData(null);
+  };
+  
+  const zoomIn = () => {
+    setCurrZoom((prevZoom) => Math.min(5, prevZoom + .5));
+  };
+
+  const zoomOut = () => {
+    setCurrZoom((prevZoom) => Math.max(1, prevZoom - .5));
   };
   
   
@@ -31,9 +40,18 @@ const ChunkMetrics = () => {
   return (
     <div className="metrics-container">
       <div className="chunk-screen-layout">
-        <button className="close-chunk-metrics" onClick={closeChunkScreen}>X</button>
+        <div className="chunk-buttons">
+          <button className="close-chunk-metrics" onClick={closeChunkScreen}>X</button>
+          <button className="zoom-metrics" onClick={zoomIn}>+</button>
+          <button className="zoom-metrics" onClick={zoomOut}>-</button>
+        </div>
+
         <div className="app-timeline-container">
-          <div className="app-timeline">
+          <div className="app-timeline" style={{
+            transform: `scaleX(${currZoom})`,
+            transformOrigin: 'left',
+            transition: 'transform 0.3s ease'
+          }}>
             {blocks}
           </div>
         </div>

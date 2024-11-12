@@ -16,14 +16,25 @@
     border: none;
     font-size: 25px;
     color: red;
-    float: left;
-    position: absolute;
-    right: 0;
+}
+
+.chunk-buttons {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.zoom-metrics {
+    background-color: transparent;
+    border: none;
+    font-size: 30px;
+    color: rgb(20, 69, 168);
+    float: right;
 }
 
 .app-timeline-container {
     display: flex;
     height: 90%;
+    overflow-x: auto;
 }
 
 .app-timeline {
@@ -34,6 +45,7 @@
     flex-direction: row;
     height: 100%;
     align-items: end;
+    margin-bottom: 20px;
 }
 
 .app-timeline .chunk {
