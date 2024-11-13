@@ -7,13 +7,14 @@ const { useSessionMetrics } = require("./SessionMetricsContext");
 
 require("./navbarStyles.css");
 require("./PrevSessionStyles.css");
-const PrevSessionsMenu = () => {
+const PrevSessionsMenu = ({setName}) => {
 
-  const { setSessionId } = useSessionMetrics();
+  const { setSessionId, setDuration } = useSessionMetrics();
 
-  const loadPrevSession = (sessionId) => {
+  const loadPrevSession = (sessionId, duration, name) => {
     console.log("Loading session with ID :", sessionId);
-    //Changing the session ID here should update everything automatically
+    setDuration(duration);
+    setName(name);
     setSessionId(sessionId);
   };
 
@@ -30,7 +31,7 @@ const PrevSessionsMenu = () => {
             <Dropdown.Item
               as="button"
               key={index}
-              onClick={() => loadPrevSession(session.sessionId)}
+              onClick={() => loadPrevSession(session.sessionId, session.duration, session.name)}
             >
               {session.name}
             </Dropdown.Item>

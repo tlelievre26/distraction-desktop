@@ -10,7 +10,7 @@ const SessionMetricsContext = createContext();
 
 // Create a provider component
 const SessionMetricsProvider = ({children}) => {
-  const duration = useLocation().state.duration; //Once we store this in the database, we should be getting it from there rather than from useLocation().state
+  const [duration, setDuration] = useState(useLocation().state.duration); //Once we store this in the database, we should be getting it from there rather than from useLocation().state
   const [chunkSize, setChunkSize] = useState(30);
   const [sessionId, setSessionId] = useState(useLocation().state.sessionId);
   const [sessionData, setSessionData] = useState([]);
@@ -46,7 +46,7 @@ const SessionMetricsProvider = ({children}) => {
 
   //These are all the values accessible within components on the timeline screen
   //We don't want any other element to be able to control the session data and metrics so we leave the state setters out
-  const contextVals = {duration, chunkSize, setChunkSize, sessionId, setSessionId, sessionData, sessionMetrics};
+  const contextVals = {duration, setDuration, chunkSize, setChunkSize, sessionId, setSessionId, sessionData, sessionMetrics};
 
   return (
     <SessionMetricsContext.Provider value={contextVals}>
