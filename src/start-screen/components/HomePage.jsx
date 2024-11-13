@@ -16,12 +16,12 @@ const HomePage = () => {
   const [filepath, setFilepath] = useState(localStorage.getItem('influxFilepath') || '');
   const [apiKey, setApiKey] = useState(localStorage.getItem('influxApiKey') || '');
   //Tracks if we've successfully connected to Influx
-  const [dbSuccess, setDbSuccess] = useState(localStorage.getItem('db-status') || false);
+  const [dbSuccess, setDbSuccess] = useState(sessionStorage.getItem('db-status') || false);
 
   useEffect(() => {
 
     ipcRenderer.on('db-conn-success', (_event) => {
-      localStorage.setItem('db-status', true);
+      sessionStorage.setItem('db-status', true);
       setDbSuccess(true);
     });
 
@@ -50,7 +50,7 @@ const HomePage = () => {
       <nav className="navbar bg-primary custom-navbar">
         <div className="container-fluid d-flex">
           <p className="countdown">Welcome to DistrAction!</p>
-          <PrevSessionProvider>
+          <PrevSessionProvider readyToLoad={dbSuccess}>
             <StartPrevSessionsMenu/>
           </PrevSessionProvider>
           <SettingsButton apiKey={apiKey} setApikey={setApiKey} filepath={filepath} setFilepath={setFilepath}/>

@@ -93,7 +93,7 @@ const appData = async (source, appName, currentSession) =>{
 
   if(write === 'true' && (prevAppName === undefined || prevAppName !== appName)) {
     log.debug("Writing to db");
-    let writeClient = influxClient.getWriteApi(org, influxBuckets.app, 's');
+    let writeClient = influxClient.getWriteApi(org, influxBuckets.apps, 's');
 
     let app = new Point('AppChange')
       .stringField('AppName',appName)
@@ -201,42 +201,6 @@ const SpecificStudySessionProcessing = async (querySessionid) => {
 };
 
 
-/*const SpecificStudySession = async (startTime, endTime, idsOfSession, startTimes, endTimes) =>{
-
-  timeOfCurrentSession = currentTime.seconds(); 
-
-
-  log.debug("Start Time of Session: " + new Date(startTime)); //Study Session Star ttimes
-  log.debug("End Time of Session:" +new Date(endTime)); // End time of study session
-  log.debug("Session ID:" + " " + idsOfSession); // id of study session
-  log.debug("Start Time:" + " " + new Date(startTimes)); // all the measurements start times
-  log.debug("End Time:" +" " + new Date(endTimes)); // all the end measurements end times
-
-
-  let queryClient = client.getQueryApi(org);  
-
-  const fluxQuery = ` from(bucket: "WebsiteData") |> range(start: ${startTime}, stop: ${endTime}) |> filter(fn: (r) => r._measurement == "AppChange")`;
-
-  queryClient.queryRows(fluxQuery, {
-    next: (row, tableMeta) => {
-      const tableObject = tableMeta.toObject(row);
-
-      // return the stuff in this tableObject 
-    },
-    error: (error) => {
-      log.error('\nError', error);
-    },
-    complete: () => {
-      log.debug('\nSuccess');
-    }
-  });
-
-
-};
-
-*/
-
-
 const grabTimesForApp = (appName) => {
   return new Promise((resolve, reject) => {
     const allTimes = []; // exact time of point
@@ -281,7 +245,7 @@ const grabTimesForApp = (appName) => {
 // Write into previous study sessions
 const insertStudySessionData = (id, startTime, endTime, duration) =>{
  
-  let writeClientStudy = client.getWriteApi(org, influxBuckets.sessions, 's');
+  let writeClientStudy = influxClient.getWriteApi(org, influxBuckets.sessions, 's');
 
   let studySessionHistory = new Point('studySession')
     .tag('sessionId', id) // ID of study sesssion we are saving
@@ -312,9 +276,8 @@ const insertStudySessionData = (id, startTime, endTime, duration) =>{
 const grabAllPreviousStudySessionIDs = () => {
   return new Promise((resolve, reject) => {
 
-    const prevSessions = [];
-
-    let queryClient = client.getQueryApi(org);
+    const prevSessions = []; 
+    let queryClient = influxClient.getQueryApi(org);
     const timeOfCurrentSession = currentTime.seconds();
     let stringVersion = `-${timeOfCurrentSession.toString()}s`;
 
@@ -344,27 +307,5 @@ const grabAllPreviousStudySessionIDs = () => {
   });
 };
 
-
-// const AllStudySessionProcessing = async () => {
-//   try {
-//     const result = await grabAllPreviousStudySessionIDs();
-    
-//     const idsOfSessions = result.allQueryIds;
-//     const startTimes = result.allStartTimes;
-//     const endTimes = result.allEndTimes;
-
-
-//     const sessionData = {
-//       sessionId: idsOfSessions,
-//       startTimes: startTimes,
-//       endTimes: endTimes
-//     };
-    
-//     return sessionData;
-//   } catch (error) {
-//     log.error(error);
-//     throw error;
-//   }
-// };
 
 module.exports = { appData, SpecificStudySessionProcessing, grabTimesForApp, insertStudySessionData, grabAllPreviousStudySessionIDs, connectToInflux };

@@ -7,7 +7,6 @@ const { currentTime } = require("@influxdata/influxdb-client");
 
 const log = require('../util/logger');
 const { appData, insertStudySessionData } = require("../api_recievers/influxqueries");
-const { stopInfluxDb } = require("../api_recievers/start-influx-db");
 let winApiThread;
 let sessionId;
 let wss;
@@ -99,7 +98,6 @@ const endSession = (event, cleanSession) => {
     }
     sessionId = undefined;
   }
-  stopInfluxDb();
   return;
 };
 

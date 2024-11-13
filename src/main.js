@@ -5,8 +5,9 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 
 const { beginSession, endSession } = require("./study-session/session-control");
 const showErrorPopup = require('./util/error-popup');
-const { startInfluxDb } = require('./api_recievers/start-influx-db');
+const { startInfluxDb, stopInfluxDb } = require('./api_recievers/start-influx-db');
 const log = require('./util/logger');
+const { grabAllPreviousStudySessionIDs } = require('./api_recievers/influxqueries');
 
 //For whatever reason, the electron-store module doesn't support using require, so we have to do this to get i
 const importElectronStore = async () => {
@@ -67,6 +68,18 @@ const createWindow = async () => {
     win.maximize();
     endSession(...args); 
   });
+
+  ipcMain.on("resize-window", (_event, screen) => {
+    if(screen === "start") {
+      win.setSize(1000, 800);
+      win.setMinimumSize(1000, 800);
+    }
+    else if(screen === "timeline") {
+      win.setMinimumSize(1200, 800);
+      win.maximize();
+    }
+  });
+  
   ipcMain.on("attempt-reconnect", async (_event, influxPath, apiKey) => {
     store.set("apiKey", apiKey);
     store.set("influxPath", influxPath);
@@ -89,6 +102,11 @@ const createWindow = async () => {
 
   });
 
+  ipcMain.on('get-prev-sessions', async (event) => { //Lets the frontend create error popups
+    const prevSessionData = await grabAllPreviousStudySessionIDs();
+    event.sender.send('return-prev-sessions', prevSessionData);
+  });
+
   ipcMain.on('error-msg', (_event, msg) => { //Lets the frontend create error popups
     showErrorPopup(msg);
   });
@@ -104,6 +122,7 @@ app.whenReady().then(() => {
 
 app.on("window-all-closed", () => {
   endSession(null, true); //Can always pass in true for cleanup here
+  stopInfluxDb();
   //If the session isn't active, it doesn't do anything anyways
   if (process.platform !== "darwin") {
     app.quit();

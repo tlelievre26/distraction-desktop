@@ -33,6 +33,7 @@ const startInfluxDb = async (influxPath, apiKey) => {
   
     try {
       influxProcess = await spawnInfluxProcess(absPath);
+      log.debug("Successfully spawned influx process with ID", influxProcess.pid);
     }
     catch(err) {
       log.error("Failed to start to Influx DB process");
