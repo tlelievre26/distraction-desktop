@@ -1,29 +1,87 @@
 require('dotenv').config();
 
 const { currentTime, InfluxDB, Point } = require("@influxdata/influxdb-client");
+const { BucketsAPI, OrgsAPI } = require('@influxdata/influxdb-client-apis');
 
 const log = require('../util/logger');
 
 let influxClient;
 let org = process.env.INFLUX_ORG ?? "Distraction";
-let bucket = process.env.INFLUX_BUCKET ?? "WebsiteData";
-let bucketStudySession = process.env.INFLUX_BUCKET_2 ?? "StudySessionData";
 let write = process.env.DB_WRITE ?? 'true';
 //Track the name of the previously written app, just to prevent accidental duplicate events
 let prevAppName = undefined;
 
-//Moved this into it's own function so we initiate the connection on startup rather than at the start of a session
-const connectToInflux = (apiKey) => {
-  const url = `http://localhost:${process.env.DB_PORT ?? 8086}`;
+const influxBuckets = Object.freeze({ //Acts like an enum for our buckets
+  apps: "WebsiteData",
+  sessions: "StudySessionData",
+  tasks: "TaskData",
+  metrics: "SessionMetricsData"
+});
+
+const checkExistingBuckets = async (bucketAPI) => {
+  //Kill 2 birds with one stone here, this endpoint makes sure the auth key is right and that the DB is running
+  //We also need to check which buckets we have anyways, so it's convenient to do both at once
   try {
-    influxClient = new InfluxDB({url, apiKey});
-    return true;
+    const currBuckets = await bucketAPI.getBuckets();
+    return currBuckets.buckets.map((bucket) => bucket.name);
   }
   catch (error) {
-    log.error("Failed to connect to InfluxDB");
+    //If the DB hasn't booted up yet this throws an error that we ignore
+    //If it returns but says we don't have access then we give the user an error saying the API key is invalid
+    if(error.statusCode === 401) {
+      log.error(error);
+      return null;
+    }
     throw error;
   }
+};
 
+const initBuckets = async (currBuckets, bucketAPI) => {
+  const orgsAPI = new OrgsAPI(influxClient);
+  const organizations = await orgsAPI.getOrgs({org});
+  const orgID = organizations.orgs[0].id;
+  const ourBuckets = Object.values(influxBuckets);
+  ourBuckets.forEach(async (bucket) => {
+    if (!currBuckets.includes(bucket)) {
+      const newBucket = await bucketAPI.postBuckets({body: {orgID, name: bucket}});
+      log.debug("Successfully created new bucket ", newBucket);
+    }
+  });
+};
+
+//Moved this into it's own function so we initiate the connection on startup rather than at the start of a session
+const connectToInflux = async (apiKey) => {
+  const url = `http://localhost:${process.env.DB_PORT ?? 8086}`;
+  influxClient = new InfluxDB({url, token: apiKey});
+  const bucketAPI = new BucketsAPI(influxClient);
+  let currBuckets;
+  //Thx chatgpt for this one
+  //Basically pings the server until it's running to check the API key works
+  //Tries to connect 10 times with a 1 sec delay between attempts
+  for (let attempt = 1; attempt <= 10; attempt++) {
+
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      currBuckets = await checkExistingBuckets(bucketAPI);
+      if (currBuckets !== null)  {
+        initBuckets(currBuckets, bucketAPI);
+        return true; // Connection successful
+      }
+      else {
+        log.debug(`Invalid API Key`);
+        return false;
+      }
+    }
+    catch {
+      //If the DB isn't running yet
+      log.debug(`Failed to connect to InfluxDB after ${attempt} tries, retrying`);
+    }
+
+    // Wait before the next retry
+    // eslint-disable-next-line no-await-in-loop
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  }
+  return false; // InfluxDB didn't become ready within the retry limit
 };
 
 //Write Function
@@ -35,7 +93,7 @@ const appData = async (source, appName, currentSession) =>{
 
   if(write === 'true' && (prevAppName === undefined || prevAppName !== appName)) {
     log.debug("Writing to db");
-    let writeClient = influxClient.getWriteApi(org, bucket, 's');
+    let writeClient = influxClient.getWriteApi(org, influxBuckets.app, 's');
 
     let app = new Point('AppChange')
       .stringField('AppName',appName)
@@ -223,7 +281,7 @@ const grabTimesForApp = (appName) => {
 // Write into previous study sessions
 const insertStudySessionData = (id, startTime, endTime, duration) =>{
  
-  let writeClientStudy = client.getWriteApi(org, bucketStudySession, 's');
+  let writeClientStudy = client.getWriteApi(org, influxBuckets.sessions, 's');
 
   let studySessionHistory = new Point('studySession')
     .tag('sessionId', id) // ID of study sesssion we are saving
@@ -309,7 +367,4 @@ const grabAllPreviousStudySessionIDs = () => {
 //   }
 // };
 
-module.exports = { appData, SpecificStudySessionProcessing, grabTimesForApp, insertStudySessionData, grabAllPreviousStudySessionIDs};
-// appData("Windows","HolyCow", 8);
-// SpecificStudySessionProcessing("8");
-module.exports = { appData, SpecificStudySessionProcessing, grabTimesForApp, connectToInflux };
+module.exports = { appData, SpecificStudySessionProcessing, grabTimesForApp, insertStudySessionData, grabAllPreviousStudySessionIDs, connectToInflux };
