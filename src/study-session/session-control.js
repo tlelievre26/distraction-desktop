@@ -7,7 +7,7 @@ const { v4: uuidv4 } = require('uuid');
 const log = require('../util/logger');
 const { appData } = require("../api_recievers/influxqueries");
 let winApiThread;
-let sessionId = null;
+let sessionId;
 let wss;
 let startTime;
 let timeLeft;
@@ -131,8 +131,5 @@ const closeWebsocket = () => {
   connected = false;
 };
 
-const getSessionId = () => {
-  return sessionId;
-};
 
-module.exports = {beginSession, endSession, getSessionId};
+module.exports = {beginSession, endSession};

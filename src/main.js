@@ -28,7 +28,7 @@ const createWindow = () => {
   ipcMain.on("begin-session", (...args) => {
     win.setMinimumSize(800, 600);
     win.setSize(800, 600);
-    sessionId = beginSession(...args);
+    beginSession(...args);
   });
   ipcMain.on("end-session", (...args) => {
     win.setMinimumSize(1200, 800);
