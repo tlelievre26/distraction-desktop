@@ -7,10 +7,9 @@ const AppTimelineBlock = require("./AppTimelineBlock");
 require("./chunkMetricStyles.css");
 
 const ChunkMetrics = () => {
-  const { currChunkData, setCurrChunkData, currChunkId, setCurrChunkId, chunkSize } = useSessionMetrics();
+  const { currChunkData, setCurrChunkData, currChunkId, setCurrChunkId } = useSessionMetrics();
   const [ currZoom, setCurrZoom ] = useState(1);
   const [ focusedApp, setFocusedApp ] =  useState('');
-  //   const 
   
   const closeChunkScreen = () => {
     setCurrChunkId(-1);
@@ -24,12 +23,11 @@ const ChunkMetrics = () => {
   const zoomOut = () => {
     setCurrZoom((prevZoom) => Math.max(1, prevZoom - .5));
   };
-  
+
   
   let blocks;
   if(currChunkData) {
-    console.log("Generating TL blocks for data", currChunkData);
-    blocks = currChunkData.map((app) => <AppTimelineBlock timeSpent={app.timeSpent} name={app.name}/>);
+    blocks = currChunkData.map((app) => <AppTimelineBlock timeSpent={app.timeSpent} name={app.name} zoom={currZoom} setFocusedApp={setFocusedApp}/>);
   }
 
 
@@ -47,11 +45,7 @@ const ChunkMetrics = () => {
         </div>
 
         <div className="app-timeline-container">
-          <div className="app-timeline" style={{
-            transform: `scaleX(${currZoom})`,
-            transformOrigin: 'left',
-            transition: 'transform 0.3s ease'
-          }}>
+          <div className="app-timeline">
             {blocks}
           </div>
         </div>

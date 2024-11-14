@@ -1,4 +1,6 @@
 const React = require("react");
+
+const { useSessionMetrics } = require("../SessionMetricsContext");
 const { useState } = React;
 require("./chunkMetricStyles.css");
 
@@ -25,7 +27,11 @@ const stringToColor = (str) => {
 };
 
 const AppTimelineBlock = ({timeSpent, name, zoom}) => {
-  const dynWidth = timeSpent >= 0 ? `${timeSpent}px` : '1px';
+  const { chunkSize } = useSessionMetrics();
+  
+
+  const dynWidth = Math.ceil(1200 * (timeSpent / (chunkSize * 60))) * zoom;
+
   const [showInfo, setShowInfo] = useState(false); // State to control bubble visibility
   const handleMouseEnter = () => {
     setShowInfo(true); // Show bubble on hover
@@ -34,20 +40,21 @@ const AppTimelineBlock = ({timeSpent, name, zoom}) => {
   const handleMouseLeave = () => {
     setShowInfo(false); // Hide bubble when mouse leaves
   };
-
+  
+  if(dynWidth <= 2) {
+    return null;
+  }
 
   return (
-    <>
+    <div style={{width:`${dynWidth}px`}}>
       {/* Chat Bubble */}
       {showInfo && (
         <div
           style={{
-            position: 'absolute',
-            bottom: '100%', // Positions the bubble above the element
+            padding: '10px',
+            position: 'relative',
             left: '50%',
             transform: 'translateX(-50%)',
-            marginBottom: '8px',
-            padding: '10px',
             backgroundColor: '#f9f9f9',
             border: '1px solid #ccc',
             borderRadius: '8px',
@@ -58,29 +65,29 @@ const AppTimelineBlock = ({timeSpent, name, zoom}) => {
             width: '200px'
           }}
         >
-          <div>This is a chat bubble!</div>
-          {/* Arrow/triangle below the chat bubble */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: '-8px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: '0',
-              height: '0',
-              borderLeft: '8px solid transparent',
-              borderRight: '8px solid transparent',
-              borderTop: '8px solid #f9f9f9' // Match background color of bubble
-            }}
-          ></div>
+          {name}
         </div>
       )}
-      <div className="chunk"         
+      {showInfo && <div
+        style={{
+          position: 'relative',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '0',
+          height: '0',
+          borderLeft: '8px solid transparent',
+          borderRight: '8px solid transparent',
+          borderTop: '8px solid #e3e1e1' // Match background color of bubble
+        }}
+      ></div>}
+      <div className="app-timeline-chunk"         
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        style={{width:dynWidth, backgroundColor: stringToColor(name)}}>
+        style={{
+          backgroundColor: stringToColor(name) 
+        }}>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -66,8 +66,9 @@ const createWindow = async () => {
   });
 
   ipcMain.on("end-session", (...args) => {
-    win.setMinimumSize(1200, 800);
     win.maximize();
+    const [width, height] = win.getSize();
+    win.setMinimumSize(width, height);
     endSession(...args); 
   });
 
