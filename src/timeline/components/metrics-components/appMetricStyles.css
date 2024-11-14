@@ -1,0 +1,27 @@
+.app-metrics-container {
+    height: 54%;      /* 65% of the viewport height */
+    width: 100%;      /* Full viewport width */
+    padding: 0px 25px;
+    display: flex;
+    justify-content: center;
+}
+
+.app-metrics-box {
+    border: 1px solid black;
+    height: 100%;
+    width: 100%;
+    min-width: 600px;
+    max-width: 800px;
+    padding: 5px 10px;
+    -webkit-text-fill-color: black;
+    font-size: large;
+    display: flex;
+}
+
+.metric-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    height: 20%;
+}

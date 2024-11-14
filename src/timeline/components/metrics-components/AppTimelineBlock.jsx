@@ -7,28 +7,31 @@ require("./chunkMetricStyles.css");
 //Asked ChatGPT for a function to hash an appName into a color codeand this is what it gave me
 const stringToColor = (str) => {
   let hash = 0;
+  // Generate a simple hash based on the input string
   for (let i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash); // Simple hash function
+    hash = str.charCodeAt(i) + ((hash << 5) - hash); // Bitwise operations for hashing
+    hash = hash & hash; // Ensure hash remains a 32-bit integer
   }
-  
-  // Generate RGB values from the hash, but make sure they're in the pastel range
+
+  // Generate RGB values from the hash
   const r = (hash >> 16) & 0xFF;
   const g = (hash >> 8) & 0xFF;
   const b = hash & 0xFF;
 
-  // Pastel colors: Mix the color with white by averaging the color values with 255
-  const pastelR = Math.min(255, Math.floor((r + 255) / 2));
-  const pastelG = Math.min(255, Math.floor((g + 255) / 2));
-  const pastelB = Math.min(255, Math.floor((b + 255) / 2));
+  // Adjust the RGB values to create more diverse colors
+  // Instead of mixing with white completely, we reduce it for a broader range
+  const vibrantFactor = 0.7; // Controls vibrancy (1.0 for no pastels, 0.5 for full pastels)
+  const vibrantR = Math.floor(r * vibrantFactor + 255 * (1 - vibrantFactor));
+  const vibrantG = Math.floor(g * vibrantFactor + 255 * (1 - vibrantFactor));
+  const vibrantB = Math.floor(b * vibrantFactor + 255 * (1 - vibrantFactor));
 
-  // Convert to hex and return the color
-  const color = `#${pastelR.toString(16).padStart(2, '0')}${pastelG.toString(16).padStart(2, '0')}${pastelB.toString(16).padStart(2, '0')}`;
+  // Convert to a hex string and return
+  const color = `#${vibrantR.toString(16).padStart(2, '0')}${vibrantG.toString(16).padStart(2, '0')}${vibrantB.toString(16).padStart(2, '0')}`;
   return color;
 };
 
-const AppTimelineBlock = ({timeSpent, name, zoom}) => {
+const AppTimelineBlock = ({timeSpent, name, zoom, focusedApp, setFocusedApp }) => {
   const { chunkSize } = useSessionMetrics();
-  
 
   const dynWidth = Math.ceil(1200 * (timeSpent / (chunkSize * 60))) * zoom;
 
@@ -39,6 +42,15 @@ const AppTimelineBlock = ({timeSpent, name, zoom}) => {
 
   const handleMouseLeave = () => {
     setShowInfo(false); // Hide bubble when mouse leaves
+  };
+
+  const selectApp = () => {
+    setFocusedApp(name);
+  };
+
+  const selectedStyle = { //When this chunk is selected keep it darker
+    backgroundColor: stringToColor(name),
+    opacity: focusedApp !== '' && focusedApp !== name && 0.2
   };
   
   if(dynWidth <= 2) {
@@ -83,9 +95,8 @@ const AppTimelineBlock = ({timeSpent, name, zoom}) => {
       <div className="app-timeline-chunk"         
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        style={{
-          backgroundColor: stringToColor(name) 
-        }}>
+        onClick={selectApp}
+        style={selectedStyle}>
       </div>
     </div>
   );

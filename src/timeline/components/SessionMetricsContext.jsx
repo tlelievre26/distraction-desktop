@@ -25,6 +25,7 @@ const SessionMetricsProvider = ({children}) => {
     mostUsedApps: []
   });
   const {numCompletedTasks} = useTasks();
+  const [appSpecificMetrics, setAppSpecificMetrics] = useState({});
   const [currChunkId, setCurrChunkId] = useState(-1);
   const [currChunkData, setCurrChunkData] = useState(null); // Stores the data in the current chunk
   //Null when no chunk is selected
@@ -47,6 +48,10 @@ const SessionMetricsProvider = ({children}) => {
         //Also would need to get sessionMetadata
         //Right now calcMetrics just returns a sample
         setSessionMetrics(calcMetrics(data, duration, numCompletedTasks));
+        setChunkSize(30);
+        setCurrChunkId(-1);
+        setCurrChunkData(null);
+        setAppSpecificMetrics({});
       } catch (error) {
         console.error("Error fetching session data:", error);
       }
@@ -65,6 +70,7 @@ const SessionMetricsProvider = ({children}) => {
     setSessionId, 
     sessionData, 
     sessionMetrics, 
+    appSpecificMetrics,
     currChunkId, 
     setCurrChunkId, 
     currChunkData, 

@@ -3,6 +3,7 @@ const { useState } = React;
 
 const { useSessionMetrics } = require("../SessionMetricsContext");
 const AppTimelineBlock = require("./AppTimelineBlock");
+const AppMetricsScreen = require("./AppMetricsScreen");
 
 require("./chunkMetricStyles.css");
 
@@ -11,23 +12,38 @@ const ChunkMetrics = () => {
   const [ currZoom, setCurrZoom ] = useState(1);
   const [ focusedApp, setFocusedApp ] =  useState('');
   
-  const closeChunkScreen = () => {
-    setCurrChunkId(-1);
-    setCurrChunkData(null);
-  };
-  
-  const zoomIn = () => {
-    setCurrZoom((prevZoom) => Math.min(5, prevZoom + .5));
-  };
 
-  const zoomOut = () => {
-    setCurrZoom((prevZoom) => Math.max(1, prevZoom - .5));
-  };
+  const ChunkScreenButtons = () => { //Only defining this in here so I don't have to pass in a ton of state variables
+    const closeChunkScreen = () => {
+      setCurrChunkId(-1);
+      setCurrChunkData(null);
+      setFocusedApp('');
+    };
+        
+    const zoomIn = () => {
+      setCurrZoom((prevZoom) => Math.min(5, prevZoom + .5));
+    };
+      
+    const zoomOut = () => {
+      setCurrZoom((prevZoom) => Math.max(1, prevZoom - .5));
+    };
+    
+    if(focusedApp !== '') {
+      return null;
+    }
 
+    return (         
+      <div className="chunk-buttons">
+        <button className="close-chunk-metrics" onClick={closeChunkScreen}>X</button>
+        <button className="zoom-metrics" onClick={zoomIn}>+</button>
+        <button className="zoom-metrics" onClick={zoomOut}>-</button>
+      </div>
+    );
+  };
   
   let blocks;
   if(currChunkData) {
-    blocks = currChunkData.map((app) => <AppTimelineBlock timeSpent={app.timeSpent} name={app.name} zoom={currZoom} setFocusedApp={setFocusedApp}/>);
+    blocks = currChunkData.map((app) => <AppTimelineBlock timeSpent={app.timeSpent} name={app.name} zoom={currZoom} focusedApp={focusedApp} setFocusedApp={setFocusedApp}/>);
   }
 
 
@@ -38,12 +54,8 @@ const ChunkMetrics = () => {
   return (
     <div className="metrics-container">
       <div className="chunk-screen-layout">
-        <div className="chunk-buttons">
-          <button className="close-chunk-metrics" onClick={closeChunkScreen}>X</button>
-          <button className="zoom-metrics" onClick={zoomIn}>+</button>
-          <button className="zoom-metrics" onClick={zoomOut}>-</button>
-        </div>
-
+        <ChunkScreenButtons/>
+        <AppMetricsScreen focusedApp={focusedApp} setFocusedApp={setFocusedApp}/>
         <div className="app-timeline-container">
           <div className="app-timeline">
             {blocks}
