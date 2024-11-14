@@ -76,7 +76,6 @@ const endSession = (event, cleanSession) => {
       const webContents = event.sender;
       webContents.send('backend-end-session', startTime - timeLeft, startSessionTime, endSessionTime);
     }
-
     //End winAPI worker
     winApiThread.postMessage('end-session');
     winApiThread.on('exit', (code) => {
@@ -146,4 +145,5 @@ const closeWebsocket = () => {
   connected = false;
 };
 
-module.exports = {beginSession, endSession };
+
+module.exports = {beginSession, endSession};
