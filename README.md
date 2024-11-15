@@ -42,7 +42,7 @@ If you have an issue, please open a request on the “Issues” tab of the repos
 
 # User Manual
 
-See our user manual here {link}
+See our user manual [here](https://github.com/tlelievre26/distraction-desktop/blob/documentation/USERMANUAL.md)
 
 # Licensing
 
