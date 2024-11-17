@@ -2,7 +2,7 @@
 const React = require("react");
 const { useLocation } = require("react-router-dom");
 
-const { calcMetrics, chunkData, calcAppSpecificMetrics } = require("../build-timeline");
+const { calcMetrics, chunkData } = require("../build-timeline");
 const { useContext, createContext, useState, useEffect } = React;
 const data = require("../two_hr_session.json"); //sample data
 const {convertTime, getTimeSpent} = require("../calc-time.js");
@@ -28,7 +28,7 @@ const SessionMetricsProvider = ({children}) => {
   //Once the values get updated here, they automatically get shared with other elements
   useEffect(() => {
     const fetchData = async () => {
-
+      
       try {
         //Returns the session data
         // const data = await SpecificStudySessionProcessing(sessionId);

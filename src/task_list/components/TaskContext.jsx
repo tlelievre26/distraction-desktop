@@ -4,6 +4,8 @@ const { useContext, createContext, useState } = React;
 // Create the context
 const TaskContext = createContext();
 
+const numCompletedTasks = 0;
+
 // Create a provider component
 const TaskProvider = ({ children }) => {
   const [tasks, setTasks] = useState([{
@@ -15,7 +17,9 @@ const TaskProvider = ({ children }) => {
   const [screen, setScreen] = useState('start');
 
   const removeCompletedTasks = () => {
-    setTasks((prevTasks) => prevTasks.filter(task => !task.completed));
+    const filteredTasks = prevTasks.filter(task => !task.completed);
+    numCompletedTasks = prevTasks.length - filteredTasks.length;
+    setTasks(filteredTasks);
   };
 
   return (
@@ -25,7 +29,11 @@ const TaskProvider = ({ children }) => {
   );
 };
 
+const getCompletedTasks = () => {
+  return numCompletedTasks;
+};
+
 // Export the context for use in other components
 const useTasks = () => useContext(TaskContext);
 
-module.exports = { TaskProvider, useTasks };
+module.exports = { TaskProvider, useTasks, getCompletedTasks };
