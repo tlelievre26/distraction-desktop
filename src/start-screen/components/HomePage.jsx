@@ -7,19 +7,22 @@ const { PrevSessionProvider } = require("../../timeline/components/PrevSessionCo
 const TaskList = require("../../task_list/components/TaskList");
 const StartPrevSessionsMenu = require("./StartPrevSessionsMenu");
 const SettingsButton = require("./SettingsButton");
+const {calcMetrics} = require("../../timeline/build-timeline.js");
+const data = require("../../timeline/two_hr_session.json"); //sample data
+const {convertTime, getTimeSpent} = require("../../timeline/calc-time.js");
 
 require("./../../timeline/components/navbarStyles.css");
 
 const HomePage = () => {
-  
-
   const [filepath, setFilepath] = useState(localStorage.getItem('influxFilepath') || '');
   const [apiKey, setApiKey] = useState(localStorage.getItem('influxApiKey') || '');
   //Tracks if we've successfully connected to Influx
   const [dbSuccess, setDbSuccess] = useState(sessionStorage.getItem('db-status') || false);
 
   useEffect(() => {
-
+    convertTime(data);
+    getTimeSpent(data);
+    calcMetrics(data);
     ipcRenderer.on('db-conn-success', (_event) => {
       sessionStorage.setItem('db-status', true);
       setDbSuccess(true);
