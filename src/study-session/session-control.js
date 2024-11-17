@@ -3,20 +3,23 @@ const path = require('path');
 
 const { WebSocketServer } = require('ws');
 const { v4: uuidv4 } = require('uuid');
+const { currentTime } = require("@influxdata/influxdb-client");
 
 const log = require('../util/logger');
-const { appData } = require("../api_recievers/influxqueries");
+const { appData, insertStudySessionData } = require("../api_recievers/influxqueries");
 let winApiThread;
 let sessionId;
 let wss;
 let startTime;
 let timeLeft;
 let timerInterval;
+let startSessionTime;
 
 let connected = false; //Represents if the Chrome Ext has connected to the WSS
 
 const beginSession = (event, duration) => {
   createWebsocket(event);
+  startSessionTime = (currentTime.seconds());
   startTime = duration;
   timeLeft = startTime;
   sessionId = uuidv4();
@@ -26,10 +29,18 @@ const beginSession = (event, duration) => {
 
   log.debug("Beginning session with ID " + sessionId);
   winApiThread = new Worker(path.join(__dirname, "../collector/focus-event.js"));
-  winApiThread.on('message', async (windowTitle) => {
-    log.debug('Active window title:', windowTitle);
-    if(!connected ||(connected && !windowTitle.includes("Google Chrome"))) { //Don't want to register switching to Chrome if the connection is sending data
-      await appData("Windows", windowTitle, sessionId);
+  winApiThread.on('message', async (msg) => {
+    if(msg.hasOwnProperty("debug")) {
+      log.debug(msg.debug);
+    }
+    else if(msg.hasOwnProperty("error")) {
+      log.error(msg.error);
+    }
+    else {
+      log.debug('Active window title:', msg.windowTitle);
+      if(!connected ||(connected && !msg.windowTitle.includes("Google Chrome"))) { //Don't want to register switching to Chrome if the connection is sending data
+        await appData("Windows", msg.windowTitle, sessionId);
+      }
     }
 
   });
@@ -52,6 +63,8 @@ const beginSession = (event, duration) => {
 
 const endSession = (event, cleanSession) => {
   if(sessionId !== undefined) {
+    const endSessionTime = currentTime.seconds();
+    const duration = endSessionTime - startSessionTime;
     
     clearInterval(timerInterval); //End the countdown timer
     timerInterval = undefined;
@@ -59,9 +72,8 @@ const endSession = (event, cleanSession) => {
 
     if(event !== null) {
       const webContents = event.sender;
-      webContents.send('backend-end-session', startTime - timeLeft);
+      webContents.send('backend-end-session', startTime - timeLeft, startSessionTime, endSessionTime);
     }
-
     //End winAPI worker
     winApiThread.postMessage('end-session');
     winApiThread.on('exit', (code) => {
@@ -70,14 +82,21 @@ const endSession = (event, cleanSession) => {
 
     closeWebsocket(); //Close WSS
 
-    sessionId = undefined;
     if(cleanSession) {
       //TODO:
       //We should prob have a function to clean all records with a certain session ID in case of failure
       //Don't want to leave a half-finished session in the DB
       //Also would just be useful for removing old timelines
       log.debug("Session ended unexpectedly, cleaning up data");
+      
     }
+
+    else{
+
+      // function call to write study session id in new bucket 
+      insertStudySessionData(sessionId, startSessionTime, endSessionTime, duration);
+    }
+    sessionId = undefined;
   }
   return;
 };
@@ -124,4 +143,5 @@ const closeWebsocket = () => {
   connected = false;
 };
 
-module.exports = {beginSession, endSession };
+
+module.exports = {beginSession, endSession};

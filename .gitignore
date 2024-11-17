@@ -14,8 +14,6 @@ playwright/.cache/
 dist/
 build/
 
-.vscode/
-
 .env
 
 *.zip

@@ -10,13 +10,20 @@ const { useTasks } = require("./TaskContext");
 const TaskList = () => {
   const { tasks, setTasks } = useTasks();
 
-  toggleCompleted =(index)=> {
+  toggleCompleted = (index) => {
     const newTasks = [...tasks];
     newTasks[index].completed = !newTasks[index].completed;
+    newTasks[index].currentTask = false;
+    if (index !== newTasks.length - 1) {
+      const currentTask = newTasks[index];
+      newTasks.splice(index, 1);
+      newTasks.push(currentTask);
+    }
+
     setTasks(newTasks);
   };
 
-  addTask = (taskName)=> {
+  addTask = (taskName) => {
     const newTask = {
       id: uuidv4(),
       text: taskName,
@@ -30,9 +37,22 @@ const TaskList = () => {
     setTasks(tasks.filter(task => task.id !== id));
   };
 
-  setCurrentTask = (index)=> {
+  setCurrentTask = (index) => {
     const newTasks = [...tasks];
     newTasks[index].currentTask = !newTasks[index].currentTask;
+    newTasks[index].completed = false;
+    newTasks.map((task, i)=> {
+      if(i !== index && newTasks[i].currentTask === true) {
+        newTasks[i].currentTask = false;
+      }
+      return task;
+    });
+
+    if (index !== 0) {
+      const currentTask = newTasks[index];
+      newTasks.splice(index, 1);
+      newTasks.unshift(currentTask);
+    }
     setTasks(newTasks);
   };
 

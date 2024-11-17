@@ -6,14 +6,15 @@ const ChromeWarning = require("./ChromeWarning");
 const EndSessionButton = require("./EndSessionButton.jsx");
 const CountdownTimer = require("./CountdownTimer.jsx");
 const TaskList = require("../../task_list/components/TaskList.jsx");
+const formatDate = require("../../util/format-date.js");
 require("./../../timeline/components/navbarStyles.css");
 
 const SessionScreen = () => {
   const navigation = useNavigate();
   const [sessionId, setSessionId] = React.useState('undefined');
-  const goToTimeline = (duration) => {
+  const goToTimeline = (duration, name) => {
     navigation("/timeline", {
-      state: { sessionId, duration }
+      state: { sessionId, duration, name }
     });
   };
 
@@ -23,9 +24,9 @@ const SessionScreen = () => {
       setSessionId(newSessionId);
     });
 
-    ipcRenderer.on('backend-end-session', (_event, duration) => {
-      console.log("Recieved signal to end study session with duration", duration);
-      goToTimeline(duration);
+    ipcRenderer.on('backend-end-session', (_event, duration, startTime, endTime) => {
+      const name = formatDate(startTime, endTime);
+      goToTimeline(duration, name);
     });
 
     // Cleanup listener on unmount

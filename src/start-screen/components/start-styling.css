@@ -49,3 +49,23 @@ input::-webkit-inner-spin-button {
   margin-bottom: 5px !important;
   border: 2px solid rgb(196, 201, 215) !important;
 }
+
+.settins-button {
+  margin-right: 50px;
+}
+
+.settings-menu {
+  width: max-content;
+}
+
+.settings-save-button {
+  margin-left: 5px;
+}
+
+.form-group {
+  margin-top: 10px;
+}
+
+.settings-form-control {
+  width: 400px !important;
+}

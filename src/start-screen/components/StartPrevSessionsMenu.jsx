@@ -2,6 +2,7 @@
 const React = require("react");
 const { useNavigate } = require("react-router-dom");
 const { Dropdown } = require("react-bootstrap");
+const { ipcRenderer } = require("electron");
 
 const { usePrevSession } = require("./../../timeline/components/PrevSessionContext");
 
@@ -14,17 +15,18 @@ const StartPrevSessionsMenu = () => {
   const navigation = useNavigate();
 
 
-  const loadPrevSession = (duration, sessionId) => {
+  const loadPrevSession = (duration, name, sessionId) => {
+    ipcRenderer.send("resize-window", 'timeline');
     navigation("/timeline", {
-      state: { duration, sessionId }
+      state: { duration, name, sessionId }
     });
   };
 
   const { prevSessionIds } = usePrevSession();
 
   return (
-    <div className="navbar-button p-2">
-      <Dropdown>
+    <div className="navbar-button">
+      <Dropdown className="navbar-button">
         <Dropdown.Toggle variant="info" id="dropdown-basic">
           Previous Sessions
         </Dropdown.Toggle>
@@ -33,7 +35,8 @@ const StartPrevSessionsMenu = () => {
             <Dropdown.Item
               as="button"
               key={index}
-              onClick={() => loadPrevSession(session.duration, session.sessionId)}
+              onClick={() => loadPrevSession(session.duration, session.name, session.sessionId)}
+              className="prev-session-item"
             >
               {session.name}
             </Dropdown.Item>

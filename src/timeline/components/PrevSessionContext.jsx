@@ -1,19 +1,35 @@
 const React = require("react");
-const { useContext, createContext, useState } = React;
+const { useContext, createContext, useState, useEffect } = React;
+const { ipcRenderer } = require("electron");
 
-// Create the context
+const formatDate = require("../../util/format-date");
+
+
 const PrevSessionContext = createContext();
 
-// Create a provider component
-const PrevSessionProvider = ({children}) => {
-  const prevSessions = [
-    { name: "MM/DD/YY HH:MM to HH:MM", sessionId: 0, duration: 10000 },
-    { name: "MM/DD/YY HH:MM to HH:MM", sessionId: 1, duration: 10000 }
-  ];
+const PrevSessionProvider = ({ children, readyToLoad = true }) => {
+  const [prevSessionIds, setPrevSessionIds] = useState([]);
+
+  useEffect(() => {
   
-  //REPLACE THIS ARRAY with the data for each study session as queries from the database
+    // const fetchSessionMetadata = async () => {
+    //   const sessionMetadata = await grabAllPreviousStudySessionIDs();
+    ipcRenderer.on('return-prev-sessions', (_event, sessionMetadata) => {
+      const prevSessions = sessionMetadata.map((prevSession) => ({
+        name: formatDate(prevSession.startTime, prevSession.endTime), sessionId: prevSession.sessionId, duration: prevSession.duration
+      }));
+      setPrevSessionIds(prevSessions);
+    });
   
-  const [prevSessionIds, setPrevSessionIds] = useState(prevSessions);
+    if(readyToLoad) { //Only try and access prev sessions when we've successfully connected to Influx
+      ipcRenderer.send('get-prev-sessions');
+      // fetchSessionMetadata();
+    }
+
+    return () => {
+      ipcRenderer.removeAllListeners('return-prev-sessions');
+    };
+  }, [readyToLoad]); 
 
   return (
     <PrevSessionContext.Provider value={{ prevSessionIds, setPrevSessionIds }}>

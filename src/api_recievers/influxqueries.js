@@ -1,22 +1,88 @@
-// const { time } = require("console");
-// const { start } = require("repl");
 require('dotenv').config();
 
 const { currentTime, InfluxDB, Point } = require("@influxdata/influxdb-client");
+const { BucketsAPI, OrgsAPI } = require('@influxdata/influxdb-client-apis');
 
 const log = require('../util/logger');
 
-
-const token = process.env.INFLUXDB_TOKEN;
-const url = `http://localhost:${process.env.DB_PORT}`;
-const client = new InfluxDB({url, token});
-let org = process.env.INFLUX_ORG;
-let bucket = process.env.INFLUX_BUCKET;
-log.debug(process.env.DB_WRITE);
-
-
+let influxClient;
+let org = process.env.INFLUX_ORG ?? "Distraction";
+let write = process.env.DB_WRITE ?? 'true';
 //Track the name of the previously written app, just to prevent accidental duplicate events
 let prevAppName = undefined;
+
+const influxBuckets = Object.freeze({ //Acts like an enum for our buckets
+  apps: "WebsiteData",
+  sessions: "StudySessionData",
+  tasks: "TaskData",
+  metrics: "SessionMetricsData"
+});
+
+const checkExistingBuckets = async (bucketAPI) => {
+  //Kill 2 birds with one stone here, this endpoint makes sure the auth key is right and that the DB is running
+  //We also need to check which buckets we have anyways, so it's convenient to do both at once
+  try {
+    const currBuckets = await bucketAPI.getBuckets();
+    return currBuckets.buckets.map((bucket) => bucket.name);
+  }
+  catch (error) {
+    //If the DB hasn't booted up yet this throws an error that we ignore
+    //If it returns but says we don't have access then we give the user an error saying the API key is invalid
+    if(error.statusCode === 401) {
+      log.error(error);
+      return null;
+    }
+    throw error;
+  }
+};
+
+const initBuckets = async (currBuckets, bucketAPI) => {
+  const orgsAPI = new OrgsAPI(influxClient);
+  const organizations = await orgsAPI.getOrgs({org});
+  const orgID = organizations.orgs[0].id;
+  const ourBuckets = Object.values(influxBuckets);
+  ourBuckets.forEach(async (bucket) => {
+    if (!currBuckets.includes(bucket)) {
+      const newBucket = await bucketAPI.postBuckets({body: {orgID, name: bucket}});
+      log.debug("Successfully created new bucket ", newBucket);
+    }
+  });
+};
+
+//Moved this into it's own function so we initiate the connection on startup rather than at the start of a session
+const connectToInflux = async (apiKey) => {
+  const url = `http://localhost:${process.env.DB_PORT ?? 8086}`;
+  influxClient = new InfluxDB({url, token: apiKey});
+  const bucketAPI = new BucketsAPI(influxClient);
+  let currBuckets;
+  //Thx chatgpt for this one
+  //Basically pings the server until it's running to check the API key works
+  //Tries to connect 10 times with a 1 sec delay between attempts
+  for (let attempt = 1; attempt <= 10; attempt++) {
+
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      currBuckets = await checkExistingBuckets(bucketAPI);
+      if (currBuckets !== null)  {
+        initBuckets(currBuckets, bucketAPI);
+        return true; // Connection successful
+      }
+      else {
+        log.debug(`Invalid API Key`);
+        return false;
+      }
+    }
+    catch {
+      //If the DB isn't running yet
+      log.debug(`Failed to connect to InfluxDB after ${attempt} tries, retrying`);
+    }
+
+    // Wait before the next retry
+    // eslint-disable-next-line no-await-in-loop
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  }
+  return false; // InfluxDB didn't become ready within the retry limit
+};
 
 //Write Function
 //Source is from Chrome API or OS 
@@ -25,9 +91,9 @@ let prevAppName = undefined;
 //Inputs are Strings
 const appData = async (source, appName, currentSession) =>{
 
-  if(process.env.DB_WRITE === 'true' && (prevAppName === undefined || prevAppName !== appName)) {
+  if(write === 'true' && (prevAppName === undefined || prevAppName !== appName)) {
     log.debug("Writing to db");
-    let writeClient = client.getWriteApi(org, bucket, 's');
+    let writeClient = influxClient.getWriteApi(org, influxBuckets.apps, 's');
 
     let app = new Point('AppChange')
       .stringField('AppName',appName)
@@ -69,7 +135,7 @@ const grabTimesForStudySession = (querySessionID) => {
 
     // Get the current time
     const timeOfCurrentSession = currentTime.seconds();
-    let queryClient = client.getQueryApi(org);
+    let queryClient = influxClient.getQueryApi(org);
     let stringVersion = `-${timeOfCurrentSession.toString()}s`;
 
     // Construct the Flux query with the filter for the specific querySessionID
@@ -135,42 +201,6 @@ const SpecificStudySessionProcessing = async (querySessionid) => {
 };
 
 
-/*const SpecificStudySession = async (startTime, endTime, idsOfSession, startTimes, endTimes) =>{
-
-  timeOfCurrentSession = currentTime.seconds(); 
-
-
-  log.debug("Start Time of Session: " + new Date(startTime)); //Study Session Star ttimes
-  log.debug("End Time of Session:" +new Date(endTime)); // End time of study session
-  log.debug("Session ID:" + " " + idsOfSession); // id of study session
-  log.debug("Start Time:" + " " + new Date(startTimes)); // all the measurements start times
-  log.debug("End Time:" +" " + new Date(endTimes)); // all the end measurements end times
-
-
-  let queryClient = client.getQueryApi(org);  
-
-  const fluxQuery = ` from(bucket: "WebsiteData") |> range(start: ${startTime}, stop: ${endTime}) |> filter(fn: (r) => r._measurement == "AppChange")`;
-
-  queryClient.queryRows(fluxQuery, {
-    next: (row, tableMeta) => {
-      const tableObject = tableMeta.toObject(row);
-
-      // return the stuff in this tableObject 
-    },
-    error: (error) => {
-      log.error('\nError', error);
-    },
-    complete: () => {
-      log.debug('\nSuccess');
-    }
-  });
-
-
-};
-
-*/
-
-
 const grabTimesForApp = (appName) => {
   return new Promise((resolve, reject) => {
     const allTimes = []; // exact time of point
@@ -180,11 +210,16 @@ const grabTimesForApp = (appName) => {
 
     // Get the current time
     const timeOfCurrentSession = currentTime.seconds();
-    let queryClient = client.getQueryApi(org);
+    let queryClient = influxClient.getQueryApi(org);
     let stringVersion = `-${timeOfCurrentSession.toString()}s`;
 
     // Construct the Flux query with the filter for the specific querySessionID
-    const fluxQuery = `from(bucket: "WebsiteData")  |> range(start: ${stringVersion}) |> filter(fn: (r) => r._measurement == "AppChange") |> filter(fn: (r) => r._field == "AppName") |> filter(fn: (r) => r._value == "${appName}")`;
+    const fluxQuery = `
+              from(bucket: "WebsiteData") 
+              |> range(start: ${stringVersion})
+              |> filter(fn: (r) => r._measurement == "AppChange")
+              |> filter(fn: (r) => r._field == "AppName")
+              |> filter(fn: (r) => r._value == "${appName}")`;
 
     queryClient.queryRows(fluxQuery, {
       next: (row, tableMeta) => {
@@ -206,6 +241,71 @@ const grabTimesForApp = (appName) => {
   });
 };
 
-// appData("Windows","HolyCow", 8);
-// SpecificStudySessionProcessing("8");
-module.exports = { appData, SpecificStudySessionProcessing, grabTimesForApp  };
+
+// Write into previous study sessions
+const insertStudySessionData = (id, startTime, endTime, duration) =>{
+ 
+  let writeClientStudy = influxClient.getWriteApi(org, influxBuckets.sessions, 's');
+
+  let studySessionHistory = new Point('studySession')
+    .tag('sessionId', id) // ID of study sesssion we are saving
+    .intField('startTime', startTime) // Start time of study session
+    .intField('endTime', endTime)  //End time of study session
+    .intField('duration', duration)
+    .timestamp(currentTime.seconds()); // Time you pushed a new study session in
+  
+  try {
+    writeClientStudy.writePoint(studySessionHistory);
+      
+  }
+  catch (error) {
+    log.error(error);
+    throw error;
+  }
+  
+  log.debug(`Study Session added to InfluxDB: 
+      ID: ${id}, 
+      StartTime: ${startTime}, 
+      EndTime: ${endTime}, 
+      Timestamp: ${currentTime.seconds()}`);
+
+};
+
+
+//Query out just all the IDs to choose from
+const grabAllPreviousStudySessionIDs = () => {
+  return new Promise((resolve, reject) => {
+
+    const prevSessions = []; 
+    let queryClient = influxClient.getQueryApi(org);
+    const timeOfCurrentSession = currentTime.seconds();
+    let stringVersion = `-${timeOfCurrentSession.toString()}s`;
+
+    // Construct the Flux query with the filter for the specific querySessionID
+    const fluxQuery = ` 
+      from(bucket: "StudySessionData")
+      |> range(start: ${stringVersion})
+      |> filter(fn: (r) => r._measurement == "studySession")
+      |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
+      |> group(columns: ["sessionId"])
+      |> keep(columns: ["duration", "sessionId", "endTime", "startTime"])
+    `;
+
+    queryClient.queryRows(fluxQuery, {
+      next: (row, tableMeta) => {
+        const tableObject = tableMeta.toObject(row);
+        prevSessions.push(tableObject);
+      },
+      error: (error) => {
+        log.error(error);
+        reject(error); // Reject the promise if an error occurs
+      },
+      complete: () => {
+        resolve(prevSessions); // Resolve the promise once complete
+      }
+    });
+  });
+};
+
+
+module.exports = { appData, SpecificStudySessionProcessing, grabTimesForApp, insertStudySessionData, grabAllPreviousStudySessionIDs, connectToInflux };

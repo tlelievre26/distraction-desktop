@@ -15,7 +15,8 @@
 .navbar-button {
     height: inherit;
     text-align: center;
-    display: inline-block;
+    display: inline-block !important;
+    min-width: 80px;
     width: auto;
     padding: 0px 5px;
 }

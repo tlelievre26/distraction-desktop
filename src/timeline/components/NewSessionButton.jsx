@@ -1,11 +1,14 @@
 const React = require("react");
 const { useNavigate } = require("react-router-dom");
 
+const { useTasks } = require("../../task_list/components/TaskContext");
 require("./navbarStyles.css");
 
 const NewSessionButton = () => {
+  const { removeCompletedTasks } = useTasks();
   const navigation = useNavigate();
   const goToStart = () => {
+    removeCompletedTasks();
     navigation("/");
   };
 
