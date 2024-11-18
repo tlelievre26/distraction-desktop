@@ -2,6 +2,9 @@ const React = require('react');
 const { useContext, createContext, useState } = React;
 const { v4: uuidv4 } = require('uuid');
 
+const { taskData } = require("../../api_recievers/influxqueries");
+const {getSessionId} = require("../../study-session/session-control");
+
 // Create the context
 const TaskContext = createContext();
 
@@ -20,8 +23,9 @@ const TaskProvider = ({ children }) => {
     setTasks(prevTasks.filter(task => !task.completed));
   };
 
-  toggleCompleted = (index) => {
+  toggleCompleted = async (index) => {
     const newTasks = [...tasks];
+    taskData(true, newTasks[index].text, getSessionId());
     newTasks[index].completed = !newTasks[index].completed;
     newTasks[index].currentTask = false;
     setNumCompletedTasks(prevCount => prevCount + (task.completed ? 1 : -1));
@@ -48,8 +52,9 @@ const TaskProvider = ({ children }) => {
     setTasks(tasks.filter(task => task.id !== id));
   };
 
-  setCurrentTask = (index) => {
+  setCurrentTask = async (index) => {
     const newTasks = [...tasks];
+    taskData(false, newTasks[index].text, getSessionId());
     newTasks[index].currentTask = !newTasks[index].currentTask;
     newTasks[index].completed = false;
     newTasks.map((task, i)=> {

@@ -143,5 +143,8 @@ const closeWebsocket = () => {
   connected = false;
 };
 
+const getSessionId = () => {
+  return sessionId;
+};
 
-module.exports = {beginSession, endSession};
+module.exports = {beginSession, endSession, getSessionId};

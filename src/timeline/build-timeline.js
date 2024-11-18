@@ -33,7 +33,6 @@ const getNumSites = (data) => {
 };
 
 const calcAppSpecificMetrics = (appName, sessionData) => {
-  console.log("Calculating metrics for " + appName);
   filteredByAppName = sessionData.map((item, index) => ({ ...item, arrayIndex: index })).filter(app => app._value === appName);
   length = filteredByAppName.length;
   totalTimeSpent = filteredByAppName.reduce((acc, item) => acc + item._timeSpent, 0) / 60;
@@ -61,7 +60,6 @@ const calcAppSpecificMetrics = (appName, sessionData) => {
       appsMostFrequentlyUsed: {appName: sortedNextApps[0].app, count: sortedNextApps[0].count}, 
       magicDistractionScore: totalTimeSpent / length * 100
     };
-  console.log(appMetrics);
   return appMetrics;
 };
 
