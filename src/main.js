@@ -7,8 +7,9 @@ const { beginSession, endSession } = require("./study-session/session-control");
 const showErrorPopup = require('./util/error-popup');
 const { startInfluxDb, stopInfluxDb } = require('./api_recievers/start-influx-db');
 const log = require('./util/logger');
-const { grabAllPreviousStudySessionIDs, taskData, getTasksForSession, grabTimesForStudySession, sessionMetricsData, getAvgSessionMetrics } = require('./api_recievers/influxqueries');
+const { grabAllPreviousStudySessionIDs, taskData, getTasksForSession, grabTimesForStudySession, deleteStudySession, sessionMetricsData, getAvgSessionMetrics } = require('./api_recievers/influxqueries');
 const version = require('../package.json').version;
+
 
 //For whatever reason, the electron-store module doesn't support using require, so we have to do this to get i
 const importElectronStore = async () => {
@@ -130,6 +131,10 @@ const createWindow = async () => {
 
   ipcMain.on('error-msg', (_event, msg) => { //Lets the frontend create error popups
     showErrorPopup(msg);
+  });
+
+  ipcMain.on('deleteSession', async (_event, sessionId) => { //Lets the frontend create error popups
+    deleteStudySession(sessionId);
   });
 
   win.on('closed', () => {

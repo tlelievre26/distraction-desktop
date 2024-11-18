@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const { currentTime, InfluxDB, Point } = require("@influxdata/influxdb-client");
-const { BucketsAPI, OrgsAPI } = require('@influxdata/influxdb-client-apis');
+const { BucketsAPI, OrgsAPI, DeleteAPI } = require('@influxdata/influxdb-client-apis');
 
 const log = require('../util/logger');
 
@@ -349,6 +349,50 @@ const getTasksForSession = (sessionId) => {
   });
 };
 
+
+const deleteStudySession = async (sessionId) => {
+  const deleteAPI = new DeleteAPI(influxClient);
+
+  const start = '1970-01-01T00:00:00Z'; // Start of the range (earliest possible time)
+  const stop = new Date().toISOString(); // End of the range (now)
+  const deleteKey = `_measurement="AppChange" AND QuerySession == ${sessionId}`;
+  let prevSessionDeleted = null; // Initialize outside the loop
+  
+  const headers = {
+    'Authorization': process.env.INFLUXDB_TOKEN,
+    'Content-type': 'application/json'
+  };
+
+  try {
+    await Promise.all(
+      Object.values(influxBuckets).map(async (bucket) => {
+        await deleteAPI.postDelete({
+          org,
+          bucket,
+          body: {
+            start,
+            stop,
+            deleteKey
+          },
+          headers
+        });
+
+        prevSessionDeleted = sessionId;
+
+        console.log(`You have just deleted the session associated with the ID ${sessionId}`);
+
+      })
+    );
+  } catch (error) {
+    if (prevSessionDeleted !== sessionId) {
+      console.error(`Failed to delete session with ID ${sessionId}. Reason: ${error.message}`);
+      throw error; 
+    } else {
+      console.warn(`The session with ID ${sessionId} was already deleted.`);
+    }
+  }
+};
+
 const getAvgSessionMetrics = () => {
   return new Promise((resolve, reject) => {
     let avgData;
@@ -398,5 +442,4 @@ const getAvgSessionMetrics = () => {
 
 };
 
-module.exports = { appData, SpecificStudySessionProcessing, taskData, grabTimesForStudySession, insertStudySessionData, grabAllPreviousStudySessionIDs, connectToInflux, getTasksForSession, sessionMetricsData, getAvgSessionMetrics };
-
+module.exports = { appData, SpecificStudySessionProcessing, taskData, grabTimesForStudySession, grabTimesForApp, insertStudySessionData, grabAllPreviousStudySessionIDs, connectToInflux, deleteStudySession, sessionMetricsData, getAvgSessionMetrics };
