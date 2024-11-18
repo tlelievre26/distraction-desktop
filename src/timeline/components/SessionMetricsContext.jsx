@@ -6,7 +6,7 @@ const { calcMetrics, chunkData } = require("../build-timeline");
 const { useContext, createContext, useState, useEffect } = React;
 const data = require("../two_hr_session.json"); //sample data
 const {convertTime, getTimeSpent} = require("../calc-time.js");
-
+const {useTasks} = require("../../task_list/components/TaskContext");
 // Create the context
 const SessionMetricsContext = createContext();
 
@@ -23,6 +23,7 @@ const SessionMetricsProvider = ({children}) => {
     productivityEstimate: 0,
     mostUsedApps: []
   });
+  const {numCompletedTasks} = useTasks();
 
   //Essentially what this does is that whenever the sessionId changes, it will load the data for that ID and calc the metrics
   //Once the values get updated here, they automatically get shared with other elements
@@ -39,7 +40,7 @@ const SessionMetricsProvider = ({children}) => {
         getTimeSpent(data);
         setSessionData(chunkData(data));
         //Right now calcMetrics just returns a sample
-        setSessionMetrics(calcMetrics(data));
+        setSessionMetrics(calcMetrics(data, duration, numCompletedTasks));
       } catch (error) {
         console.error("Error fetching session data:", error);
       }

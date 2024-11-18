@@ -1,10 +1,9 @@
 const React = require('react');
 const { useContext, createContext, useState } = React;
+const { v4: uuidv4 } = require('uuid');
 
 // Create the context
 const TaskContext = createContext();
-
-const numCompletedTasks = 0;
 
 // Create a provider component
 const TaskProvider = ({ children }) => {
@@ -15,25 +14,69 @@ const TaskProvider = ({ children }) => {
     currentTask: false
   }]);
   const [screen, setScreen] = useState('start');
+  const [numCompletedTasks, setNumCompletedTasks] = useState(0);
 
   const removeCompletedTasks = () => {
-    const filteredTasks = prevTasks.filter(task => !task.completed);
-    numCompletedTasks = prevTasks.length - filteredTasks.length;
-    setTasks(filteredTasks);
+    setTasks(prevTasks.filter(task => !task.completed));
+  };
+
+  toggleCompleted = (index) => {
+    const newTasks = [...tasks];
+    newTasks[index].completed = !newTasks[index].completed;
+    newTasks[index].currentTask = false;
+    setNumCompletedTasks(prevCount => prevCount + (task.completed ? 1 : -1));
+    if (index !== newTasks.length - 1) {
+      const currentTask = newTasks[index];
+      newTasks.splice(index, 1);
+      newTasks.push(currentTask);
+    }
+
+    setTasks(newTasks);
+  };
+
+  addTask = (taskName) => {
+    const newTask = {
+      id: uuidv4(),
+      text: taskName,
+      completed: false,
+      currentTask: false
+    };
+    setTasks([...tasks, newTask]);
+  };
+
+  deleteTask =(id)=> {
+    setTasks(tasks.filter(task => task.id !== id));
+  };
+
+  setCurrentTask = (index) => {
+    const newTasks = [...tasks];
+    newTasks[index].currentTask = !newTasks[index].currentTask;
+    newTasks[index].completed = false;
+    newTasks.map((task, i)=> {
+      if(i !== index && newTasks[i].currentTask === true) {
+        newTasks[i].currentTask = false;
+      }
+      return task;
+    });
+
+    if (index !== 0) {
+      const currentTask = newTasks[index];
+      newTasks.splice(index, 1);
+      newTasks.unshift(currentTask);
+    }
+    setTasks(newTasks);
   };
 
   return (
-    <TaskContext.Provider value={{ tasks, setTasks, removeCompletedTasks, screen, setScreen }}>
+    <TaskContext.Provider value={{ tasks, setTasks, removeCompletedTasks, toggleCompleted, addTask, deleteTask, numCompletedTasks,
+      setNumCompletedTasks, setCurrentTask, screen, setScreen }}>
       {children}
     </TaskContext.Provider>
   );
 };
 
-const getCompletedTasks = () => {
-  return numCompletedTasks;
-};
 
 // Export the context for use in other components
 const useTasks = () => useContext(TaskContext);
 
-module.exports = { TaskProvider, useTasks, getCompletedTasks };
+module.exports = { TaskProvider, useTasks };
