@@ -15,6 +15,7 @@ const PrevSessionProvider = ({ children, readyToLoad = true }) => {
     // const fetchSessionMetadata = async () => {
     //   const sessionMetadata = await grabAllPreviousStudySessionIDs();
     ipcRenderer.on('return-prev-sessions', (_event, sessionMetadata) => {
+      sessionMetadata.sort((a, b) => a.startTime - b.startTime);
       const prevSessions = sessionMetadata.map((prevSession) => ({
         name: formatDate(prevSession.startTime, prevSession.endTime), sessionId: prevSession.sessionId, duration: prevSession.duration
       }));

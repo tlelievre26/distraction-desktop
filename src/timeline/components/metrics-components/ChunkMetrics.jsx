@@ -52,7 +52,7 @@ const ChunkMetrics = () => {
   }
 
   return (
-    <div className="metrics-container">
+    <div className="chunk-metrics-container">
       <div className="chunk-screen-layout">
         <ChunkScreenButtons/>
         <AppMetricsScreen focusedApp={focusedApp} setFocusedApp={setFocusedApp}/>
