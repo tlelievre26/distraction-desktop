@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
-//Just including this file as an example so that git tracks the directory structure
+
+const { convertTime, getTimeSpent } = require("./calc-time");
 
 const calcMetrics = (data, sessionId) => {
   console.log("Calculating metrics for session ", sessionId);
@@ -21,7 +22,74 @@ const calcMetrics = (data, sessionId) => {
         
   };
   return sampleMetrics;
-
 };
 
-module.exports = calcMetrics;
+const calcAppSpecificMetrics = (appName, sessionData) => {
+  console.log("Calculating metrics for " + appName);
+  filteredByAppName = sessionData.map((item, index) => ({ ...item, arrayIndex: index })).filter(app => app._value === appName);
+  length = filteredByAppName.length;
+  getUTCTime = convertTime(filteredByAppName);
+  getTotalTimeSpent = getTimeSpent(getUTCTime); 
+  totalTimeSpent = getTotalTimeSpent.reduce((acc, item) => acc + item, 0) / 60;
+
+  const nextAppCounts = {};
+  frequentSwitches = filteredByAppName.map((item) => {
+    const nextApp = item.arrayIndex + 1 < sessionData.length ? sessionData[item.arrayIndex + 1]._value : "End of session";
+    nextAppCounts[nextApp] = (nextAppCounts[nextApp] || 0) + 1;
+  });
+
+  const sortedNextApps = Object.entries(nextAppCounts)
+    .map(([app, count]) => ({ app, count }))
+    .sort((a, b) => b.count - a.count);  // Sort by count, descending
+
+  getTimeBetweenSwitches = getUTCTime.map((element, index, array) => {
+    return (index < array.length - 1) ? (array[index+1] - element) : 0;
+  });
+  
+  console.log(sortedNextApps);
+  const appMetrics = [
+    {numTimesSwitchedTo: length},
+    {totalTimeSpent: totalTimeSpent}, // displays in minutes
+    {avgTimeBetweenSwitches: getTimeBetweenSwitches.reduce((acc, item) => item > 5 ? acc + item : acc, 0) / (length * 60)},
+    {appsMostFrequentlyUsed: {appName: sortedNextApps[0].app, count: sortedNextApps[0].count}},
+    {magicDistractionScore: totalTimeSpent / length}
+  ];
+
+  console.log(appMetrics);
+
+  return appMetrics;
+};
+
+const chunkData = (sessionData) => {
+
+  const data = { chunks: [] };
+  time = convertTime(sessionData);
+  timeConversion = getTimeSpent(time);
+
+  timeConversion.reduce((acc, time, idx) => {
+    if (acc.currentSum + time > 900) {
+      if (acc.currentSum === 900 || idx === timeConversion.length - 1) { // Push the chunk if it sums to 900 or if youve reached the end of the session 
+        data.chunks.push(acc.currentChunk); 
+      }
+      else {
+        acc.currentChunk.push({name: sessionData[idx]._value, timeSpent: 900 - acc.currentSum});
+        data.chunks.push(acc.currentChunk);
+        time = time - (900 - acc.currentSum);
+      }
+      // Reset for the next chunk
+      acc.currentChunk = [{name: sessionData[idx]._value, timeSpent: time}];
+      acc.currentSum = time; // Reset currentSum      
+    } 
+    else {
+      // Add to the current chunk
+      acc.currentChunk.push({name: sessionData[idx]._value, timeSpent: time});
+      acc.currentSum += time;
+    }
+    return acc;
+  }, { currentChunk: [{}], currentSum: 0 });
+
+  data.chunks.shift();
+  return data;
+};
+
+module.exports = {calcMetrics, chunkData, calcAppSpecificMetrics};
