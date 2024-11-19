@@ -7,7 +7,7 @@ const { useTasks } = require("./TaskContext");
 
 //Code referenced from: https://medium.com/@worachote/building-a-todo-list-app-with-reactjs-a-step-by-step-guide-2c58b9b6c0f5
 //                      https://pusher.com/tutorials/todo-app-react-hooks/#setup
-const TaskList = () => {
+const TaskList = (sessionId) => {
   const { tasks, deleteTask, toggleCompleted, setCurrentTask } = useTasks();
 
   return (
@@ -23,6 +23,7 @@ const TaskList = () => {
             index={index}
             setCurrentTask={setCurrentTask}
             length={tasks.length}
+            sessionId={sessionId}
           />
         ))}
         </div>

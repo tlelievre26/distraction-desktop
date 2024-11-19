@@ -15,7 +15,6 @@ const HomePage = () => {
   const [apiKey, setApiKey] = useState(localStorage.getItem('influxApiKey') || '');
   //Tracks if we've successfully connected to Influx
   const [dbSuccess, setDbSuccess] = useState(sessionStorage.getItem('db-status') || false);
-  const {numCompletedTasks} = useTasks();
 
   useEffect(() => {
     ipcRenderer.on('db-conn-success', (_event) => {
