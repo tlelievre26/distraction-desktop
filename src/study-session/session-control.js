@@ -143,5 +143,4 @@ const closeWebsocket = () => {
   connected = false;
 };
 
-
 module.exports = {beginSession, endSession};
