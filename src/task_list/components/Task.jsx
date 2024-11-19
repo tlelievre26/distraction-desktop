@@ -1,10 +1,10 @@
 const React = require("react");
 const { useLocation } = require('react-router-dom');
 
-const Task =({ task, deleteTask, toggleCompleted, index, setCurrentTask, length })=> {
+const Task =({ task, deleteTask, toggleCompleted, index, setCurrentTask, length, sessionId })=> {
   const location = useLocation();
   handleChange =()=> {
-    toggleCompleted(task.id);
+    toggleCompleted(task.id, sessionId);
   };
  
   return (
@@ -13,7 +13,7 @@ const Task =({ task, deleteTask, toggleCompleted, index, setCurrentTask, length 
       <div style={{ display: 'flex'}}>
         {task.text !== "" &&
         <button className="star"
-          onClick={() => setCurrentTask(index)} >
+          onClick={() => setCurrentTask(index, sessionId)} >
           <span className={task.currentTask === true ? "on" : "off"}>&#9733;</span>
         </button>
         }
@@ -25,7 +25,7 @@ const Task =({ task, deleteTask, toggleCompleted, index, setCurrentTask, length 
             </button>
           }
           {location.pathname !== "/" && task.text !== "" &&
-            <button onClick={() => toggleCompleted(index)}>Complete</button>
+            <button onClick={() => toggleCompleted(index, sessionId)}>Complete</button>
           }
         </div>
       </div>

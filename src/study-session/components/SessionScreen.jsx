@@ -47,7 +47,7 @@ const SessionScreen = () => {
       <div className="centered">
         <ChromeWarning/>
       </div>
-      <TaskList/>
+      <TaskList sessionId={sessionId}/>
     </>
 
   );

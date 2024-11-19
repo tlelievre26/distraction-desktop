@@ -73,6 +73,7 @@ const TaskList = () => {
             index={index}
             setCurrentTask={setCurrentTask}
             length={tasks.length}
+            sessionId={sessionId}
           />
         ))}
         </div>
