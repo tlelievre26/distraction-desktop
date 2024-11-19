@@ -90,7 +90,6 @@ const connectToInflux = async (apiKey) => {
 //Must provide the current study session this entry is associaed with
 //Inputs are Strings
 const appData = async (source, appName, currentSession) =>{
-
   if(write === 'true' && (prevAppName === undefined || prevAppName !== appName)) {
     log.debug("Writing to db");
     let writeClient = influxClient.getWriteApi(org, influxBuckets.apps, 's');
@@ -119,7 +118,37 @@ const appData = async (source, appName, currentSession) =>{
     
     await writeClient.close();
   }
+};
 
+const taskData = async(completed, taskName, currentSession) => {
+  if(write === 'true') {
+    log.debug("Writing to db");
+    let writeClient = influxClient.getWriteApi(org, influxBuckets.tasks, 's');
+
+    let app = new Point('TaskMarked')
+      .stringField('TaskName',taskName)
+      .timestamp(currentTime.seconds())
+      .stringField('Completed', completed) //If false then user must have started the task
+      .tag('QuerySession',currentSession);
+  
+    try {
+      writeClient.writePoint(app);
+      
+    }
+    catch (error) {
+      log.error(error);
+      throw error;
+    }
+  
+    prevAppName = appName;
+    log.debug(`App added to InfluxDB: 
+      Name: ${appName}, 
+      Completed: ${completed}, 
+      QuerySession: ${currentSession}, 
+      Timestamp: ${currentTime.seconds()}`);
+    
+    await writeClient.close();
+  }
 };
 
 const taskData = async(completed, taskName, currentSession) => {
@@ -340,4 +369,6 @@ const grabAllPreviousStudySessionIDs = () => {
 };
 
 
+
 module.exports = { appData, SpecificStudySessionProcessing, taskData, grabTimesForApp, insertStudySessionData, grabAllPreviousStudySessionIDs, connectToInflux };
+

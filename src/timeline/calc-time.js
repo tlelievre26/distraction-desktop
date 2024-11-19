@@ -3,6 +3,7 @@ const convertTime = (data) => {
   data.forEach((element, index) => {
     date = new Date(element._time);
     data[index]["_timeInSeconds"] = date.getUTCSeconds() + date.getUTCMinutes() * 60 + date.getUTCHours() * 3600;
+
   });
 };
 

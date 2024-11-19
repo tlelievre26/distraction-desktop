@@ -1,8 +1,7 @@
 /* eslint-disable no-console */
 
 const calcMetrics = (data, duration, numTasksCompleted, sessionId) => {
-  console.log("Calculating metrics for session ", sessionId);
-  //Filling this with default values just to create a schema of our metrics
+
   const uniqueValues = [...new Set(data.map(item => item._value))];
   const metricsByApp = uniqueValues.map(itemName => {
     return calcAppSpecificMetrics(itemName, data);
@@ -22,7 +21,7 @@ const calcMetrics = (data, duration, numTasksCompleted, sessionId) => {
     })),
     appSpecificMetrics: metricsByApp
   };
-  console.log(sessionMetrics);
+
   return sessionMetrics;
 };
 
@@ -37,6 +36,7 @@ const calcAppSpecificMetrics = (appName, sessionData) => {
   length = filteredByAppName.length;
   totalTimeSpent = filteredByAppName.reduce((acc, item) => acc + item._timeSpent, 0) / 60;
 
+
   const nextAppCounts = {};
   frequentSwitches = filteredByAppName.map((item) => {
     const nextApp = item.arrayIndex + 1 < sessionData.length ? sessionData[item.arrayIndex + 1]._value : "End of session";
@@ -45,6 +45,7 @@ const calcAppSpecificMetrics = (appName, sessionData) => {
 
   const sortedNextApps = Object.entries(nextAppCounts)
     .map(([app, count]) => ({ app, count }))
+
     .sort((a, b) => b.count - a.count);  // Sort by count
 
   getTimeBetweenSwitches = filteredByAppName.map((element, index, array) => {
@@ -60,6 +61,7 @@ const calcAppSpecificMetrics = (appName, sessionData) => {
       appsMostFrequentlyUsed: {appName: sortedNextApps[0].app, count: sortedNextApps[0].count}, 
       magicDistractionScore: totalTimeSpent / length * 100
     };
+
   return appMetrics;
 };
 
@@ -70,6 +72,7 @@ const chunkData = (sessionData) => {
     var time = element._timeSpent;
     if (acc.currentSum + time > 900) {
       if (acc.currentSum === 900 || idx === sessionData.length - 1) { // Push the chunk if it sums to 900 or if youve reached the end of the session 
+
         data.chunks.push(acc.currentChunk); 
       }
       else {
@@ -90,7 +93,6 @@ const chunkData = (sessionData) => {
   }, { currentChunk: [{}], currentSum: 0 });
 
   data.chunks.shift();
-  console.log(data);
   return data;
 };
 

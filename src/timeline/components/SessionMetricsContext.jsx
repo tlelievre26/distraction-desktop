@@ -7,6 +7,7 @@ const { useContext, createContext, useState, useEffect } = React;
 const data = require("../two_hr_session.json"); //sample data
 const {convertTime, getTimeSpent} = require("../calc-time.js");
 const {useTasks} = require("../../task_list/components/TaskContext");
+
 // Create the context
 const SessionMetricsContext = createContext();
 
