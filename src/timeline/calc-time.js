@@ -1,21 +1,16 @@
 //Converts influxdb time to a readable format
 const convertTime = (data) => {
-  return data.map((element) => {
+  data.forEach((element, index) => {
     date = new Date(element._time);
-    return date.getUTCSeconds() + date.getUTCMinutes() * 60 + date.getUTCHours() * 3600;
+    data[index]["_timeInSeconds"] = date.getUTCSeconds() + date.getUTCMinutes() * 60 + date.getUTCHours() * 3600;
+
   });
 };
 
 const getTimeSpent = (time) => {
-  const timeConversion = time.map((element, index, arr) => {
-    if (index + 1 < arr.length) {
-      const endTime = arr[index+1];
-      return endTime - element;
-    }
-    return 0;
+  time.forEach((element, index, arr) => {
+    time[index]["_timeSpent"]= index + 1 < arr.length ? arr[index+1]._timeInSeconds - element._timeInSeconds : 0;
   });
-  return timeConversion;
 };
-
 
 module.exports = {convertTime, getTimeSpent};

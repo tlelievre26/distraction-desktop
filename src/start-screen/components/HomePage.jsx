@@ -11,15 +11,12 @@ const SettingsButton = require("./SettingsButton");
 require("./../../timeline/components/navbarStyles.css");
 
 const HomePage = () => {
-  
-
   const [filepath, setFilepath] = useState(localStorage.getItem('influxFilepath') || '');
   const [apiKey, setApiKey] = useState(localStorage.getItem('influxApiKey') || '');
   //Tracks if we've successfully connected to Influx
   const [dbSuccess, setDbSuccess] = useState(sessionStorage.getItem('db-status') || false);
 
   useEffect(() => {
-
     ipcRenderer.on('db-conn-success', (_event) => {
       sessionStorage.setItem('db-status', true);
       setDbSuccess(true);

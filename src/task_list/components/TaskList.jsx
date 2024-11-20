@@ -1,64 +1,14 @@
 const React = require("react");
-const { v4: uuidv4 } = require('uuid');
 
 require('./TaskDisplay.css');
 const TaskInput = require('./TaskInput');
 const Task = require("./Task");
 const { useTasks } = require("./TaskContext");
-const { taskData } = require("../../api_recievers/influxqueries");
-const {getSessionId} = require("../../study-session/session-control");
 
 //Code referenced from: https://medium.com/@worachote/building-a-todo-list-app-with-reactjs-a-step-by-step-guide-2c58b9b6c0f5
 //                      https://pusher.com/tutorials/todo-app-react-hooks/#setup
-const TaskList = () => {
-  const { tasks, setTasks } = useTasks();
-
-  toggleCompleted = async (index) => {
-    const newTasks = [...tasks];
-    taskData(true, newTasks[index].text, getSessionId());
-    newTasks[index].completed = !newTasks[index].completed;
-    newTasks[index].currentTask = false;
-    if (index !== newTasks.length - 1) {
-      const currentTask = newTasks[index];
-      newTasks.splice(index, 1);
-      newTasks.push(currentTask);
-    }
-    setTasks(newTasks);
-  };
-
-  addTask = (taskName) => {
-    const newTask = {
-      id: uuidv4(),
-      text: taskName,
-      completed: false,
-      currentTask: false
-    };
-    setTasks([...tasks, newTask]);
-  };
-
-  deleteTask =(id)=> {
-    setTasks(tasks.filter(task => task.id !== id));
-  };
-
-  setCurrentTask = async (index) => {
-    const newTasks = [...tasks];
-    taskData(false, newTasks[index].text, getSessionId());
-    newTasks[index].currentTask = !newTasks[index].currentTask;
-    newTasks[index].completed = false;
-    newTasks.map((task, i)=> {
-      if(i !== index && newTasks[i].currentTask === true) {
-        newTasks[i].currentTask = false;
-      }
-      return task;
-    });
-
-    if (index !== 0) {
-      const currentTask = newTasks[index];
-      newTasks.splice(index, 1);
-      newTasks.unshift(currentTask);
-    }
-    setTasks(newTasks);
-  };
+const TaskList = (sessionId) => {
+  const { tasks, deleteTask, toggleCompleted, setCurrentTask } = useTasks();
 
   return (
     <div className="ui">

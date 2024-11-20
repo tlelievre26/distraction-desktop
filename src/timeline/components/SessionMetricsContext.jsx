@@ -2,9 +2,11 @@
 const React = require("react");
 const { useLocation } = require("react-router-dom");
 
-const { calcMetrics, chunkData, calcAppSpecificMetrics } = require("../build-timeline");
+const { calcMetrics, chunkData } = require("../build-timeline");
 const { useContext, createContext, useState, useEffect } = React;
 const data = require("../two_hr_session.json"); //sample data
+const {convertTime, getTimeSpent} = require("../calc-time.js");
+const {useTasks} = require("../../task_list/components/TaskContext");
 
 // Create the context
 const SessionMetricsContext = createContext();
@@ -22,21 +24,24 @@ const SessionMetricsProvider = ({children}) => {
     productivityEstimate: 0,
     mostUsedApps: []
   });
+  const {numCompletedTasks} = useTasks();
 
   //Essentially what this does is that whenever the sessionId changes, it will load the data for that ID and calc the metrics
   //Once the values get updated here, they automatically get shared with other elements
   useEffect(() => {
     const fetchData = async () => {
-
+      
       try {
         //Returns the session data
         // const data = await SpecificStudySessionProcessing(sessionId);
         //const data = {}
 
         //We might want to do the data processing/chunking here?
+        convertTime(data);
+        getTimeSpent(data);
         setSessionData(chunkData(data));
         //Right now calcMetrics just returns a sample
-        setSessionMetrics(calcMetrics(data));
+        setSessionMetrics(calcMetrics(data, duration, numCompletedTasks));
       } catch (error) {
         console.error("Error fetching session data:", error);
       }
@@ -46,7 +51,6 @@ const SessionMetricsProvider = ({children}) => {
 
   //These are all the values accessible within components on the timeline screen
   //We don't want any other element to be able to control the session data and metrics so we leave the state setters out
-  calcAppSpecificMetrics("Visual Studio Code", data);
   const contextVals = {duration, setDuration, chunkSize, setChunkSize, sessionId, setSessionId, sessionData, sessionMetrics};
 
   return (

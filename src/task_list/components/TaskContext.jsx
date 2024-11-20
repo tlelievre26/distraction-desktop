@@ -16,6 +16,7 @@ const TaskProvider = ({ children }) => {
     currentTask: false
   }]);
   const [screen, setScreen] = useState('start');
+  const [numCompletedTasks, setNumCompletedTasks] = useState(0);
 
   const removeCompletedTasks = () => {
     setTasks(prevTasks.filter(task => !task.completed));
@@ -71,11 +72,13 @@ const TaskProvider = ({ children }) => {
   };
 
   return (
-    <TaskContext.Provider value={{ tasks, setTasks, removeCompletedTasks, screen, setScreen }}>
+    <TaskContext.Provider value={{ tasks, setTasks, removeCompletedTasks, toggleCompleted, addTask, deleteTask, numCompletedTasks,
+      setNumCompletedTasks, setCurrentTask, screen, setScreen }}>
       {children}
     </TaskContext.Provider>
   );
 };
+
 
 // Export the context for use in other components
 const useTasks = () => useContext(TaskContext);
