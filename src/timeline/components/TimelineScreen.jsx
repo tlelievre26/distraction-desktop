@@ -28,9 +28,9 @@ const TimelineScreen = () => {
             <p className="countdown">{name}</p> 
             <PrevSessionProvider>
               <PrevSessionsMenu setName={setName}/>
+              <NewSessionButton/>
+              <DeleteSessionButton/>
             </PrevSessionProvider>
-            <NewSessionButton/>
-            <DeleteSessionButton/>
           </div>
   
         </nav>

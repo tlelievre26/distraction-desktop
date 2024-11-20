@@ -355,7 +355,7 @@ const deleteStudySession = async (sessionId) => {
 
   const start = '1970-01-01T00:00:00Z'; // Start of the range (earliest possible time)
   const stop = new Date().toISOString(); // End of the range (now)
-  const deleteKey = `_measurement="AppChange" AND QuerySession == ${sessionId}`;
+  const deleteKey = `_measurement="AppChange" OR _measurement="studySession" AND QuerySession == ${sessionId}`;
   let prevSessionDeleted = null; // Initialize outside the loop
   
   const headers = {
