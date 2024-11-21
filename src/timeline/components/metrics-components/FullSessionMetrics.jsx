@@ -29,13 +29,13 @@ const FullSessionMetrics = () => {
             <p># Tasks Completed: {sessionMetrics.numTasks}</p>
           </div>
           <div>
-            <p>Tab Switches per min: {sessionMetrics.tabSwitchRate}</p>
+            <p>Tab Switches per min: {sessionMetrics.tabSwitchRate.toFixed(2)}</p>
           </div>
           <div>
-            <p>Time on Distractions: {Math.floor(sessionMetrics.timeOnDistr / 60)}m {sessionMetrics.timeOnDistr % 60}s</p>
+            <p>Num Unique Apps Used: {sessionMetrics.numApps}</p>
           </div>
           <div>
-            <p>Productivity Estimate: {sessionMetrics.productivityEstimate}</p>
+            <p>Num Unique Sites Used: {sessionMetrics.numWebsites}</p>
           </div>
         </div>
         <div className="top-apps">

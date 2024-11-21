@@ -7,9 +7,12 @@ const convertTime = (data) => {
   });
 };
 
-const getTimeSpent = (time) => {
+const getTimeSpent = (time, duration) => {
+  let initDuration = duration;
+
   time.forEach((element, index, arr) => {
-    time[index]["_timeSpent"]= index + 1 < arr.length ? arr[index+1]._timeInSeconds - element._timeInSeconds : 0;
+    time[index]["_timeSpent"] = index + 1 < arr.length ? arr[index+1]._timeInSeconds - element._timeInSeconds : initDuration;
+    initDuration -= time[index]["_timeSpent"];
   });
 };
 

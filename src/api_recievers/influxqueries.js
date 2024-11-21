@@ -7,7 +7,6 @@ const log = require('../util/logger');
 
 let influxClient;
 let org = process.env.INFLUX_ORG ?? "Distraction";
-let write = process.env.DB_WRITE ?? 'true';
 //Track the name of the previously written app, just to prevent accidental duplicate events
 let prevAppName = undefined;
 
@@ -90,8 +89,8 @@ const connectToInflux = async (apiKey) => {
 //Must provide the current study session this entry is associaed with
 //Inputs are Strings
 const appData = async (source, appName, currentSession) =>{
-  if(write === 'true' && (prevAppName === undefined || prevAppName !== appName)) {
-    log.debug("Writing to db");
+  if((prevAppName === undefined || prevAppName !== appName)) {
+
     let writeClient = influxClient.getWriteApi(org, influxBuckets.apps, 's');
 
     let app = new Point('AppChange')
@@ -121,46 +120,40 @@ const appData = async (source, appName, currentSession) =>{
 };
 
 const taskData = async(completed, taskName, currentSession) => {
-  if(write === 'true') {
-    log.debug("Writing to db");
-    let writeClient = influxClient.getWriteApi(org, influxBuckets.tasks, 's');
 
-    let app = new Point('TaskMarked')
-      .stringField('TaskName',taskName)
-      .timestamp(currentTime.seconds())
-      .stringField('Completed', completed) //If false then user must have started the task
-      .tag('QuerySession',currentSession);
+  log.debug("Writing to db");
+  let writeClient = influxClient.getWriteApi(org, influxBuckets.tasks, 's');
+
+  let app = new Point('TaskMarked')
+    .stringField('TaskName',taskName)
+    .timestamp(currentTime.seconds())
+    .stringField('Completed', completed) //If false then user must have started the task
+    .tag('QuerySession',currentSession);
   
-    try {
-      writeClient.writePoint(app);
+  try {
+    writeClient.writePoint(app);
       
-    }
-    catch (error) {
-      log.error(error);
-      throw error;
-    }
-  
-    prevAppName = appName;
-    log.debug(`App added to InfluxDB: 
-      Name: ${appName}, 
-      Completed: ${completed}, 
-      QuerySession: ${currentSession}, 
-      Timestamp: ${currentTime.seconds()}`);
-    
-    await writeClient.close();
   }
+  catch (error) {
+    log.error(error);
+    throw error;
+  }
+
+  log.debug(`Task added to InfluxDB: 
+    Name: ${taskName}, 
+    Complete: ${completed},
+    QuerySession: ${currentSession}, 
+    Timestamp: ${currentTime.seconds()}`);
+    
+  await writeClient.close();
+
 };
 
 // Function that will extract the time and the query session associated with that time 
 // Can add in the start and the end time of the measurement 
 const grabTimesForStudySession = (querySessionID) => {
   return new Promise((resolve, reject) => {
-    const allTimes = []; // exact time of point
-    const allqueryIds = []; // Associated Query Session ID of that point
-    const allStartTimes = []; // When the measurement was started
-    const allEndTimes = []; // When the measurement was ended
-    const allAppNames = []; 
-    const allObjects = [];
+    const appUsageData = [];
 
     // Get the current time
     const timeOfCurrentSession = currentTime.seconds();
@@ -173,6 +166,7 @@ const grabTimesForStudySession = (querySessionID) => {
       |> range(start: ${stringVersion})
       |> filter(fn: (r) => r._measurement == "AppChange" and r.QuerySession == "${querySessionID}")
       |> filter(fn: (r) => r._field == "AppName")
+      |> keep(columns: ["_time", "_value"])
     `;
 
 
@@ -180,19 +174,14 @@ const grabTimesForStudySession = (querySessionID) => {
       next: (row, tableMeta) => {
         const tableObject = tableMeta.toObject(row);
         //console.log(tableObject);
-        allTimes.push(tableObject._time);
-        allqueryIds.push(tableObject.QuerySession);
-        allStartTimes.push(tableObject._start);
-        allEndTimes.push(tableObject._stop);
-        allAppNames.push(tableObject._value);
-        allObjects.push(tableObject);
+        appUsageData.push(tableObject);
       },
       error: (error) => {
         log.error(error);
         reject(error); // Reject the promise if an error occurs
       },
       complete: () => {
-        resolve({ allTimes, allqueryIds, allStartTimes, allEndTimes, allAppNames, allObjects }); // Resolve the promise once complete
+        resolve(appUsageData); // Resolve the promise once complete
       }
     });
   });
@@ -230,45 +219,45 @@ const SpecificStudySessionProcessing = async (querySessionid) => {
 };
 
 
-const grabTimesForApp = (appName) => {
-  return new Promise((resolve, reject) => {
-    const allTimes = []; // exact time of point
-    const allqueryIds = []; // Associated Query Session ID of that point
-    const allStartTimes = []; // When the measurement was started
-    const allEndTimes = []; // When the measurement was ended
+// const grabTimesForApp = (appName) => {
+//   return new Promise((resolve, reject) => {
+//     const allTimes = []; // exact time of point
+//     const allqueryIds = []; // Associated Query Session ID of that point
+//     const allStartTimes = []; // When the measurement was started
+//     const allEndTimes = []; // When the measurement was ended
 
-    // Get the current time
-    const timeOfCurrentSession = currentTime.seconds();
-    let queryClient = influxClient.getQueryApi(org);
-    let stringVersion = `-${timeOfCurrentSession.toString()}s`;
+//     // Get the current time
+//     const timeOfCurrentSession = currentTime.seconds();
+//     let queryClient = influxClient.getQueryApi(org);
+//     let stringVersion = `-${timeOfCurrentSession.toString()}s`;
 
-    // Construct the Flux query with the filter for the specific querySessionID
-    const fluxQuery = `
-              from(bucket: "WebsiteData") 
-              |> range(start: ${stringVersion})
-              |> filter(fn: (r) => r._measurement == "AppChange")
-              |> filter(fn: (r) => r._field == "AppName")
-              |> filter(fn: (r) => r._value == "${appName}")`;
+//     // Construct the Flux query with the filter for the specific querySessionID
+//     const fluxQuery = `
+//               from(bucket: "WebsiteData") 
+//               |> range(start: ${stringVersion})
+//               |> filter(fn: (r) => r._measurement == "AppChange")
+//               |> filter(fn: (r) => r._field == "AppName")
+//               |> filter(fn: (r) => r._value == "${appName}")`;
 
-    queryClient.queryRows(fluxQuery, {
-      next: (row, tableMeta) => {
-        const tableObject = tableMeta.toObject(row);
-        log.debug(tableObject);
-        allTimes.push(tableObject._time);
-        allqueryIds.push(tableObject.QuerySession);
-        allStartTimes.push(tableObject._start);
-        allEndTimes.push(tableObject._stop);
-      },
-      error: (error) => {
-        log.error(error);
-        reject(error); // Reject the promise if an error occurs
-      },
-      complete: () => {
-        resolve({ allTimes, allqueryIds, allStartTimes, allEndTimes }); // Resolve the promise once complete
-      }
-    });
-  });
-};
+//     queryClient.queryRows(fluxQuery, {
+//       next: (row, tableMeta) => {
+//         const tableObject = tableMeta.toObject(row);
+//         log.debug(tableObject);
+//         allTimes.push(tableObject._time);
+//         allqueryIds.push(tableObject.QuerySession);
+//         allStartTimes.push(tableObject._start);
+//         allEndTimes.push(tableObject._stop);
+//       },
+//       error: (error) => {
+//         log.error(error);
+//         reject(error); // Reject the promise if an error occurs
+//       },
+//       complete: () => {
+//         resolve({ allTimes, allqueryIds, allStartTimes, allEndTimes }); // Resolve the promise once complete
+//       }
+//     });
+//   });
+// };
 
 
 // Write into previous study sessions
@@ -335,7 +324,38 @@ const grabAllPreviousStudySessionIDs = () => {
     });
   });
 };
+const getTasksForSession = (sessionId) => {
+  return new Promise((resolve, reject) => {
 
+    const taskData = []; 
+    let queryClient = influxClient.getQueryApi(org);
+    const timeOfCurrentSession = currentTime.seconds();
+    let stringVersion = `-${timeOfCurrentSession.toString()}s`;
 
-module.exports = { appData, SpecificStudySessionProcessing, taskData, grabTimesForApp, insertStudySessionData, grabAllPreviousStudySessionIDs, connectToInflux };
+    // Construct the Flux query with the filter for the specific querySessionID
+    const fluxQuery = ` 
+      from(bucket: "TaskData")
+      |> range(start: ${stringVersion})
+      |> filter(fn: (r) => r._measurement == "TaskMarked" and r.QuerySession == "${sessionId}")
+      |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
+      |> keep(columns: ["_time", "TaskName", "Completed"])
+    `;
+
+    queryClient.queryRows(fluxQuery, {
+      next: (row, tableMeta) => {
+        const tableObject = tableMeta.toObject(row);
+        taskData.push(tableObject);
+      },
+      error: (error) => {
+        log.error(error);
+        reject(error); // Reject the promise if an error occurs
+      },
+      complete: () => {
+        resolve(taskData); // Resolve the promise once complete
+      }
+    });
+  });
+};
+
+module.exports = { appData, SpecificStudySessionProcessing, taskData, grabTimesForStudySession, insertStudySessionData, grabAllPreviousStudySessionIDs, connectToInflux, getTasksForSession };
 

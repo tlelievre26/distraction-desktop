@@ -7,7 +7,7 @@ const { beginSession, endSession } = require("./study-session/session-control");
 const showErrorPopup = require('./util/error-popup');
 const { startInfluxDb, stopInfluxDb } = require('./api_recievers/start-influx-db');
 const log = require('./util/logger');
-const { grabAllPreviousStudySessionIDs } = require('./api_recievers/influxqueries');
+const { grabAllPreviousStudySessionIDs, taskData, getTasksForSession, grabTimesForStudySession } = require('./api_recievers/influxqueries');
 const version = require('../package.json').version;
 
 //For whatever reason, the electron-store module doesn't support using require, so we have to do this to get i
@@ -108,6 +108,16 @@ const createWindow = async () => {
   ipcMain.on('get-prev-sessions', async (event) => { //Lets the frontend create error popups
     const prevSessionData = await grabAllPreviousStudySessionIDs();
     event.sender.send('return-prev-sessions', prevSessionData);
+  });
+
+  ipcMain.on('record-task', async (_event, taskCompleted, taskName, sessionId) => { //Lets the frontend create error popups
+    await taskData(taskCompleted, taskName, sessionId);
+  });
+
+  ipcMain.on('get-session-data', async (event, sessionId) => {
+    const sessionData = await grabTimesForStudySession(sessionId);
+    const taskData = await getTasksForSession(sessionId);
+    event.sender.send('return-session-data', sessionData, taskData);
   });
 
   ipcMain.on('error-msg', (_event, msg) => { //Lets the frontend create error popups

@@ -30,10 +30,12 @@ const stringToColor = (str) => {
   return color;
 };
 
-const AppTimelineBlock = ({timeSpent, name, zoom, focusedApp, setFocusedApp }) => {
-  const { chunkSize } = useSessionMetrics();
-
-  const dynWidth = Math.ceil(1200 * (timeSpent / (chunkSize * 60))) * zoom;
+const AppTimelineBlock = ({ timeSpent, name, zoom, focusedApp, setFocusedApp }) => {
+  const { duration, chunkSize } = useSessionMetrics();
+  // console.log(duration);
+  // console.log(chunkSize);
+  // console.log(Math.min(duration, chunkSize));
+  const dynWidth = Math.ceil(1200 * (timeSpent / (Math.min(duration, chunkSize * 60)))) * zoom;
 
   const [showInfo, setShowInfo] = useState(false); // State to control bubble visibility
   const handleMouseEnter = () => {
@@ -45,12 +47,15 @@ const AppTimelineBlock = ({timeSpent, name, zoom, focusedApp, setFocusedApp }) =
   };
 
   const selectApp = () => {
-    setFocusedApp(name);
+    setFocusedApp({
+      name,
+      duration: timeSpent
+    });
   };
 
   const selectedStyle = { //When this chunk is selected keep it darker
     backgroundColor: stringToColor(name),
-    opacity: focusedApp !== '' && focusedApp !== name && 0.2
+    opacity: focusedApp !== null && focusedApp.name !== name && 0.2
   };
   
   if(dynWidth <= 2) {

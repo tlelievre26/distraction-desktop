@@ -9,8 +9,8 @@ require("./TimelineStyles.css");
 
 const Timeline = () => {
   const { chunkSize, duration, sessionData } = useSessionMetrics();
+  // console.log(sessionData);
   const numChunks = Math.ceil(duration / (60 * chunkSize));
-
   let chunks;
   const segmentsPerChunk = chunkSize / 15;
   if(sessionData) {

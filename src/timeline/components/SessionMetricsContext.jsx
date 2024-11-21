@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
 const React = require("react");
 const { useLocation } = require("react-router-dom");
+const { ipcRenderer } = require("electron");
 
 const { calcMetrics, chunkData } = require("../build-timeline");
 const { useContext, createContext, useState, useEffect } = React;
-const sampleData = require("../two_hr_session.json"); //sample data
+// const sampleData = require("../two_hr_session.json"); //sample data
 const {convertTime, getTimeSpent} = require("../calc-time.js");
-const {useTasks} = require("../../task_list/components/TaskContext");
 
 // Create the context
 const SessionMetricsContext = createContext();
@@ -24,7 +24,6 @@ const SessionMetricsProvider = ({children}) => {
     productivityEstimate: 0,
     mostUsedApps: []
   });
-  const {numCompletedTasks} = useTasks();
   const [appSpecificMetrics, setAppSpecificMetrics] = useState({});
   const [currChunkId, setCurrChunkId] = useState(-1);
   const [currChunkData, setCurrChunkData] = useState(null); // Stores the data in the current chunk
@@ -33,30 +32,35 @@ const SessionMetricsProvider = ({children}) => {
   //Essentially what this does is that whenever the sessionId changes, it will load the data for that ID and calc the metrics
   //Once the values get updated here, they automatically get shared with other elements
   useEffect(() => {
-    const fetchData = async () => {
-      
-      try {
-        //Returns the session data
-        // const data = await SpecificStudySessionProcessing(sessionId);
-        const data = sampleData;
 
-        //We might want to do the data processing/chunking here?
+    ipcRenderer.on('return-session-data', (_event, sessionData, taskData) => {
+      try {
+        console.log("Loading with Session ID", sessionId);
+        const data = sessionData;
         convertTime(data);
-        getTimeSpent(data);
+        convertTime(taskData);
+        getTimeSpent(data, duration);
+        getTimeSpent(taskData);
+
         setSessionData(chunkData(data));
 
         //Also would need to get sessionMetadata
         //Right now calcMetrics just returns a sample
-        setSessionMetrics(calcMetrics(data, duration, numCompletedTasks));
+        const [fullSessionMetrics, appMetrics] = calcMetrics(data, duration, taskData);
+        setSessionMetrics(fullSessionMetrics);
+        setAppSpecificMetrics(appMetrics);
         setChunkSize(30);
         setCurrChunkId(-1);
         setCurrChunkData(null);
-        setAppSpecificMetrics({});
       } catch (error) {
         console.error("Error fetching session data:", error);
       }
+    });
+
+    ipcRenderer.send('get-session-data', sessionId);
+    return () => {
+      ipcRenderer.removeAllListeners('return-session-data');
     };
-    fetchData(); // Apparently doing it this way (defining a function then calling it) is preferred within useEffect
   }, [sessionId]);
 
   //These are all the values accessible within components on the timeline screen

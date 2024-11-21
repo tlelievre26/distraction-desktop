@@ -1,8 +1,7 @@
 const React = require('react');
 const { useContext, createContext, useState } = React;
 const { v4: uuidv4 } = require('uuid');
-
-const { taskData } = require("../../api_recievers/influxqueries");
+const { ipcRenderer } = require('electron');
 
 // Create the context
 const TaskContext = createContext();
@@ -19,15 +18,16 @@ const TaskProvider = ({ children }) => {
   const [numCompletedTasks, setNumCompletedTasks] = useState(0);
 
   const removeCompletedTasks = () => {
-    setTasks(prevTasks.filter(task => !task.completed));
+    setTasks((prevTasks) => prevTasks.filter(task => !task.completed));
   };
 
   toggleCompleted = async (index, sessionId) => {
     const newTasks = [...tasks];
-    taskData(true, newTasks[index].text, sessionId);
-    newTasks[index].completed = !newTasks[index].completed;
-    newTasks[index].currentTask = false;
-    setNumCompletedTasks(prevCount => prevCount + (task.completed ? 1 : -1));
+    const task = newTasks[index];
+    ipcRenderer.send('record-task', true, task.text, sessionId);
+    task.completed = !newTasks[index].completed;
+    task.currentTask = false;
+    setNumCompletedTasks((prevCount) => prevCount + (task.completed ? 1 : -1));
     if (index !== newTasks.length - 1) {
       const currentTask = newTasks[index];
       newTasks.splice(index, 1);
@@ -48,12 +48,15 @@ const TaskProvider = ({ children }) => {
   };
 
   deleteTask =(id)=> {
-    setTasks(tasks.filter(task => task.id !== id));
+    setTasks(tasks.filter((task) => task.id !== id));
   };
 
   setCurrentTask = async (index, sessionId) => {
     const newTasks = [...tasks];
-    taskData(false, newTasks[index].text, sessionId);
+    if(sessionId !== undefined) {
+      ipcRenderer.send('record-task', false, newTasks[index].text, sessionId);
+    }
+
     newTasks[index].currentTask = !newTasks[index].currentTask;
     newTasks[index].completed = false;
     newTasks.map((task, i)=> {
