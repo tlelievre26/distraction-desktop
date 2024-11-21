@@ -6,7 +6,7 @@ const { ipcRenderer } = require("electron");
 const { calcMetrics, chunkData } = require("../build-timeline");
 const { useContext, createContext, useState, useEffect } = React;
 // const sampleData = require("../two_hr_session.json"); //sample data
-const {convertTime, getTimeSpent} = require("../calc-time.js");
+const {convertTime, getTimeSpent, getTaskTimeSpent} = require("../calc-time.js");
 
 // Create the context
 const SessionMetricsContext = createContext();
@@ -27,26 +27,34 @@ const SessionMetricsProvider = ({children}) => {
   const [appSpecificMetrics, setAppSpecificMetrics] = useState({});
   const [currChunkId, setCurrChunkId] = useState(-1);
   const [currChunkData, setCurrChunkData] = useState(null); // Stores the data in the current chunk
+  const [taskData, setTaskData] = useState(null);
+  const [startTime, setStartTime] = useState(convertTime(useLocation().state.startTime * 1000));
+  const [endTime, setEndTime] = useState(convertTime(useLocation().state.startTime * 1000));
   //Null when no chunk is selected
 
   //Essentially what this does is that whenever the sessionId changes, it will load the data for that ID and calc the metrics
   //Once the values get updated here, they automatically get shared with other elements
   useEffect(() => {
 
-    ipcRenderer.on('return-session-data', (_event, sessionData, taskData) => {
+    ipcRenderer.on('return-session-data', (_event, sessionData, incTaskData) => {
       try {
         console.log("Loading with Session ID", sessionId);
         const data = sessionData;
-        convertTime(data);
-        convertTime(taskData);
+        data.forEach((element, index) => {
+          data[index]["_timeInSeconds"] = convertTime(element._time);
+        });
+        incTaskData.forEach((element, index) => {
+          incTaskData[index]["_timeInSeconds"] = convertTime(element._time);
+        });
         getTimeSpent(data, duration);
-        getTimeSpent(taskData);
+        const formattedTasks = getTaskTimeSpent(incTaskData, startTime, endTime);
+        setTaskData(formattedTasks);
 
         setSessionData(chunkData(data));
 
         //Also would need to get sessionMetadata
         //Right now calcMetrics just returns a sample
-        const [fullSessionMetrics, appMetrics] = calcMetrics(data, duration, taskData);
+        const [fullSessionMetrics, appMetrics] = calcMetrics(data, duration, formattedTasks);
         setSessionMetrics(fullSessionMetrics);
         setAppSpecificMetrics(appMetrics);
         setChunkSize(30);
@@ -78,7 +86,13 @@ const SessionMetricsProvider = ({children}) => {
     currChunkId, 
     setCurrChunkId, 
     currChunkData, 
-    setCurrChunkData
+    setCurrChunkData,
+    taskData,
+    setTaskData,
+    startTime,
+    setStartTime,
+    endTime,
+    setEndTime
   };
 
   return (

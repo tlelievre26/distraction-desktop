@@ -24,7 +24,7 @@ const TaskProvider = ({ children }) => {
   toggleCompleted = async (index, sessionId) => {
     const newTasks = [...tasks];
     const task = newTasks[index];
-    ipcRenderer.send('record-task', true, task.text, sessionId);
+    ipcRenderer.send('record-task', "completed", task.text, sessionId);
     task.completed = !newTasks[index].completed;
     task.currentTask = false;
     setNumCompletedTasks((prevCount) => prevCount + (task.completed ? 1 : -1));
@@ -54,7 +54,13 @@ const TaskProvider = ({ children }) => {
   setCurrentTask = async (index, sessionId) => {
     const newTasks = [...tasks];
     if(sessionId !== undefined) {
-      ipcRenderer.send('record-task', false, newTasks[index].text, sessionId);
+      if(newTasks[index].currentTask) { //If the task went true -> false, record a "NONE" entry
+        ipcRenderer.send('record-task', "unstarred", newTasks[index].text, sessionId);
+      }
+      else {
+        ipcRenderer.send('record-task', "starred", newTasks[index].text, sessionId);
+      }
+
     }
 
     newTasks[index].currentTask = !newTasks[index].currentTask;

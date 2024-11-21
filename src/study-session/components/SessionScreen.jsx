@@ -13,9 +13,9 @@ require("./../../timeline/components/navbarStyles.css");
 const SessionScreen = () => {
   const navigation = useNavigate();
   const [sessionId, setSessionId] = useState(sessionStorage.getItem('active-session-id') ?? null);
-  const goToTimeline = (duration, name) => {
+  const goToTimeline = (duration, name, startTime, endTime) => {
     navigation("/timeline", {
-      state: { sessionId: sessionStorage.getItem('active-session-id'), duration, name }
+      state: { sessionId: sessionStorage.getItem('active-session-id'), duration, name, startTime, endTime }
     });
   };
 
@@ -28,7 +28,7 @@ const SessionScreen = () => {
 
     ipcRenderer.on('backend-end-session', (_event, duration, startTime, endTime) => {
       const name = formatDate(startTime, endTime);
-      goToTimeline(duration, name);
+      goToTimeline(duration, name, startTime, endTime);
     });
 
     // Cleanup listener on unmount

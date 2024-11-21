@@ -17,7 +17,7 @@ const PrevSessionProvider = ({ children, readyToLoad = true }) => {
     ipcRenderer.on('return-prev-sessions', (_event, sessionMetadata) => {
       sessionMetadata.sort((a, b) => a.startTime - b.startTime);
       const prevSessions = sessionMetadata.map((prevSession) => ({
-        name: formatDate(prevSession.startTime, prevSession.endTime), sessionId: prevSession.sessionId, duration: prevSession.duration
+        name: formatDate(prevSession.startTime, prevSession.endTime), sessionId: prevSession.sessionId, duration: prevSession.duration, startTime: prevSession.startTime, endTime: prevSession.endTime
       }));
       setPrevSessionIds(prevSessions);
     });

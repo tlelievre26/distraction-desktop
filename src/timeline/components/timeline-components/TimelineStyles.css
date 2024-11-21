@@ -22,6 +22,30 @@
   font-size: 7px;
 }
 
+
+.task-timeline {
+  width: 100%; /* Full width of the container */
+  padding: 0px 50px;
+  height: auto;
+  position: relative;
+}
+
+.task-chunk-container {
+  position: absolute;
+  height: fit-content; /* Fixed height for each chunk */
+  margin: 0px -1px -1px 0px; /* Space between chunks */
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.task-chunk {
+  border-radius: 0px; /* Rounded corners */
+  border: 1px solid #000000;
+  opacity: 0.5;
+}
+
 .chunk:hover {
     filter: brightness(80%);
 }

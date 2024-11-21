@@ -4,14 +4,16 @@ const React = require("react");
 
 const { useSessionMetrics } = require("../SessionMetricsContext");
 const TimelineChunk = require('./TimelineChunk');
+const TaskChunk = require("./TaskChunk");
 
 require("./TimelineStyles.css");
 
 const Timeline = () => {
-  const { chunkSize, duration, sessionData } = useSessionMetrics();
+  const { chunkSize, duration, sessionData, taskData } = useSessionMetrics();
   // console.log(sessionData);
   const numChunks = Math.ceil(duration / (60 * chunkSize));
   let chunks;
+  let taskChunks;
   const segmentsPerChunk = chunkSize / 15;
   if(sessionData) {
     chunks = Array.from({ length: numChunks }, (_, index) => {
@@ -25,15 +27,27 @@ const Timeline = () => {
       }
       dataForChunk = dataForChunk.flat();
 
-      return <TimelineChunk key={index} id={index} data={dataForChunk} className="chunk" />;
+      return <TimelineChunk key={index} id={index} data={dataForChunk}/>;
+    });
+    taskChunks = Array.from({ length: taskData.length }, (_, index) => {
+      const percentOffset = Math.floor((taskData[index].offset / duration) * 100);
+      const percentWidth = Math.floor((taskData[index].duration / duration) * 100);
+      return <TaskChunk offset={percentOffset} width={percentWidth} name={taskData[index].name} status={taskData[index].status}/>;
     });
   }
 
 
   return (
-    <div className="timeline">
-      {chunks}
+    <div>
+      <div className="timeline">
+        {chunks}
+      </div>
+      <div className="task-timeline">
+        {taskChunks}
+      </div>
     </div>
+
+
   );
 };
 
