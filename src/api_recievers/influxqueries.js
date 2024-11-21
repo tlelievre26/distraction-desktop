@@ -357,11 +357,7 @@ const deleteStudySession = async (sessionId) => {
   const stop = new Date().toISOString(); // End of the range (now)
   const deleteKey = `_measurement="AppChange" OR _measurement="studySession" AND QuerySession == ${sessionId}`;
   let prevSessionDeleted = null; // Initialize outside the loop
-  
-  const headers = {
-    'Authorization': process.env.INFLUXDB_TOKEN,
-    'Content-type': 'application/json'
-  };
+
 
   try {
     await Promise.all(
