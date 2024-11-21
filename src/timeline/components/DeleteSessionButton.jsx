@@ -15,9 +15,10 @@ const DeleteSessionButton = () => {
 
   const deleteSession =  () => {
     ipcRenderer.send("deleteSession", sessionId);
-    setPrevSessionIds(prevSessionIds.filter((prevSession) => prevSession.sessionId != sessionId)); // Remove deleted session from the list
+    setPrevSessionIds(prevSessionIds.filter((prevSession) => prevSession.sessionId !== sessionId)); // Remove deleted session from the list
     if(prevSessionIds.length !== 0) {
-      setSessionId(prevSessionIds.length - 1); //Load the last session in the list
+      console.log("Loading in new session with ID", prevSessionIds[prevSessionIds.length - 1]);
+      setSessionId(prevSessionIds[prevSessionIds.length - 1]); //Load the last session in the list
     }
     else {
       navigation("/"); //Go to home screen if there are no other sessions

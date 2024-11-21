@@ -369,22 +369,21 @@ const deleteStudySession = async (sessionId) => {
             start,
             stop,
             deleteKey
-          },
-          headers
+          }
         });
 
         prevSessionDeleted = sessionId;
 
-        console.log(`You have just deleted the session associated with the ID ${sessionId}`);
+        log.debug(`You have just deleted the session associated with the ID ${sessionId}`);
 
       })
     );
   } catch (error) {
     if (prevSessionDeleted !== sessionId) {
-      console.error(`Failed to delete session with ID ${sessionId}. Reason: ${error.message}`);
+      log.debug(`Failed to delete session with ID ${sessionId}. Reason: ${error.message}`);
       throw error; 
     } else {
-      console.warn(`The session with ID ${sessionId} was already deleted.`);
+      log.debug(`The session with ID ${sessionId} was already deleted.`);
     }
   }
 };
