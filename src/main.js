@@ -58,6 +58,7 @@ const createWindow = async () => {
       }
 
     }
+    win.setAlwaysOnTop(false);
   });
 
   ipcMain.on("begin-session", (...args) => {
@@ -82,6 +83,19 @@ const createWindow = async () => {
       win.setMinimumSize(1200, 800);
       win.maximize();
     }
+  });
+
+  ipcMain.on('lock-app', () => {
+    isAFK = true;
+    win.setAlwaysOnTop(true);
+    win.focus();
+    win.setFullScreen(true);
+  });
+  
+  ipcMain.on('unlock-app', () => {
+    isAFK = false;
+    win.setAlwaysOnTop(false);
+    win.setFullScreen(false);
   });
   
   ipcMain.on("attempt-reconnect", async (_event, influxPath, apiKey) => {

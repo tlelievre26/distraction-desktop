@@ -37,9 +37,11 @@ const beginSession = (event, duration) => {
       log.error(msg.error);
     }
     else {
-      log.debug('Active window title:', msg.windowTitle);
-      if(!connected ||(connected && !msg.windowTitle.includes("Google Chrome"))) { //Don't want to register switching to Chrome if the connection is sending data
-        await appData("Windows", msg.windowTitle, sessionId);
+      if (isAFK === false) {
+        log.debug('Active window title:', msg.windowTitle);
+        /*if(!connected ||(connected && !msg.windowTitle.includes("Google Chrome"))) { //Don't want to register switching to Chrome if the connection is sending data
+          await appData("Windows", msg.windowTitle, sessionId);
+        }*/
       }
     }
 

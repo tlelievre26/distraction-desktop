@@ -23,7 +23,7 @@ const TaskList = ({sessionId = undefined}) => {
             index={index}
             setCurrentTask={setCurrentTask}
             length={tasks.length}
-            sessionId={sessionId}
+            sessionId={sessionId ?? "placeholder"}
           />
         ))}
         </div>
