@@ -6,6 +6,9 @@ on:
       - main
       - build-and-release
 
+env:
+  NEW_VERSION: $(node -p "require('./package.json').version")
+
 jobs:
   release:
     runs-on: windows-latest
@@ -25,16 +28,6 @@ jobs:
         with:
           python-version: '3.9'  # Recommended version range for node-gyp
 
-      - name: Increment version number
-        run: |
-          yarn version --patch
-          NEW_VERSION=$(node -p "require('./package.json').version")
-          git add package.json yarn.lock
-          git commit -m "Release version $NEW_VERSION"
-          git tag -a "v$NEW_VERSION" -m "Release version $NEW_VERSION"
-          git push origin main --follow-tags
-
-
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
         with:
@@ -49,14 +42,20 @@ jobs:
           cp -R build/*.exe release/
           zip -r release/build.zip build/
 
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create GitHub release
         id: create_release
         uses: actions/create-release@v1
         with:
-          tag_name: ${{ github.ref_name }}
-          release_name: Release ${{ github.ref_name }}
+          tag_name: ${{ steps.tag_version.outputs.new_tag }}
+          release_name: Release ${{ steps.tag_version.outputs.new_tag }}
           body: |
-            Automated release for version ${{ github.ref_name }}.
+            Automated release for version ${{ steps.tag_version.outputs.new_tag }}.
             - Installer included.
             - Zipped build folder available for download.
           draft: false

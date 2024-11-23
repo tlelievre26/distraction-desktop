@@ -18,6 +18,7 @@
 - [ ] Have you run your changes against the testing suite?
 - [ ] Have you given a written explanation of the change?
 - [ ] Have you asked a teammate for review?
+- [ ] **Did you update the version number appropriately**
 
 ## Anything else important?
 
