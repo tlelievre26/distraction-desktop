@@ -6,9 +6,6 @@ on:
       - main
       - build-and-release
 
-env:
-  NEW_VERSION: $(node -p "require('./package.json').version")
-
 jobs:
   release:
     runs-on: windows-latest
@@ -39,6 +36,13 @@ jobs:
           git add .
           git commit -m "Release version $NEW_VERSION"
           git push origin --follow-tags
+      
+      - name: Save version number
+        id: increment_version
+        shell: cmd
+        run: |
+          FOR /F "delims=" %%A IN ('node -p "require('./package.json').version"') DO SET NEW_VERSION=%%A
+          echo ::set-output name=new_version::%NEW_VERSION%
 
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
@@ -48,42 +52,13 @@ jobs:
           github_token: ${{ secrets.github_token }}
           # args: "--dir"
 
-      - name: Bump version and push tag
-        id: tag_version
-        uses: mathieudutour/github-tag-action@v6.2
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          custom_tag: "v${{ env.NEW_VERSION }}"
-
-      # - name: Create GitHub release
-      #   id: create_release
-      #   uses: actions/create-release@v1
-      #   with:
-      #     tag_name: ${{ steps.tag_version.outputs.new_tag }}
-      #     release_name: DistrAction ${{ steps.tag_version.outputs.new_tag }}
-
-      #     draft: false
-      #     prerelease: false
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.github_token }}
-
-      # - name: Upload release assets
-      #   uses: actions/upload-release-asset@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.github_token }}
-      #   with:
-      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
-      #     asset_path: release/build.zip
-      #     asset_name: build.zip
-      #     asset_content_type: application/zip
-
       - name: Upload installer
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.github_token }}
-          tag_name: ${{ steps.tag_version.outputs.new_tag }}
+          tag_name: "v${{ steps.increment_version.outputs.new_version }}"
           body: |
-            Automated release for version ${{ steps.tag_version.outputs.new_tag }}.
+            Automated release for version v${{ steps.increment_version.outputs.new_version }}"
             - Installer included
           make_latest: true
           files: |
