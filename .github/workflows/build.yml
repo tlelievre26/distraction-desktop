@@ -36,12 +36,6 @@ jobs:
           github_token: ${{ secrets.github_token }}
           args: "--dir"
 
-      - name: Prepare build artifacts
-        run: |
-          mkdir -p release
-          cp -R build/*.exe release/
-          zip -r release/build.zip build/
-
       - name: Bump version and push tag
         id: tag_version
         uses: mathieudutour/github-tag-action@v6.2
@@ -63,15 +57,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.github_token }}
 
-      - name: Upload release assets
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.github_token }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: release/build.zip
-          asset_name: build.zip
-          asset_content_type: application/zip
+      # - name: Upload release assets
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.github_token }}
+      #   with:
+      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #     asset_path: release/build.zip
+      #     asset_name: build.zip
+      #     asset_content_type: application/zip
 
       - name: Upload installer
         uses: actions/upload-release-asset@v1
@@ -79,7 +73,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.github_token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: release/*.exe
-          asset_name: app-installer.exe
+          asset_path: build/*.exe
+          asset_name: distraction-installer.exe
           asset_content_type: application/octet-stream
   
