@@ -28,34 +28,44 @@ jobs:
         with:
           python-version: '3.9'  # Recommended version range for node-gyp
 
+      - name: Configure Git with GitHub Actions Bot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "<>"
+
+      - name: Increment version number
+        run: |
+          yarn version --patch
+          git add .
+          git commit -m "Release version $NEW_VERSION"
+          git push origin --follow-tags
+
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
         with:
           # GitHub token, automatically provided to the action
           # (No need to define this secret in the repo settings)
           github_token: ${{ secrets.github_token }}
-          args: "--dir"
+          # args: "--dir"
 
       - name: Bump version and push tag
         id: tag_version
         uses: mathieudutour/github-tag-action@v6.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          custom_tag: "v${{ env.NEW_VERSION }}"
 
-      - name: Create GitHub release
-        id: create_release
-        uses: actions/create-release@v1
-        with:
-          tag_name: ${{ steps.tag_version.outputs.new_tag }}
-          release_name: Release ${{ steps.tag_version.outputs.new_tag }}
-          body: |
-            Automated release for version ${{ steps.tag_version.outputs.new_tag }}.
-            - Installer included.
-            - Zipped build folder available for download.
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.github_token }}
+      # - name: Create GitHub release
+      #   id: create_release
+      #   uses: actions/create-release@v1
+      #   with:
+      #     tag_name: ${{ steps.tag_version.outputs.new_tag }}
+      #     release_name: DistrAction ${{ steps.tag_version.outputs.new_tag }}
+
+      #     draft: false
+      #     prerelease: false
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.github_token }}
 
       # - name: Upload release assets
       #   uses: actions/upload-release-asset@v1
@@ -68,12 +78,14 @@ jobs:
       #     asset_content_type: application/zip
 
       - name: Upload installer
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.github_token }}
+        uses: softprops/action-gh-release@v2
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/*.exe
-          asset_name: distraction-installer.exe
-          asset_content_type: application/octet-stream
+          token: ${{ secrets.github_token }}
+          tag_name: ${{ steps.tag_version.outputs.new_tag }}
+          body: |
+            Automated release for version ${{ steps.tag_version.outputs.new_tag }}.
+            - Installer included
+          make_latest: true
+          files: |
+            build/*.exe
   
