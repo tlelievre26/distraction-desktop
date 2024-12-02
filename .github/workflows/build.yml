@@ -24,17 +24,42 @@ jobs:
         with:
           python-version: '3.9'  # Recommended version range for node-gyp
 
+      - name: Configure Git with GitHub Actions Bot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "<>"
+
+      - name: Increment version number
+        run: |
+          yarn version --patch
+          git add .
+          git commit -m "Release version $NEW_VERSION"
+          git push origin --follow-tags
+      
+      - name: Save version number
+        id: increment_version
+        shell: cmd
+        run: |
+          FOR /F "delims=" %%A IN ('node -p "require('./package.json').version"') DO SET NEW_VERSION=%%A
+          echo ::set-output name=new_version::%NEW_VERSION%
+
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
         with:
           # GitHub token, automatically provided to the action
           # (No need to define this secret in the repo settings)
           github_token: ${{ secrets.github_token }}
+          # args: "--dir"
 
-          args: "--dir"
-
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload installer
+        uses: softprops/action-gh-release@v2
         with:
-          path: "**\\build\\win-unpacked\\"
-          overwrite: true
+          token: ${{ secrets.github_token }}
+          tag_name: "v${{ steps.increment_version.outputs.new_version }}"
+          body: |
+            Automated release for version v${{ steps.increment_version.outputs.new_version }}"
+            - Installer included
+          make_latest: true
+          files: |
+            build/*.exe
+  

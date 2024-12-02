@@ -151,38 +151,6 @@ const taskData = async(completed, taskName, currentSession) => {
   }
 };
 
-const taskData = async(completed, taskName, currentSession) => {
-  if(write === 'true') {
-    log.debug("Writing to db");
-    let writeClient = influxClient.getWriteApi(org, influxBuckets.tasks, 's');
-
-
-    let app = new Point('TaskMarked')
-      .stringField('TaskName',taskName)
-      .timestamp(currentTime.seconds())
-      .stringField('Completed', completed) //If false then user must have started the task
-      .tag('QuerySession',currentSession);
-
-    try {
-      writeClient.writePoint(app);
-
-    }
-    catch (error) {
-      log.error(error);
-      throw error;
-    }
-
-    prevAppName = appName;
-    log.debug(`App added to InfluxDB: 
-      Name: ${appName}, 
-      Completed: ${completed}, 
-      QuerySession: ${currentSession}, 
-      Timestamp: ${currentTime.seconds()}`);
-
-    await writeClient.close();
-  }
-};
-
 // Function that will extract the time and the query session associated with that time 
 // Can add in the start and the end time of the measurement 
 const grabTimesForStudySession = (querySessionID) => {
@@ -367,7 +335,6 @@ const grabAllPreviousStudySessionIDs = () => {
     });
   });
 };
-
 
 
 module.exports = { appData, SpecificStudySessionProcessing, taskData, grabTimesForApp, insertStudySessionData, grabAllPreviousStudySessionIDs, connectToInflux };
