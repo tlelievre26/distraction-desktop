@@ -15,10 +15,10 @@ const StartPrevSessionsMenu = () => {
   const navigation = useNavigate();
 
 
-  const loadPrevSession = (duration, name, sessionId) => {
+  const loadPrevSession = (duration, name, sessionId, startTime, endTime) => {
     ipcRenderer.send("resize-window", 'timeline');
     navigation("/timeline", {
-      state: { duration, name, sessionId }
+      state: { duration, name, sessionId, startTime, endTime }
     });
   };
 
@@ -35,7 +35,7 @@ const StartPrevSessionsMenu = () => {
             <Dropdown.Item
               as="button"
               key={index}
-              onClick={() => loadPrevSession(session.duration, session.name, session.sessionId)}
+              onClick={() => loadPrevSession(session.duration, session.name, session.sessionId, session.startTime, session.endTime)}
               className="prev-session-item"
             >
               {session.name}

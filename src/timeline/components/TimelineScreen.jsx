@@ -10,6 +10,7 @@ const { PrevSessionProvider } = require("./PrevSessionContext");
 const PrevSessionsMenu = require("./PrevSessionsMenu");
 const FullSessionMetrics = require("./metrics-components/FullSessionMetrics");
 const { SessionMetricsProvider } = require("./SessionMetricsContext");
+const ChunkMetrics = require("./metrics-components/ChunkMetrics");
 
 // const Timeline = require("./timeline.jsx");
 
@@ -38,10 +39,11 @@ const TimelineScreen = () => {
           <div id="metrics">
             {/* Area for us to show metrics relating to the study session as a whole */}
             <FullSessionMetrics/>
+            <ChunkMetrics/>
           </div>
           <div id="timelineArea">
             {/* For an outline's sake I'll assume a session is 2 Hrs with 30 min chunks */}
-            <Timeline></Timeline>
+            <Timeline/>
           </div>
         </div>
         {/* <Timeline /> */}

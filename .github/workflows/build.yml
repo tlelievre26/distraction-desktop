@@ -57,7 +57,7 @@ jobs:
           token: ${{ secrets.github_token }}
           tag_name: "v${{ steps.increment_version.outputs.new_version }}"
           body: |
-            Automated release for version v${{ steps.increment_version.outputs.new_version }}"
+            Automated release for version v${{ steps.increment_version.outputs.new_version }}
             - Installer included
           make_latest: true
           files: |

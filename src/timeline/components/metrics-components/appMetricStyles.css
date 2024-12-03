@@ -1,0 +1,42 @@
+.app-metrics-container {
+    height: 54%;      /* 65% of the viewport height */
+    width: 100%;      /* Full viewport width */
+    padding: 0px 25px;
+    display: flex;
+    justify-content: center;
+}
+
+.app-metrics-box {
+    border: 1px solid black;
+    height: 100%;
+    width: 100%;
+    min-width: 600px;
+    max-width: 800px;
+    padding: 10px 15px;
+    -webkit-text-fill-color: black;
+    font-size: large;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.metric-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.metric-row h4 {
+    font-weight: bolder;
+    font-size: larger;
+}
+
+.metric-row h3 {
+    width: 100%;
+    text-align: center;
+}
+
+.metric-row p {
+    width: 50%;
+}

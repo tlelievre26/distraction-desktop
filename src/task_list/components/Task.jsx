@@ -24,7 +24,7 @@ const Task =({ task, deleteTask, toggleCompleted, index, setCurrentTask, length,
             Delete Task
             </button>
           }
-          {location.pathname !== "/" && task.text !== "" &&
+          {location.pathname !== "/" && task.text !== "" && task.currentTask === true &&
             <button onClick={() => toggleCompleted(index, sessionId)}>Complete</button>
           }
         </div>

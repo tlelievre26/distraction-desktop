@@ -1,5 +1,6 @@
 const { ipcRenderer } = require("electron");
 const React = require("react");
+const { useState, useEffect} = React;
 const { useNavigate } = require("react-router-dom");
 
 const ChromeWarning = require("./ChromeWarning");
@@ -11,22 +12,23 @@ require("./../../timeline/components/navbarStyles.css");
 
 const SessionScreen = () => {
   const navigation = useNavigate();
-  const [sessionId, setSessionId] = React.useState('undefined');
-  const goToTimeline = (duration, name) => {
+  const [sessionId, setSessionId] = useState(sessionStorage.getItem('active-session-id') ?? null);
+  const goToTimeline = (duration, name, startTime, endTime) => {
     navigation("/timeline", {
-      state: { sessionId, duration, name }
+      state: { sessionId: sessionStorage.getItem('active-session-id'), duration, name, startTime, endTime }
     });
   };
 
-  React.useEffect(() => { //Recieves messages about whether or not the Chrome extension is connected
+  useEffect(() => { //Recieves messages about whether or not the Chrome extension is connected
 
     ipcRenderer.on('session-id', (_event, newSessionId) => {
+      sessionStorage.setItem('active-session-id', newSessionId);
       setSessionId(newSessionId);
     });
 
     ipcRenderer.on('backend-end-session', (_event, duration, startTime, endTime) => {
       const name = formatDate(startTime, endTime);
-      goToTimeline(duration, name);
+      goToTimeline(duration, name, startTime, endTime);
     });
 
     // Cleanup listener on unmount
@@ -47,7 +49,7 @@ const SessionScreen = () => {
       <div className="centered">
         <ChromeWarning/>
       </div>
-      <TaskList sessionId={sessionId ?? "placeholder"}/>
+      <TaskList sessionId={sessionId}/>
     </>
 
   );

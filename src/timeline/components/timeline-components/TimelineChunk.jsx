@@ -1,17 +1,24 @@
 const React = require("react");
 
+const { useSessionMetrics } = require("../SessionMetricsContext");
+
 require("./TimelineStyles.css");
 
-const TimelineChunk = ({timeChunk, timeSpent, name}) => {
-  const dynWidth = timeSpent >= 0 ? `${timeSpent}px` : '1px';
+const TimelineChunk = ({id, data}) => {
+  const { currChunkId, setCurrChunkId, setCurrChunkData } = useSessionMetrics();
+  const selectThisChunk = () => {
+    setCurrChunkId(id);
+    setCurrChunkData(data);
+  };
+  
+
+  const selectedStyle = { //When this chunk is selected keep it darker
+    filter: currChunkId === id && 'brightness(80%)'
+  };
+
   return (
-    <>
-      { timeSpent >= timeChunk / 60  && 
-        <div className="chunk" style={{width:dynWidth}}>
-          <p>{timeSpent}</p>
-        </div>
-      }
-    </>
+    <div className="chunk" onClick={selectThisChunk} style={selectedStyle}>
+    </div>
   );
 };
 
