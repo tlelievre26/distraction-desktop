@@ -148,6 +148,39 @@ const taskData = async(completed, taskName, currentSession) => {
 
 };
 
+const sessionMetricsData = async (sessionId, totalSessionMetrics, duration) => {
+  let writeClient = influxClient.getWriteApi(org, influxBuckets.metrics, 's');
+
+  let metrics = new Point('SessionMetrics')
+    .intField('duration', duration)
+    .intField('numTasks', totalSessionMetrics.numTasks)
+    .floatField('switchRate', totalSessionMetrics.switchRate)
+    .intField('numApps', totalSessionMetrics.numApps)
+    .intField('numSites', totalSessionMetrics.numSites)
+    .timestamp(currentTime.seconds())
+    .tag('QuerySession',sessionId);
+
+  try {
+    writeClient.writePoint(metrics);
+        
+  }
+  catch (error) {
+    log.error(error);
+    throw error;
+  }
+
+  log.debug(`SessionMetrics added to InfluxDB: 
+    SessionId: ${sessionId}, 
+    duration: ${duration},
+    numTasks: ${totalSessionMetrics.numTasks}, 
+    switchRate: ${totalSessionMetrics.switchRate},
+    numApps: ${totalSessionMetrics.numApps},
+    numSites: ${totalSessionMetrics.numSites},
+    Timestamp: ${currentTime.seconds()}`);
+
+  await writeClient.close();
+};
+
 // Function that will extract the time and the query session associated with that time 
 // Can add in the start and the end time of the measurement 
 const grabTimesForStudySession = (querySessionID) => {
@@ -282,6 +315,7 @@ const grabAllPreviousStudySessionIDs = () => {
     });
   });
 };
+
 const getTasksForSession = (sessionId) => {
   return new Promise((resolve, reject) => {
 
@@ -315,5 +349,54 @@ const getTasksForSession = (sessionId) => {
   });
 };
 
-module.exports = { appData, SpecificStudySessionProcessing, taskData, grabTimesForStudySession, insertStudySessionData, grabAllPreviousStudySessionIDs, connectToInflux, getTasksForSession };
+const getAvgSessionMetrics = () => {
+  return new Promise((resolve, reject) => {
+    let avgData;
+    let queryClient = influxClient.getQueryApi(org);
+    const timeOfCurrentSession = currentTime.seconds();
+    let stringVersion = `-${timeOfCurrentSession.toString()}s`;
+
+    // Turns out we can't do averages over both floats and ints at once so I need two seperate queries
+    // Ty chatgpt for helping write this
+    const avgQuery = `
+    intAvgs = from(bucket: "SessionMetricsData")
+      |> range(start: ${stringVersion})
+      |> filter(fn: (r) => r._measurement == "SessionMetrics")
+      |> filter(fn: (r) => r._field == "duration" or r._field == "numTasks" or r._field == "numApps" or r._field == "numSites")
+      |> group(columns: ["_field"])
+      |> mean()
+
+
+
+    floatAvgs = from(bucket: "SessionMetricsData")
+      |> range(start: ${stringVersion})
+      |> filter(fn: (r) => r._measurement == "SessionMetrics")
+      |> filter(fn: (r) => r._field == "switchRate")
+      |> group(columns: ["_field"])
+      |> mean()
+
+
+
+    union(tables: [intAvgs, floatAvgs])
+        |> group()
+        |> pivot(rowKey:["_start"], columnKey: ["_field"], valueColumn: "_value")`;
+
+    queryClient.queryRows(avgQuery, {
+      next: (row, tableMeta) => {
+        const tableObject = tableMeta.toObject(row);
+        avgData = tableObject;
+      },
+      error: (error) => {
+        log.error(error);
+        reject(error); // Reject the promise if an error occurs
+      },
+      complete: () => {
+        resolve(avgData); // Resolve the promise once complete
+      }
+    });
+  });
+
+};
+
+module.exports = { appData, SpecificStudySessionProcessing, taskData, grabTimesForStudySession, insertStudySessionData, grabAllPreviousStudySessionIDs, connectToInflux, getTasksForSession, sessionMetricsData, getAvgSessionMetrics };
 

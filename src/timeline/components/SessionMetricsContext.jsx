@@ -19,7 +19,7 @@ const SessionMetricsProvider = ({children}) => {
   const [sessionData, setSessionData] = useState(null);
   const [sessionMetrics, setSessionMetrics] = useState({
     numTasks: 0,
-    tabSwitchRate: 0,
+    switchRate: 0,
     timeOnDistr: 0,
     productivityEstimate: 0,
     mostUsedApps: []
@@ -30,6 +30,8 @@ const SessionMetricsProvider = ({children}) => {
   const [taskData, setTaskData] = useState(null);
   const [startTime, setStartTime] = useState(convertTime(useLocation().state.startTime * 1000));
   const [endTime, setEndTime] = useState(convertTime(useLocation().state.endTime * 1000));
+  const [avgSessionData, setAvgedSessionData] = useState(null);
+  const [isNewSession, setIsNewSession] = useState(useLocation().state.newSession ?? false);
   //Null when no chunk is selected
 
   //Essentially what this does is that whenever the sessionId changes, it will load the data for that ID and calc the metrics
@@ -55,6 +57,10 @@ const SessionMetricsProvider = ({children}) => {
         //Also would need to get sessionMetadata
         //Right now calcMetrics just returns a sample
         const [fullSessionMetrics, appMetrics] = calcMetrics(data, duration, formattedTasks);
+
+        //If this isn't a new session, don't store the fullSessionMetrics (pass in null)
+        ipcRenderer.send('full-session-metrics', duration, sessionId, isNewSession ? fullSessionMetrics : null);
+
         setSessionMetrics(fullSessionMetrics);
         setAppSpecificMetrics(appMetrics);
         setChunkSize(30);
@@ -65,9 +71,14 @@ const SessionMetricsProvider = ({children}) => {
       }
     });
 
+    ipcRenderer.on('return-metric-avgs', (_event, avgMetrics) => {
+      setAvgedSessionData(avgMetrics);
+    });
+
     ipcRenderer.send('get-session-data', sessionId);
     return () => {
       ipcRenderer.removeAllListeners('return-session-data');
+      ipcRenderer.removeAllListeners('return-metric-avgs');
     };
   }, [sessionId]);
 
@@ -92,7 +103,10 @@ const SessionMetricsProvider = ({children}) => {
     startTime,
     setStartTime,
     endTime,
-    setEndTime
+    setEndTime,
+    isNewSession,
+    setIsNewSession,
+    avgSessionData
   };
 
   return (

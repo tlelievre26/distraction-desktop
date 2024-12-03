@@ -41,7 +41,7 @@
 .top-apps-list {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: start;
     height: 100%;
 }
 
@@ -49,6 +49,16 @@
     font-size: 0.9em;
 }
 
+.top-app-entry {
+    height: 20%;
+}
+
 .most-used-apps-title {
     text-align: center;
+}
+
+.avg-toggle {
+    width: 100px;
+    font-size: 0.7em;
+    margin-bottom: -20px;
 }

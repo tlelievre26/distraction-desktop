@@ -15,7 +15,7 @@ const SessionScreen = () => {
   const [sessionId, setSessionId] = useState(sessionStorage.getItem('active-session-id') ?? null);
   const goToTimeline = (duration, name, startTime, endTime) => {
     navigation("/timeline", {
-      state: { sessionId: sessionStorage.getItem('active-session-id'), duration, name, startTime, endTime }
+      state: { sessionId: sessionStorage.getItem('active-session-id'), duration, name, startTime, endTime, newSession: true }
     });
   };
 
