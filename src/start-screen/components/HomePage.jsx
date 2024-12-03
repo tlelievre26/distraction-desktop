@@ -7,6 +7,8 @@ const { PrevSessionProvider } = require("../../timeline/components/PrevSessionCo
 const TaskList = require("../../task_list/components/TaskList");
 const StartPrevSessionsMenu = require("./StartPrevSessionsMenu");
 const SettingsButton = require("./SettingsButton");
+const version = require('../../../package.json').version;
+
 
 require("./../../timeline/components/navbarStyles.css");
 
@@ -46,7 +48,7 @@ const HomePage = () => {
     <>
       <nav className="navbar bg-primary custom-navbar">
         <div className="container-fluid d-flex">
-          <p className="countdown">Welcome to DistrAction!</p>
+          <p className="countdown">Welcome to DistrAction v{version}!</p>
           <PrevSessionProvider readyToLoad={dbSuccess}>
             <StartPrevSessionsMenu/>
           </PrevSessionProvider>

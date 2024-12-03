@@ -8,6 +8,7 @@ const showErrorPopup = require('./util/error-popup');
 const { startInfluxDb, stopInfluxDb } = require('./api_recievers/start-influx-db');
 const log = require('./util/logger');
 const { grabAllPreviousStudySessionIDs } = require('./api_recievers/influxqueries');
+const version = require('../package.json').version;
 
 //For whatever reason, the electron-store module doesn't support using require, so we have to do this to get i
 const importElectronStore = async () => {
@@ -27,7 +28,8 @@ const createWindow = async () => {
       nodeIntegration: true,
       nodeIntegrationInWorker: true,
       contextIsolation: false
-    }
+    },
+    title: `DistrAction v${version}`
   });
   const isDev = process.env.NODE_ENV === "development";
   if (isDev) {

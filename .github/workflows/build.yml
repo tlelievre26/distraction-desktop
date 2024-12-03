@@ -24,17 +24,17 @@ jobs:
         with:
           python-version: '3.9'  # Recommended version range for node-gyp
 
-      - name: Configure Git with GitHub Actions Bot
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "<>"
+      # - name: Configure Git with GitHub Actions Bot
+      #   run: |
+      #     git config user.name "github-actions[bot]"
+      #     git config user.email "<>"
 
-      - name: Increment version number
-        run: |
-          yarn version --patch
-          git add .
-          git commit -m "Release version $NEW_VERSION"
-          git push origin --follow-tags
+      # - name: Increment version number
+      #   run: |
+      #     yarn version --patch
+      #     git add .
+      #     git commit -m "Release version $NEW_VERSION"
+      #     git push origin --follow-tags
       
       - name: Save version number
         id: increment_version
