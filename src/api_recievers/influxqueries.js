@@ -121,7 +121,6 @@ const appData = async (source, appName, currentSession) =>{
 
 const taskData = async(completed, taskName, currentSession) => {
 
-  log.debug("Writing to db");
   let writeClient = influxClient.getWriteApi(org, influxBuckets.tasks, 's');
 
   let app = new Point('TaskMarked')
@@ -218,50 +217,8 @@ const SpecificStudySessionProcessing = async (querySessionid) => {
   }
 };
 
-
-// const grabTimesForApp = (appName) => {
-//   return new Promise((resolve, reject) => {
-//     const allTimes = []; // exact time of point
-//     const allqueryIds = []; // Associated Query Session ID of that point
-//     const allStartTimes = []; // When the measurement was started
-//     const allEndTimes = []; // When the measurement was ended
-
-//     // Get the current time
-//     const timeOfCurrentSession = currentTime.seconds();
-//     let queryClient = influxClient.getQueryApi(org);
-//     let stringVersion = `-${timeOfCurrentSession.toString()}s`;
-
-//     // Construct the Flux query with the filter for the specific querySessionID
-//     const fluxQuery = `
-//               from(bucket: "WebsiteData") 
-//               |> range(start: ${stringVersion})
-//               |> filter(fn: (r) => r._measurement == "AppChange")
-//               |> filter(fn: (r) => r._field == "AppName")
-//               |> filter(fn: (r) => r._value == "${appName}")`;
-
-//     queryClient.queryRows(fluxQuery, {
-//       next: (row, tableMeta) => {
-//         const tableObject = tableMeta.toObject(row);
-//         log.debug(tableObject);
-//         allTimes.push(tableObject._time);
-//         allqueryIds.push(tableObject.QuerySession);
-//         allStartTimes.push(tableObject._start);
-//         allEndTimes.push(tableObject._stop);
-//       },
-//       error: (error) => {
-//         log.error(error);
-//         reject(error); // Reject the promise if an error occurs
-//       },
-//       complete: () => {
-//         resolve({ allTimes, allqueryIds, allStartTimes, allEndTimes }); // Resolve the promise once complete
-//       }
-//     });
-//   });
-// };
-
-
 // Write into previous study sessions
-const insertStudySessionData = (id, startTime, endTime, duration) =>{
+const insertStudySessionData = async (id, startTime, endTime, duration) =>{
  
   let writeClientStudy = influxClient.getWriteApi(org, influxBuckets.sessions, 's');
 
@@ -287,6 +244,7 @@ const insertStudySessionData = (id, startTime, endTime, duration) =>{
       EndTime: ${endTime}, 
       Timestamp: ${currentTime.seconds()}`);
 
+  await writeClientStudy.close();
 };
 
 

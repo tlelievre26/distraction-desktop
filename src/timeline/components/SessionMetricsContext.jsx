@@ -29,7 +29,7 @@ const SessionMetricsProvider = ({children}) => {
   const [currChunkData, setCurrChunkData] = useState(null); // Stores the data in the current chunk
   const [taskData, setTaskData] = useState(null);
   const [startTime, setStartTime] = useState(convertTime(useLocation().state.startTime * 1000));
-  const [endTime, setEndTime] = useState(convertTime(useLocation().state.startTime * 1000));
+  const [endTime, setEndTime] = useState(convertTime(useLocation().state.endTime * 1000));
   //Null when no chunk is selected
 
   //Essentially what this does is that whenever the sessionId changes, it will load the data for that ID and calc the metrics
