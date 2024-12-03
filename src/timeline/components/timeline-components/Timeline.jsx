@@ -30,7 +30,7 @@ const Timeline = () => {
       return <TimelineChunk key={index} id={index} data={dataForChunk}/>;
     });
     taskChunks = Array.from({ length: taskData.length }, (_, index) => {
-      const percentOffset = Math.floor((taskData[index].offset / duration) * 100);
+      const percentOffset = Math.ceil((taskData[index].offset / duration) * 100);
       const percentWidth = Math.floor((taskData[index].duration / duration) * 100);
       return <TaskChunk offset={percentOffset} width={percentWidth} name={taskData[index].name} status={taskData[index].status}/>;
     });
