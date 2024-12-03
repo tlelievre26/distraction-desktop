@@ -86,14 +86,12 @@ const createWindow = async () => {
   });
 
   ipcMain.on('lock-app', () => {
-    isAFK = true;
     win.setAlwaysOnTop(true);
     win.focus();
     win.setFullScreen(true);
   });
   
   ipcMain.on('unlock-app', () => {
-    isAFK = false;
     win.setAlwaysOnTop(false);
     win.setFullScreen(false);
   });
