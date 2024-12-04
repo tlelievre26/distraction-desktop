@@ -29,7 +29,7 @@ const TimelineScreen = () => {
             <PrevSessionProvider>
               <PrevSessionsMenu setName={setName}/>
               <NewSessionButton/>
-              <DeleteSessionButton/>
+              <DeleteSessionButton setName={setName}/>
             </PrevSessionProvider>
           </div>
   

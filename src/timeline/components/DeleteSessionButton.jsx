@@ -6,19 +6,21 @@ const { useSessionMetrics } = require("./SessionMetricsContext");
 const { usePrevSession } = require("./PrevSessionContext");
 
 
-const DeleteSessionButton = () => {
+const DeleteSessionButton = ({ setName }) => {
 
-  const { sessionId, setSessionId } = useSessionMetrics();
+  const { sessionId, setSessionId, setDuration } = useSessionMetrics();
   const { prevSessionIds, setPrevSessionIds } = usePrevSession();
   const navigation = useNavigate();
 
 
   const deleteSession =  () => {
     ipcRenderer.send("deleteSession", sessionId);
-    setPrevSessionIds(prevSessionIds.filter((prevSession) => prevSession.sessionId !== sessionId)); // Remove deleted session from the list
-    if(prevSessionIds.length !== 0) {
-      console.log("Loading in new session with ID", prevSessionIds[prevSessionIds.length - 1]);
-      setSessionId(prevSessionIds[prevSessionIds.length - 1]); //Load the last session in the list
+    const filteredList = prevSessionIds.filter((prevSession) => prevSession.sessionId !== sessionId);
+    setPrevSessionIds(filteredList); // Remove deleted session from the list
+    if(filteredList.length !== 0) {
+      setSessionId(filteredList[filteredList.length - 1].sessionId); //Load the last session in the list
+      setDuration(filteredList[filteredList.length - 1].duration);
+      setName(filteredList[filteredList.length - 1].name);
     }
     else {
       navigation("/"); //Go to home screen if there are no other sessions

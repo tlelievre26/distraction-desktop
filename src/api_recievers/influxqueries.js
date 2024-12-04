@@ -256,7 +256,7 @@ const insertStudySessionData = async (id, startTime, endTime, duration) =>{
   let writeClientStudy = influxClient.getWriteApi(org, influxBuckets.sessions, 's');
 
   let studySessionHistory = new Point('studySession')
-    .tag('sessionId', id) // ID of study sesssion we are saving
+    .tag('QuerySession', id) // ID of study sesssion we are saving
     .intField('startTime', startTime) // Start time of study session
     .intField('endTime', endTime)  //End time of study session
     .intField('duration', duration)
@@ -296,8 +296,8 @@ const grabAllPreviousStudySessionIDs = () => {
       |> range(start: ${stringVersion})
       |> filter(fn: (r) => r._measurement == "studySession")
       |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
-      |> group(columns: ["sessionId"])
-      |> keep(columns: ["duration", "sessionId", "endTime", "startTime"])
+      |> group(columns: ["QuerySession"])
+      |> keep(columns: ["duration", "QuerySession", "endTime", "startTime"])
     `;
 
     queryClient.queryRows(fluxQuery, {
@@ -352,10 +352,10 @@ const getTasksForSession = (sessionId) => {
 
 const deleteStudySession = async (sessionId) => {
   const deleteAPI = new DeleteAPI(influxClient);
-
+  log.debug(`Deleting session associated with the ID ${sessionId}`);
   const start = '1970-01-01T00:00:00Z'; // Start of the range (earliest possible time)
   const stop = new Date().toISOString(); // End of the range (now)
-  const deleteKey = `_measurement="AppChange" OR _measurement="studySession" AND QuerySession == ${sessionId}`;
+  const deleteKey = `QuerySession=\"${sessionId}\"`;
   let prevSessionDeleted = null; // Initialize outside the loop
 
 
@@ -368,13 +368,11 @@ const deleteStudySession = async (sessionId) => {
           body: {
             start,
             stop,
-            deleteKey
+            predicate: deleteKey
           }
         });
 
         prevSessionDeleted = sessionId;
-
-        log.debug(`You have just deleted the session associated with the ID ${sessionId}`);
 
       })
     );
@@ -437,4 +435,4 @@ const getAvgSessionMetrics = () => {
 
 };
 
-module.exports = { appData, SpecificStudySessionProcessing, taskData, grabTimesForStudySession, grabTimesForApp, insertStudySessionData, grabAllPreviousStudySessionIDs, connectToInflux, deleteStudySession, sessionMetricsData, getAvgSessionMetrics };
+module.exports = { appData, SpecificStudySessionProcessing, taskData, grabTimesForStudySession, getTasksForSession, insertStudySessionData, grabAllPreviousStudySessionIDs, connectToInflux, deleteStudySession, sessionMetricsData, getAvgSessionMetrics };
