@@ -10,7 +10,7 @@ require("./navbarStyles.css");
 require("./PrevSessionStyles.css");
 const PrevSessionsMenu = ({setName}) => {
 
-  const { setSessionId, setDuration, setStartTime, setEndTime } = useSessionMetrics();
+  const { setSessionId, setDuration, setStartTime, setEndTime, setIsNewSession } = useSessionMetrics();
 
   const loadPrevSession = (sessionId, duration, name, startTime, endTime) => {
     console.log("Loading session with ID :", sessionId);
@@ -19,6 +19,7 @@ const PrevSessionsMenu = ({setName}) => {
     setSessionId(sessionId);
     setStartTime(convertTime(startTime * 1000));
     setEndTime(convertTime(endTime * 1000));
+    setIsNewSession(false);
   };
 
   const { prevSessionIds } = usePrevSession();

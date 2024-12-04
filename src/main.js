@@ -7,7 +7,7 @@ const { beginSession, endSession } = require("./study-session/session-control");
 const showErrorPopup = require('./util/error-popup');
 const { startInfluxDb, stopInfluxDb } = require('./api_recievers/start-influx-db');
 const log = require('./util/logger');
-const { grabAllPreviousStudySessionIDs, taskData, getTasksForSession, grabTimesForStudySession } = require('./api_recievers/influxqueries');
+const { grabAllPreviousStudySessionIDs, taskData, getTasksForSession, grabTimesForStudySession, sessionMetricsData, getAvgSessionMetrics } = require('./api_recievers/influxqueries');
 const version = require('../package.json').version;
 
 //For whatever reason, the electron-store module doesn't support using require, so we have to do this to get i
@@ -23,13 +23,13 @@ const createWindow = async () => {
     height: 800,
     minWidth: 1000,
     minHeight: 800,
+    title: `DistrAction v${version}`,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"), // Optional if using preload script
       nodeIntegration: true,
       nodeIntegrationInWorker: true,
       contextIsolation: false
-    },
-    title: `DistrAction v${version}`
+    }
   });
   const isDev = process.env.NODE_ENV === "development";
   if (isDev) {
@@ -118,6 +118,14 @@ const createWindow = async () => {
     const sessionData = await grabTimesForStudySession(sessionId);
     const taskData = await getTasksForSession(sessionId);
     event.sender.send('return-session-data', sessionData, taskData);
+  });
+
+  ipcMain.on('full-session-metrics', async (event, duration, sessionId, newMetrics) => {
+    if(newMetrics !== null) {
+      await sessionMetricsData(sessionId, newMetrics, duration);
+    }
+    const avgedMetrics = await getAvgSessionMetrics();
+    event.sender.send('return-metric-avgs', avgedMetrics);
   });
 
   ipcMain.on('error-msg', (_event, msg) => { //Lets the frontend create error popups

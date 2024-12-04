@@ -18,7 +18,7 @@ const StartPrevSessionsMenu = () => {
   const loadPrevSession = (duration, name, sessionId, startTime, endTime) => {
     ipcRenderer.send("resize-window", 'timeline');
     navigation("/timeline", {
-      state: { duration, name, sessionId, startTime, endTime }
+      state: { duration, name, sessionId, startTime, endTime, newSession: false }
     });
   };
 
