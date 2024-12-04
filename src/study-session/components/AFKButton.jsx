@@ -2,15 +2,13 @@ const { ipcRenderer } = require("electron");
 const React = require("react");
 require("./../../timeline/components/navbarStyles.css");
 
-const { appData } = require("../../api_recievers/influxqueries");
-
-const AFKButton = (sessionId) => {
+const AFKButton = ({ sessionId }) => {
   const [isLocked, setIsLocked] = React.useState(false);
 
   const goAFK = async () => {
-    ipcRenderer.send("lock-app");
+    ipcRenderer.send("lock-app", sessionId);
     setIsLocked(true);
-    appData("Windows", "AFK", sessionId);
+
     alert("You are now AFK. You will be locked on this screen until you press the Resume button.");
   };
   

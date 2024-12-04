@@ -7,7 +7,7 @@ const { beginSession, endSession } = require("./study-session/session-control");
 const showErrorPopup = require('./util/error-popup');
 const { startInfluxDb, stopInfluxDb } = require('./api_recievers/start-influx-db');
 const log = require('./util/logger');
-const { grabAllPreviousStudySessionIDs, taskData, getTasksForSession, grabTimesForStudySession, deleteStudySession, sessionMetricsData, getAvgSessionMetrics } = require('./api_recievers/influxqueries');
+const { grabAllPreviousStudySessionIDs, taskData, getTasksForSession, grabTimesForStudySession, deleteStudySession, sessionMetricsData, getAvgSessionMetrics, appData } = require('./api_recievers/influxqueries');
 const version = require('../package.json').version;
 
 
@@ -85,10 +85,11 @@ const createWindow = async () => {
     }
   });
 
-  ipcMain.on('lock-app', () => {
+  ipcMain.on('lock-app', (_event, sessionId) => {
     win.setAlwaysOnTop(true);
     win.focus();
     win.setFullScreen(true);
+    appData("Windows", "AFK", sessionId);
   });
   
   ipcMain.on('unlock-app', () => {
