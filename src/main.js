@@ -80,6 +80,8 @@ const createWindow = async () => {
       win.setMinimumSize(1000, 800);
     }
     else if(screen === "timeline") {
+      win.setAlwaysOnTop(false);
+      win.setFullScreen(false);
       win.setMinimumSize(1200, 800);
       win.maximize();
     }
