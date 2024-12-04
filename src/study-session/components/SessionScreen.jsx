@@ -8,6 +8,7 @@ const EndSessionButton = require("./EndSessionButton.jsx");
 const CountdownTimer = require("./CountdownTimer.jsx");
 const TaskList = require("../../task_list/components/TaskList.jsx");
 const formatDate = require("../../util/format-date.js");
+const AFKButton = require("./AFKButton.jsx");
 require("./../../timeline/components/navbarStyles.css");
 
 const SessionScreen = () => {
@@ -44,6 +45,7 @@ const SessionScreen = () => {
         <div className="container-fluid d-flex justify-content-start mx-auto align-items-center">
           <CountdownTimer/>
           <EndSessionButton/>
+          <AFKButton sessionId={sessionId}/>
         </div>
       </nav>
       <div className="centered">
