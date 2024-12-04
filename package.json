@@ -1,6 +1,6 @@
 {
   "name": "distraction-desktop",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Desktop component for the DistrAction app usage tracking tool",
   "main": "src/main.js",
   "scripts": {
