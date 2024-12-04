@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const { currentTime, InfluxDB, Point } = require("@influxdata/influxdb-client");
-const { BucketsAPI, OrgsAPI } = require('@influxdata/influxdb-client-apis');
+const { BucketsAPI, OrgsAPI, DeleteAPI } = require('@influxdata/influxdb-client-apis');
 
 const log = require('../util/logger');
 
@@ -256,7 +256,7 @@ const insertStudySessionData = async (id, startTime, endTime, duration) =>{
   let writeClientStudy = influxClient.getWriteApi(org, influxBuckets.sessions, 's');
 
   let studySessionHistory = new Point('studySession')
-    .tag('sessionId', id) // ID of study sesssion we are saving
+    .tag('QuerySession', id) // ID of study sesssion we are saving
     .intField('startTime', startTime) // Start time of study session
     .intField('endTime', endTime)  //End time of study session
     .intField('duration', duration)
@@ -296,8 +296,8 @@ const grabAllPreviousStudySessionIDs = () => {
       |> range(start: ${stringVersion})
       |> filter(fn: (r) => r._measurement == "studySession")
       |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
-      |> group(columns: ["sessionId"])
-      |> keep(columns: ["duration", "sessionId", "endTime", "startTime"])
+      |> group(columns: ["QuerySession"])
+      |> keep(columns: ["duration", "QuerySession", "endTime", "startTime"])
     `;
 
     queryClient.queryRows(fluxQuery, {
@@ -349,6 +349,43 @@ const getTasksForSession = (sessionId) => {
   });
 };
 
+
+const deleteStudySession = async (sessionId) => {
+  const deleteAPI = new DeleteAPI(influxClient);
+  log.debug(`Deleting session associated with the ID ${sessionId}`);
+  const start = '1970-01-01T00:00:00Z'; // Start of the range (earliest possible time)
+  const stop = new Date().toISOString(); // End of the range (now)
+  const deleteKey = `QuerySession=\"${sessionId}\"`;
+  let prevSessionDeleted = null; // Initialize outside the loop
+
+
+  try {
+    await Promise.all(
+      Object.values(influxBuckets).map(async (bucket) => {
+        await deleteAPI.postDelete({
+          org,
+          bucket,
+          body: {
+            start,
+            stop,
+            predicate: deleteKey
+          }
+        });
+
+        prevSessionDeleted = sessionId;
+
+      })
+    );
+  } catch (error) {
+    if (prevSessionDeleted !== sessionId) {
+      log.debug(`Failed to delete session with ID ${sessionId}. Reason: ${error.message}`);
+      throw error; 
+    } else {
+      log.debug(`The session with ID ${sessionId} was already deleted.`);
+    }
+  }
+};
+
 const getAvgSessionMetrics = () => {
   return new Promise((resolve, reject) => {
     let avgData;
@@ -398,5 +435,4 @@ const getAvgSessionMetrics = () => {
 
 };
 
-module.exports = { appData, SpecificStudySessionProcessing, taskData, grabTimesForStudySession, insertStudySessionData, grabAllPreviousStudySessionIDs, connectToInflux, getTasksForSession, sessionMetricsData, getAvgSessionMetrics };
-
+module.exports = { appData, SpecificStudySessionProcessing, taskData, grabTimesForStudySession, getTasksForSession, insertStudySessionData, grabAllPreviousStudySessionIDs, connectToInflux, deleteStudySession, sessionMetricsData, getAvgSessionMetrics };
