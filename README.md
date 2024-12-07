@@ -42,8 +42,8 @@ If you have an issue, please open a request on the “Issues” tab of the repos
 
 # User Manual
 
-See our user manual [here](https://github.com/tlelievre26/distraction-desktop/blob/documentation/USERMANUAL.md)
+See our user manual [here](https://github.com/tlelievre26/distraction-desktop/blob/main/USERMANUAL.md)
 
 # Licensing
 
-This project uses the [MIT License](https://github.com/tlelievre26/distraction-desktop/blob/documentation/LICENSE.md)
+This project uses the [MIT License](https://github.com/tlelievre26/distraction-desktop/blob/main/LICENSE.md)
