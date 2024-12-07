@@ -51,8 +51,9 @@ const SessionMetricsProvider = ({children}) => {
         getTimeSpent(data, duration);
         const formattedTasks = getTaskTimeSpent(incTaskData, startTime, endTime);
         setTaskData(formattedTasks);
-
-        setSessionData(chunkData(data));
+        const chunkedData = chunkData(data);
+        console.log(chunkedData);
+        setSessionData(chunkedData);
 
         //Also would need to get sessionMetadata
         //Right now calcMetrics just returns a sample
