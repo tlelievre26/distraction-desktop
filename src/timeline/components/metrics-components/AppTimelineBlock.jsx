@@ -14,13 +14,19 @@ const stringToColor = (str) => {
   }
 
   // Generate RGB values from the hash
-  const r = (hash >> 16) & 0xFF;
-  const g = (hash >> 8) & 0xFF;
-  const b = hash & 0xFF;
+  let r = (hash >> 16) & 0xFF;
+  let g = (hash >> 8) & 0xFF;
+  let b = hash & 0xFF;
 
-  // Adjust the RGB values to create more diverse colors
-  // Instead of mixing with white completely, we reduce it for a broader range
-  const vibrantFactor = 0.7; // Controls vibrancy (1.0 for no pastels, 0.5 for full pastels)
+  // Adjust RGB values to avoid gray tones
+  // Ensure there's enough variance between RGB values
+  if (Math.abs(r - g) < 30 && Math.abs(g - b) < 30 && Math.abs(r - b) < 30) {
+    r = (r + 128) % 256; // Offset red
+    g = (g + 64) % 256;  // Offset green
+  }
+
+  // Adjust the RGB values to create more diverse and vibrant colors
+  const vibrantFactor = 0.5; // Controls vibrancy (1.0 for no pastels, 0.5 for full pastels)
   const vibrantR = Math.floor(r * vibrantFactor + 255 * (1 - vibrantFactor));
   const vibrantG = Math.floor(g * vibrantFactor + 255 * (1 - vibrantFactor));
   const vibrantB = Math.floor(b * vibrantFactor + 255 * (1 - vibrantFactor));

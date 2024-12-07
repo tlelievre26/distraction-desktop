@@ -69,7 +69,7 @@ const chunkData = (sessionData) => {
   const data = { chunks: [] };
 
   sessionData.reduce((acc, element, idx) => {
-    var time = element._timeSpent;
+    let time = element._timeSpent;
     if (acc.currentSum + time > 900) {
       if (acc.currentSum === 900) { // Push the chunk if it sums to 900 or if youve reached the end of the session 
         data.chunks.push(acc.currentChunk); 
@@ -78,6 +78,11 @@ const chunkData = (sessionData) => {
         acc.currentChunk.push({name: sessionData[idx]._value, timeSpent: 900 - acc.currentSum});
         data.chunks.push(acc.currentChunk);
         time = time - (900 - acc.currentSum);
+        while(time > 900) { //If you use an app for more than 15 mins
+          acc.currentChunk = [{name: sessionData[idx]._value, timeSpent: 900}];
+          data.chunks.push(acc.currentChunk);
+          time = time % 900;
+        }
       }
       // Reset for the next chunk
       acc.currentChunk = [{name: sessionData[idx]._value, timeSpent: time}];

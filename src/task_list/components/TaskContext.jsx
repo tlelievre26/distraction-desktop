@@ -54,6 +54,7 @@ const TaskProvider = ({ children }) => {
   setCurrentTask = async (index, sessionId) => {
     const newTasks = [...tasks];
     if(sessionId !== undefined) {
+      console.log("Recording new task");
       if(newTasks[index].currentTask) { //If the task went true -> false, record a "NONE" entry
         ipcRenderer.send('record-task', "unstarred", newTasks[index].text, sessionId);
       }

@@ -21,8 +21,8 @@ const TaskChunk = ({offset, width, name, status}) => {
   };
 
   return (
-    <div>
-      <div className="task-chunk-container" style={{width: `calc(${width}%)`, left: `calc(${offset}% - 50px)`}}>
+    <div className="task-div" style={{width: `calc(${width}% - 100px)`, left: `calc(${offset}% + 50px)`}}>
+      <div className="task-chunk-container">
         <div
           className="task-chunk"
           onMouseEnter={handleMouseEnter}
@@ -53,9 +53,9 @@ const TaskChunk = ({offset, width, name, status}) => {
               borderRadius: '8px',
               boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
               whiteSpace: 'nowrap',
+              width: 'fit-content',
               zIndex: 1,
-              textAlign: 'center',
-              width: '200px'
+              textAlign: 'center'
             }}
           >
             {name} ({status})
@@ -63,8 +63,6 @@ const TaskChunk = ({offset, width, name, status}) => {
         )}
       </div>
     </div>
-    
-
   );
 };
 

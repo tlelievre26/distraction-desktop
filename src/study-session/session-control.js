@@ -10,8 +10,7 @@ const { appData, insertStudySessionData } = require("../api_recievers/influxquer
 let winApiThread;
 let sessionId;
 let wss;
-let startTime;
-let timeLeft;
+let initTime;
 let timerInterval;
 let startSessionTime;
 
@@ -20,8 +19,8 @@ let connected = false; //Represents if the Chrome Ext has connected to the WSS
 const beginSession = (event, duration) => {
   createWebsocket(event);
   startSessionTime = (currentTime.seconds());
-  startTime = duration;
-  timeLeft = startTime;
+  initTime = duration;
+  timeLeft = initTime;
   sessionId = uuidv4();
 
   const webContents = event.sender;
@@ -52,13 +51,12 @@ const beginSession = (event, duration) => {
   });
   
   timerInterval = setInterval(() => { //Counts down the timer
-    if (timeLeft > 0) {
-      timeLeft -= 1;
-      return timeLeft;
+    if (currentTime.seconds() - startSessionTime >= duration) {
+      clearInterval(timerInterval);
+      endSession(event, false);
     }
-    endSession(event, false);
-    clearInterval(timerInterval);
-  }, 1000);
+
+  }, 100);
 };
 
 const endSession = (event, cleanSession) => {
@@ -68,11 +66,11 @@ const endSession = (event, cleanSession) => {
     
     clearInterval(timerInterval); //End the countdown timer
     timerInterval = undefined;
-    log.debug("Ending active study session with duration ", startTime - timeLeft);
+    log.debug("Ending active study session with duration ", duration);
 
     if(event !== null) {
       const webContents = event.sender;
-      webContents.send('backend-end-session', startTime - timeLeft, startSessionTime, endSessionTime);
+      webContents.send('backend-end-session', duration, startSessionTime, endSessionTime);
     }
     //End winAPI worker
     winApiThread.postMessage('end-session');
